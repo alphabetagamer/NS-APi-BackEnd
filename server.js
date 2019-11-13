@@ -31,6 +31,7 @@ app.use(bodyParser.json());
 
 // Use Routes
 app.use('/api/products', products);
+app.use("/",products)
 
 const port = process.env.PORT || 5000;
 
