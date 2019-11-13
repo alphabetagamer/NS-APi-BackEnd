@@ -1,22 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 // const passport = require('passport');
-const middleware = require("../../middleware/index");
-const Grid = require('gridfs-stream');
-const async = require("async");
+// const middleware = require("../../middleware/index");
+// const Grid = require('gridfs-stream');
+// const async = require("async");
 
 // Load User Model
 const Product = require('../../models/Product');
 
-const conn = mongoose.createConnection(require('../../config/keys').mongoURI);
+// const conn = mongoose.createConnection(require('../../config/keys').mongoURI);
 
-    let gfs;
-    conn.once('open', () => {
-        // Init stream
-        gfs = Grid(conn.db, mongoose.mongo);
-        gfs.collection('uploads');
-      });
+//     let gfs;
+//     conn.once('open', () => {
+//         // Init stream
+//         gfs = Grid(conn.db, mongoose.mongo);
+//         gfs.collection('uploads');
+//       });
 
 
 var product1 = {  
