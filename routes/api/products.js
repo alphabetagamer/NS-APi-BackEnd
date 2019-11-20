@@ -75,6 +75,39 @@ router.get(
   //     .catch(err => res.status(404).json(err));
   });
 
+var product_schema={
+p_name:"name",
+p_vendor:"vendor",
+p_desc:"Description",
+p_image:["url to images","url to other images"],
+p_main_image:"url to main image",
+p_features:["feature1","feature2"],
+p_rating:"int value",
+p_reviews:[[10,"List of list"],[8,"contains score and text"]],
+p_areviews:"Uncertain",
+p_price:100,
+p_dis_price:80,
+p_variety:["flavor1","flavor2"],
+p_weight:[100,200,500],
+max_quant:2,
+p_daily_deal:60,
+p_nutri_info:{serve_size:100,serve_cont:20},
+p_ingredients:["water","sugar","lemon"],
+p_long_desc:"long text",
+p_video:["url","url"],
+p_highlight_review:[10,"text"],
+p_similar:["p_id1","p_id2"],
+p_similar_vendor:["v_id1","v_id2"]
+
+}
+
+router.get("/product_details",(req,res)=>{
+
+
+  res.json(product_schema)
+
+
+});
 // @route   GET api/news/:id
 // @desc    Get  news ID
 // @access  Public
