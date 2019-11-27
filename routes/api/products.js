@@ -81,8 +81,7 @@ p_vendor:"vendor",
 p_desc:"Description",
 p_image:[{image_url:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"},{image_url:"https://images.unsplash.com/photo-1566408716503-7f1e65675c41?ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80"}],
 p_main_image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80",
-p_features:["feature1","feature2"],
-p_rating:"int value",
+p_features:[{feature:"feature1"},{feature:"feature2"}],
 p_reviews:[
   {name:"username1",date:"2019-07-18T21:33:46.097Z",description:"really good product, a must try!!",rating:"5"},
   {name:"username2",date:"2019-08-12T15:53:46.097Z",description:"it is really good for health",rating:"4"}
@@ -90,17 +89,17 @@ p_reviews:[
 p_areviews:"Uncertain",
 p_price:100,
 p_dis_price:80,
-p_variety:["flavor1","flavor2"],
-p_weight:[100,200,500],
+p_variety:[{variety:"flavor1"},{variety:"flavor2"}],
+p_weight:[{weight:100},{weight:200},{weight:500}],
 max_quant:2,
 p_daily_deal:60,
 p_nutri_info:{serve_size:100,serve_cont:20},
-p_ingredients:["water","sugar","lemon"],
+p_ingredients:[{ingredient:"water"},{ingredient:"sugar"},{ingredient:"lemon"}],
 p_long_desc:"long text",
 p_video:[{video_url:"https://www.youtube.com/watch?v=DWlfYOpgFSM"},{video_url:"https://www.youtube.com/watch?v=DQniWOTizpA"}],
 p_highlight_review:[ {name:"username1",date:"2019-07-18T21:33:46.097Z",description:"really good product, a must try!!",rating:"5"}],
-p_similar:["p_id1","p_id2"],
-p_similar_vendor:["v_id1","v_id2"]
+p_similar:[{similar:"p_id1"},{similar:"p_id2"}],
+p_similar_vendor:[{similar:"v_id1"},{similar:"v_id2"}]
 
 }
 
