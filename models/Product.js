@@ -1,298 +1,378 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const product_types = new Schema ({
+	id : {
+		type : Number,
+		unique : true,
+    required:true
+	},
+	category_id:{
+		type:Number,
+    required:true
+	},
+	name:{
+		type:String,
+    required:true
+	}
+});
+const products = new Schema({
+	id : {
+		type : Number,
+		unique : true,
+    required:true
+	},
+	product_type_id:{
+		type: Number,
+    required:true
+	},
+	category_id:{
+		type:Number,
+    required:true
+	},
+	market_id:{
+		type:Number,
+    required:true
+	},
+	shop_id:{
+		type:Number,
+    required:true
+	},
+	country_id:{
+		type:Number,
+    required:true
+	},
+	name:{
+		type:String,
+    required:true
+	},
+	price:{
+		type:Number,
+    required:true
+	},
+	discount_price:{
+		type:Number
+	},
+	discount:{
 
-// Create Schema
-const UserSchema = new Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  description: {
-    type: String
-  },
-  price:{
-    type: Number,
-    required: true
-  },
-  joining_date: {
-    type: Date,
-    default: Date.now
-  },
-  refer_code:{
-    type:String
-  },
-  referred_code:{
-    type: String
-  },
-
-  referred_by_name:{
-    type: String
-  },
-  referred_by_phone:{
-    type: String
-  },
-  use_time:{
-    type: Number,
-    default: 0
-  },
-
-  active_time:{
-    type: Number,
-    default: 0
-  },
-
-  wallet_balance:{
-    type:Number,
-    default:0
-  },
-  total_news_read:{
-    type: Number,
-    default: 0
-  },
-
-  self_time_redeemed:{
-    type: Number,
-    dafault: 0
-  },
-  refer_friend_earning_time:{
-    type: Number,
-    default: 0
-  },
-
-  ad_time:[
-    {
-      date:{
-        type: String
-      },
-      count:{
-        type: Number
-      }
-    }
-  ],
-  ad_view:[
-    {
-      date:{
-        type: String
-      },
-      count:{
-        type: Number
-      }
-    }
-  ],
-  ad_click:[
-    {
-      date:{
-        type: String
-      },
-      count:{
-        type: Number
-      }
-    }
-  ],
-  news_read:[
-    {
-      date:{
-        type: String
-      },
-      count:{
-        type: Number
-      }
-    }
-  ],
-
-  referred_friends: [
-    {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'users'
-      },
-      name:{
-        type:String
-      },
-      time_redeemed:{
-        type: Number,
-        default: 0
-      },
-      date: {
-        type: Date,
-        default: Date.now        
-      }
-    }
-  ],
-  
-  redeem_history:[
-    {
-      name:{
-        type: String
-      },
-      amount:{
-        type: Number,
-        required: true    
-      },
-      date: {
-        type: Date,
-        default: Date.now
-      },
-      status:{
-        type: String
-      },
-      time_redeemed:{
-        type:Number
-      },
-      total_time:{
-        type: Number
-      }
-    }
-  ],
-
-  credit_history:[
-    {
-      name:{
-        type: String
-      },
-      amount:{
-        type: Number,
-        required: true    
-      },
-      date: {
-        type: Date,
-        default: Date.now
-      },
-     
-      status:{
-        type: String
-      }
-    }
-  ],
-
-  total_ads_clicked:{
-    type: Number,
-    default: 0
-  },
-  
-  total_ads_viewed:{
-    type: Number,
-    default: 0
-  },
-
-  state:{
-    type: String,
-    required: true
-  },
-
-  city:{
-    type: String,
-    required: true
-  },
-
-  gender:{
-    type: String,
-    enum:["male","female"],
-    required: true
-  },
-
-  phone:{
-    type: Number,
-    minlength:10,
-    maxlength:10,
-    required: true
-  },
-
-  device_id: {
-    type: String,
-    required: true
-  },
-
-  total_app_usage_time:{
-    type: Number ,
-    default: 0
-  },
-
-  total_ad_time:{
-    type: Number,
-    default: 0
-  },
-
-  total_earning:{
-    type: Number,
-    default: 0
-  },
-
-  total_withdrawal:{
-    type: Number,
-    default: 0
-  },
-
-  blocked:{
-    type: Boolean,
-    default: false
-  },  
-  messages:[
-    {
-      msg:{
-        type: String,
-        required:true
-      },
-      date: {
-        type: Date,
-        default: Date.now        
-      }
-    }
-  ],
-
-  notification:[
-    {
-      msg:{
-        type: String,
-        required:true
-      },
-      date: {
-        type: Date,
-        default: Date.now        
-      }
-    }
-  ],
-
-  paytm:[{
-    phone:{
-      type:Number,
-      required:true
-    }
-  }],
-  bank:[{
-    account_holder_name:{
-      type:String,
-      required:true
-    },
-    ifsc:{
-      type: String,
-      required:true
-    },
-    account_number:{
-      type:String,
-      required:true
-    }
-  }],
-
-  favourites: [
-    {
-      news: {
-        type: Schema.Types.ObjectId,
-        ref: 'news'
-      },
-     
-      date: {
-        type: Date,
-        default: Date.now
-      }
-    }
-  ],
-
-  date:{
-    type:Date,
-    dafault: Date.now
-  }
+		type:Number
+		min:0,
+		max:100
+	},
+	quantity:{
+		type:Number,
+    required:true
+	},
+	views:{
+		type:Number
+	},
+	likes:{
+		type:Number
+	},
+	sort_order:{
+		type:Number
+	},
+	status:{
+		type:Number
+	}
 
 });
+const shops = new Schema({
+	id:{
+		type:Number,
+		unique:true,
+    required:true
+	},
+	market_id:{
+		type:Number,
+    required:true
+	},
+	name:{
+		type:String,
+    required:true
+	},
+	address:{
+		type:String,
+    required:true
+	},
+	product_types_count:{
+		type:Number,
+    required:true
+	},
+	product_count:{
+		type:Number,
+    required:true
+	},
+	views:{
+		type:Number
+	},
+	photo:{
+		type:String
+	},
+	status:{
+		type:Number
+	}
 
-module.exports = User = mongoose.model('users', UserSchema);
+});
+const admins = new Schema({
+	id: {
+    type: Number,
+    unique: true,
+    required:true
+  },
+  shop_id:{
+		type:Number,
+    required:true
+	},
+	name:{
+		type:String,
+    required:true
+	},
+	username:{
+		type:String,
+		unique=true,
+    required:true
+	},
+	phone:{
+		type:Number,
+		unique=true,
+		maxlength:10,
+		minlength:10,
+    required:true
+
+	},
+	email:{
+		type:String,
+		unique:true,
+    required:true
+	},
+	email_verified_at:{
+		type:Date
+	},
+	password:{
+		type:String,
+		required:true
+	},
+	remember_token:{
+		type:String
+	}
+
+});
+const markets = new Schema({
+	id:{
+		type:Number,
+		unique:true,
+		required:true
+	},
+	name: {
+    type: String,
+    required: true
+  	},
+  	address: {
+    type: String,
+    required: true
+  	},
+  	shops_count: {
+    type: Number,
+    required: true
+  	},
+  	products_count: {
+    type: Number,
+    required: true
+  	},
+  	photo:{
+    type: String
+  	},
+  	status: {
+    type: Number
+  	}
+});
+const countries = new Schema({
+	id:{
+		type:Number,
+		required:true,
+		unique:true
+	},
+	name:{
+		type:String,
+		required:true
+	}
+});
+const product_option_values= new Schema({
+id:{
+	type:Number,
+	required:true,
+	unique:true
+}
+product_id:{
+	type:Number,
+	required:true
+},
+option_id:{
+	type:Number,
+	required:true
+},
+option_value_id:{
+	type:Number,
+	required:true
+}
+});
+const option_values = new Schema({
+	id:{
+		type:Number,
+		required:true,
+		unique:true
+	},
+	option_id:{
+		type:Number,
+		required:true
+	}
+});
+const options = new Schema({
+	id:{
+		type:Number,
+		required:true,
+		unique:true
+	},
+	name:{
+		type:String,
+		required:true
+	},
+	product_type_id:{
+		type:Number,
+		required:true
+	}
+});
+const brands = new Schema({
+	id:{
+		type:Number,
+		required:true,
+		unique:true
+	},
+	name:{
+		type:String,
+		required:true
+	}
+});
+const brand_models = new Schema({
+	id:{
+		type:Number,
+		required:true,
+		unique:true
+	},
+	name:{
+		type:String,
+		required:true
+	},
+	product_type_id:{
+		type:Number,
+		required:true
+	},
+	brand_id:{
+		type:Number,
+		required:true
+	}
+});
+const categories = new Schema({
+	id:{
+		type:Number,
+		required:true,
+		unique:true
+	},
+	_lft:{
+		type:Number,
+		required:true
+	},
+	_rgt:{
+		type:Number,
+		required:true
+	},
+	parent_id:{
+		type:Number,
+		required:true
+	},
+	top:{
+		type:Number,
+		required:true
+	},
+	sort_order:{
+		type:Number,
+		required:true
+	},
+	status:{
+		type:Number,
+		required:true
+	},
+});
+const product_type_m_options=new Schema({
+	id:{
+		type:Number,
+		required:true,
+		unique:true
+	},
+	product_type_id:{
+		type:Number,
+		required:true
+	},
+	m_option_id:{
+		type:Number,
+		required:true
+	},
+	m_option_value_id:{
+		type:Number,
+		required:true
+	}
+});
+const product_m_option_values=new Schema({
+	id:{
+		type:Number,
+		required:true,
+		unique:true
+	},
+	product_type_id:{
+		type:Number,
+		required:true
+	},
+	m_option_id:{
+		type:Number,
+		required:true
+	}
+});
+const m_options= new Schema({
+	id:{
+		type:Number,
+		required:true,
+		unique:true
+	},
+	name:{
+		type:String,
+		required:true
+	}
+});
+const m_option_values= new Schema({
+	id:{
+		type:Number,
+		required:true,
+		unique:true
+	},
+	m_option_id:{
+		type:Number,
+		required:true
+	}
+});
+
+module.exports = product_types = mongoose.model('product_types', product_types);
+module.exports = products = mongoose.model('products', products);
+module.exports = shops = mongoose.model('shops', shops);
+module.exports = markets = mongoose.model('markets', markets);
+module.exports = admins = mongoose.model('admins', admins);
+module.exports = countries = mongoose.model('countries', countries);
+module.exports = categories = mongoose.model('categories', categories);
+module.exports = product_m_option_values = mongoose.model('product_m_option_values', product_m_option_values);
+module.exports = m_options = mongoose.model('m_options', m_options);
+module.exports = m_option_values = mongoose.model('m_option_values', m_option_values);
+module.exports = product_type_m_options = mongoose.model('product_type_m_options', product_type_m_options);
+module.exports = product_option_values = mongoose.model('product_option_values', product_option_values);
+module.exports = options = mongoose.model('options', options);
+module.exports = option_values = mongoose.model('option_values', option_values);
+module.exports = brand_models = mongoose.model('brand_models', brand_models);
+module.exports = brands = mongoose.model('brands', brands);
