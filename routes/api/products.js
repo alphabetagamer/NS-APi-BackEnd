@@ -75,6 +75,8 @@ router.get(
   //     .catch(err => res.status(404).json(err));
   });
 
+  
+
 // @route   GET api/news/:id
 // @desc    Get  news ID
 // @access  Public
