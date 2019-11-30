@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const product_types = new Schema ({
+var product_types = new Schema ({
 	id : {
 		type : Number,
 		unique : true,
@@ -15,7 +15,7 @@ const product_types = new Schema ({
     required:true
 	}
 });
-const products = new Schema({
+var products = new Schema({
 	id : {
 		type : Number,
 		unique : true,
@@ -54,7 +54,7 @@ const products = new Schema({
 	},
 	discount:{
 
-		type:Number
+		type:Number,
 		min:0,
 		max:100
 	},
@@ -76,7 +76,7 @@ const products = new Schema({
 	}
 
 });
-const shops = new Schema({
+var shops = new Schema({
 	id:{
 		type:Number,
 		unique:true,
@@ -113,7 +113,7 @@ const shops = new Schema({
 	}
 
 });
-const admins = new Schema({
+var admins = new Schema({
 	id: {
     type: Number,
     unique: true,
@@ -129,12 +129,12 @@ const admins = new Schema({
 	},
 	username:{
 		type:String,
-		unique=true,
+		unique:true,
     required:true
 	},
 	phone:{
 		type:Number,
-		unique=true,
+		unique:true,
 		maxlength:10,
 		minlength:10,
     required:true
@@ -157,7 +157,7 @@ const admins = new Schema({
 	}
 
 });
-const markets = new Schema({
+var markets = new Schema({
 	id:{
 		type:Number,
 		unique:true,
@@ -186,7 +186,7 @@ const markets = new Schema({
     type: Number
   	}
 });
-const countries = new Schema({
+var countries = new Schema({
 	id:{
 		type:Number,
 		required:true,
@@ -197,12 +197,12 @@ const countries = new Schema({
 		required:true
 	}
 });
-const product_option_values= new Schema({
+var product_option_values= new Schema({
 id:{
 	type:Number,
 	required:true,
 	unique:true
-}
+},
 product_id:{
 	type:Number,
 	required:true
@@ -216,7 +216,7 @@ option_value_id:{
 	required:true
 }
 });
-const option_values = new Schema({
+var option_values = new Schema({
 	id:{
 		type:Number,
 		required:true,
@@ -227,7 +227,7 @@ const option_values = new Schema({
 		required:true
 	}
 });
-const options = new Schema({
+var options = new Schema({
 	id:{
 		type:Number,
 		required:true,
@@ -242,7 +242,7 @@ const options = new Schema({
 		required:true
 	}
 });
-const brands = new Schema({
+var brands = new Schema({
 	id:{
 		type:Number,
 		required:true,
@@ -253,7 +253,7 @@ const brands = new Schema({
 		required:true
 	}
 });
-const brand_models = new Schema({
+var brand_models = new Schema({
 	id:{
 		type:Number,
 		required:true,
@@ -272,7 +272,7 @@ const brand_models = new Schema({
 		required:true
 	}
 });
-const categories = new Schema({
+var categories = new Schema({
 	id:{
 		type:Number,
 		required:true,
@@ -303,7 +303,7 @@ const categories = new Schema({
 		required:true
 	},
 });
-const product_type_m_options=new Schema({
+var product_type_m_options=new Schema({
 	id:{
 		type:Number,
 		required:true,
@@ -322,7 +322,7 @@ const product_type_m_options=new Schema({
 		required:true
 	}
 });
-const product_m_option_values=new Schema({
+var product_m_option_values=new Schema({
 	id:{
 		type:Number,
 		required:true,
@@ -337,7 +337,7 @@ const product_m_option_values=new Schema({
 		required:true
 	}
 });
-const m_options= new Schema({
+var m_options= new Schema({
 	id:{
 		type:Number,
 		required:true,
@@ -348,7 +348,7 @@ const m_options= new Schema({
 		required:true
 	}
 });
-const m_option_values= new Schema({
+var m_option_values= new Schema({
 	id:{
 		type:Number,
 		required:true,
