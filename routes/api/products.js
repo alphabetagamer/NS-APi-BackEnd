@@ -5,7 +5,7 @@ const router = express.Router();
 // const middleware = require("../../middleware/index");
 // const Grid = require('gridfs-stream');
 // const async = require("async");
-
+const { check, validationResult } = require('express-validator');
 // Load User Model
 const Product = require('../../models/Product');
 
@@ -105,15 +105,52 @@ p_similar_vendor:[{similar:"v_id1"},{similar:"v_id2"}]
 
 router.get("/product_details",(req,res)=>{
 
+  return res.json(product_schema)
 
-  res.json(product_schema)
 
+});
 
+router.post("/signup_verify",(req,res)=>{
+var number = req.body.mobile_no
+console.log(req.body.mobile_no)
+if (number.length == 10){
+  return res.json({status:"SignedUp"})
+}
+else{
+  return res.json({status:"Incorrect number"})
+}
+
+});
+
+var header = {
+link:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+}
+router.post("/header_api",(req,res)=>{
+return res.json(header)
+});
+
+router.post("/email_api",[
+  check('email','Please include a valid email').isEmail(),
+  check('password',"Pleas enter a valid password").isLength({min:8})
+],(req,res)=>{
+const errors = validationResult(req);
+if(!errors.isEmpty()){
+  return  res.status(400).json({errors:errors.array()})
+
+}
+return res.json({status:"SignedUP"})
 });
 // @route   GET api/news/:id
 // @desc    Get  news ID
 // @access  Public
+router.post("/forgot_pass",check("email","Please input correct email").isEmail(),(req,res)=>{
+  const errors = validationResult(req);
+  if(!errors.isEmpty()){
+    return  res.status(400).json({errors:errors.array()})
 
+  }
+  return res.json({status:"Working on finding your account"})
+});
 
 
 
