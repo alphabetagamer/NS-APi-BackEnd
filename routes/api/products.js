@@ -152,7 +152,45 @@ router.post("/forgot_pass",check("email","Please input correct email").isEmail()
   return res.json({status:"Working on finding your account"})
 });
 
+var blog_listing={
+  banner:[{
+    banner:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"},{
+    banner:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+  }],
+  blog_item:[{
+    blog_image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80",
+    blog_title:"Lorem Ipsum",
+    blog_short_desc:"Lorem Ipsum",
+    blog_category:[{category:"Fitness"},{category:"Health"}],
+    blog_date:"2019-07-18T21:33:46.097Z"
+  },{
+    blog_image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80",
+    blog_title:"Lorem Ipsum",
+    blog_short_desc:"Lorem Ipsum",
+    blog_category:[{category:"Fitness"},{category:"Health"}],
+    blog_date:"2019-07-18T21:33:46.097Z"
+  }],
+  top_blogs:[{blog:"www.blog.com",views:100},{blog:"www.blog2.com",views:300}]
+}
+router.get("/blog/blog_list",(req,res)=>{
+  return res.json(blog_listing)
+});
+blog_details={
+  blog_image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80",
+  blog_category:[{category:"Fitness"},{category:"Health"}],
+  blog_title:"Lorem Ipsum",
+  blog_text:"Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum",
+  top_blogs:[{blog:"www.blog.com",views:100},{blog:"www.blog2.com",views:300}],
+  blog_comments:[{comment:"Great blog",author:"Sam cook",date:"2019-07-18T21:33:46.097Z",comment_id:"1",user_avatar:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"},{comment:"superb blog",author:"rachel cook",date:"2019-07-18T21:33:46.097Z",comment_id:"2",user_avatar:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"}],
+  similar_blogs:[{category:"Health",blogs:[{blog:"www.blog3.com"},{blog1:"www.blog4.com"}]}]
 
+}
+router.post("/blog/:blogID/post_comment",(req,res)=>{
+  return res.json({status:"comment received "})
+});
+router.post("/blog/:blogID",(req,res)=>{
+return res.json(blog_details)
+});
 
 // router.post('/update/:id', middleware.checkToken,async (req, res) => {
 //   const errors = {};
