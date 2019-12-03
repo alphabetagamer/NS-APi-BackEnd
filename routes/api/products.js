@@ -186,7 +186,22 @@ blog_details={
 
 }
 router.post("/blog/:blogID/post_comment",(req,res)=>{
-  return res.json({status:"comment received "})
+  var username = req.body.username
+  var comment=req.body.comment
+  var blog_id=req.params.blogID
+  var replyTo=""
+  var date=req.body.date
+  var email=req.body.email
+  if(req.body.replyTo){
+    replyTo=req.body.replyTo
+  }
+  return res.json({
+    user:username,
+    user_comment:comment,
+    blog_id:blog_id,
+    date:date,
+    email:email
+  })
 });
 router.post("/blog/:blogID",(req,res)=>{
 return res.json(blog_details)
