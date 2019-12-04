@@ -1,31 +1,149 @@
 var mongoose = require("mongoose"),
-    User = require("./models/User"),
-    News = require("./models/News"),
-    // Employ = require("./models/Employ")
-    ReferManager = require("./models/ReferManager")
+    product = require("./models/Product"),
+    blog_table=require("./models/blog")
 
-var data = [
-    {headline : "clouds rest" ,author:"author 1", description: "bloah blah blah", tags:["tag 1","tag 2", "tag 3"],category:["cat A","cat B","cat C"],photo_download_url :"https://www.nps.gov/maca/planyourvisit/images/MapleSpringsCampground-Campsite.jpg?maxwidth=1200&maxheight=1200&autorotate=false"}
-   , {headline : "sky high" ,author:"author 2", description: "its sky descriptoion",tags:["tag 5","tag 4", "tag 3"],category:["cat D","cat C"],photo_download_url :"https://www.nps.gov/maca/planyourvisit/images/MapleSpringsCampground-Campsite.jpg?maxwidth=1200&maxheight=1200&autorotate=false"}
-   , {headline : "ccolt steels" ,author:"author 3", description: "colt steele", tags:["tag 7","tag 6", "tag 5"],category:["cat A","cat E","cat C"],photo_download_url :"https://www.nps.gov/maca/planyourvisit/images/MapleSpringsCampground-Campsite.jpg?maxwidth=1200&maxheight=1200&autorotate=false"}
+var blog = [{blog_id:2,
+title:"Title",
+body:"lorem Ipsum",
+images:[{
+    image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+}],
+views:100,
+user_id:1,
+categories:[{
+    category:
+        "Health"},{category: "Fitness"}],
+publish_date:"2019-07-18T21:33:46.097Z",
+likes:[{
+    user_id:2
+}]
+},{blog_id:2,
+title:"Title",
+body:"lorem Ipsum",
+images:[{
+    image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+}],
+views:100,
+user_id:1,
+categories:[{
+    category:
+        "Health"},{category: "Fitness"}],
+publish_date:"2019-07-18T21:33:46.097Z",
+likes:[{
+    user_id:2
+}]
+},{blog_id:3,
+    title:"Title2",
+    body:"lorem Ipsum",
+    images:[{
+        image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+    }],
+    views:100,
+    user_id:4,
+    categories:[{
+        category:
+            "Health"},{category: "Fitness"}],
+    publish_date:"2019-07-18T21:33:46.097Z",
+    likes:[{
+        user_id:2
+    }]
+    }];
+var prod=[{product_id :2,
+name: "Whey Protein2",
+vendor_id:3,
+price:1800,
+discount:20,
+images:[{
+    image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+,
+image_alt_text:"Whey Powder",
+image_caption:"Image Caption"
+}],
+thumbnails:[{
+    thumbnail:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+    }],
+short_desc:"SHort Description",
+long_desc:"The best whey powder in the market",
+categories:[{
+    category:
+        "Health"},{category: "Fitness"}],
+flavor:"Strawberry",
+other_flavors:[{
+    product_id:2,
+    flavor:"Banana"
+}],
+weight:100,
+other_weights:[{
+    product_id:2,
+    weight:200
+}],
+goals:[{
+    goal:"Fitness"
+}],
+brand_id:2
 
-];
-var user = {name: "Daphnis", email:"daphnis@gmail.com",age:29,refer_code:"daph123", state:"delhi", city:"West delhi",gender:"female",phone:9999999999,device_id:"moto 2011"
-            ,use_time:10,active_time:9,total_news_read:4,refer_friend_earning_time:0,total_ads_clicked:6,total_ads_viewed:4,total_app_usage_time:12,total_ad_time:7,total_earnings:300
-            ,credit_history:[{amount:200,status:"complete"},{amount:100,status:"complete"}],redeem_history:[{amount:250,status:"complete"},{amount:50,status:"complete"}]
-        }
 
-var employ = {name: "employ 1", email:"employ@gmail.com",state:"haryana", city:"gurugram",gender:"male",salary:"102500",phone:9716822108,isSuper:true}
- var refermanager = {redeem_amount : 25, redeem_time: 36000};
+},{product_id :3,
+    name: "Whey Protein2",
+    vendor_id:3,
+    price:1800,
+    discount:20,
+    images:[{
+        image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+    ,
+    image_alt_text:"Whey Powder",
+    image_caption:"Image Caption"
+    }],
+    thumbnails:[{
+        thumbnail:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+        }],
+    short_desc:"SHort Description",
+    long_desc:"The best whey powder in the market",
+    categories:[{
+        category:
+            "Health"},{category: "Fitness"}],
+    flavor:"Strawberry",
+    other_flavors:[{
+        product_id:2,
+        flavor:"Banana"
+    }],
+    weight:100,
+    other_weights:[{
+        product_id:2,
+        weight:200
+    }],
+    goals:[{
+        goal:"Fitness"
+    }],
+    brand_id:2
+    }];
+// var user = {name: "Daphnis", email:"daphnis@gmail.com",age:29,refer_code:"daph123", state:"delhi", city:"West delhi",gender:"female",phone:9999999999,device_id:"moto 2011"
+//             ,use_time:10,active_time:9,total_news_read:4,refer_friend_earning_time:0,total_ads_clicked:6,total_ads_viewed:4,total_app_usage_time:12,total_ad_time:7,total_earnings:300
+//             ,credit_history:[{amount:200,status:"complete"},{amount:100,status:"complete"}],redeem_history:[{amount:250,status:"complete"},{amount:50,status:"complete"}]
+//         }
+
+// var employ = {name: "employ 1", email:"employ@gmail.com",state:"haryana", city:"gurugram",gender:"male",salary:"102500",phone:9716822108,isSuper:true}
+//  var refermanager = {redeem_amount : 25, redeem_time: 36000};
 
 function seedDB(){
-    ReferManager.create(refermanager,(err,created)=>{
+    blog.forEach(function(seed){
+        blog_table.create(blog,(err,created)=>{
+            if(err){
+                console.log(err)
+            } else{
+                console.log("refermanager created with id "+ created._id )
+            }
+        })
+    });
+    
+    prod.forEach(function(seed){product.create(seed,(err,created)=>{
         if(err){
             console.log(err)
         } else{
             console.log("refermanager created with id "+ created._id )
         }
-    })
+    })});
+    
     // data.forEach(function(seed){
     //     News.create(seed,function(err,news){
     //         if(err){

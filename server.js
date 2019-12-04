@@ -1,8 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const products = require('./routes/api/products');
-
-// const seeddb = require('./seedDb');
+const mongoose = require('mongoose');
+const seeddb = require('./seedDb');
 const app = express();
 
 
@@ -19,14 +19,14 @@ app.all('/*', function(req, res, next) {
 });
 
 // DB Config
-// const db = require('./config/keys').mongoURI;
-// // Connect to MongoDB
-// mongoose
-//   .connect(db)
-//   .then(() => console.log('MongoDB Connected'))
-//   .catch(err => console.log(err));
+const db = require('./config/keys').mongoURI;
+// Connect to MongoDB
+mongoose
+  .connect(db)
+  .then(() => console.log('MongoDB Connected'))
+  .catch(err => console.log(err));
 
-//   // seeddb();
+seeddb();
 
 // // Passport middleware
 // app.use(passport.initialize());
