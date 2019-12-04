@@ -1,4 +1,8 @@
+// module.exports = {
+//   mongoURI: 'mongodb://test:test12@ds251948.mlab.com:51948/ns',
+//   secretOrKey: 'secret'
+// };
 module.exports = {
-  mongoURI: 'mongodb://admin:admin1@ds249127.mlab.com:49127/news_app',
+  mongoURI: "mongodb://test:test12@ds251948.mlab.com:51948/ns",
   secretOrKey: 'secret'
 };

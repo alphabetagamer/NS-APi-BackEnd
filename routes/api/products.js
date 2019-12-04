@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
-// const mongoose = require('mongoose');
+const mongoose = require('mongoose');
+var product = require("./../../models/Product"),
+    blog_table=require("./../../models/blog");
 // const passport = require('passport');
 // const middleware = require("../../middleware/index");
 // const Grid = require('gridfs-stream');
@@ -8,8 +10,7 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 // Load User Model
 const Product = require('../../models/Product');
-
-// const conn = mongoose.createConnection(require('../../config/keys').mongoURI);
+const conn = mongoose.createConnection(require('../../config/keys').mongoURI);
 
 //     let gfs;
 //     conn.once('open', () => {
@@ -74,7 +75,19 @@ router.get(
   //     })
   //     .catch(err => res.status(404).json(err));
   });
-
+  router.get('/allproducts',async (req, res) => {
+      var prod=await product.find();
+      res.json(prod)
+    //   Product.find().sort({post_date:1}).populate("added_by")
+    //     .then(news => {
+    //       if (!news) {
+    //         errors.nonews = 'There is no news';
+    //         return res.status(404).json(errors);
+    //       }
+    //       res.json(news);
+    //     })
+    //     .catch(err => res.status(404).json(err));
+    });
 var product_schema={
 p_name:"name",
 p_vendor:"vendor",
@@ -103,13 +116,16 @@ p_similar_vendor:[{similar:"v_id1"},{similar:"v_id2"}]
 
 }
 
-router.get("/product_details",(req,res)=>{
+router.get("/product_details",async(req,res)=>{
 
   return res.json(product_schema)
 
 
 });
-
+router.get('/:prodID',async (req, res) => {
+  var prod=await product.findOne({product_id:req.params.prodID});
+  res.json(prod)
+});
 router.post("/signup_verify",(req,res)=>{
 var number = req.body.mobile_no
 console.log(req.body.mobile_no)
@@ -172,8 +188,10 @@ var blog_listing={
   }],
   top_blogs:[{blog:"www.blog.com",views:100},{blog:"www.blog2.com",views:300}]
 }
-router.get("/blog/blog_list",(req,res)=>{
-  return res.json(blog_listing)
+router.get("/blog/blog_list",async (req,res)=>{
+
+  var blogs= await blog_table.find();
+  res.json(blogs);
 });
 blog_details={
   blog_image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80",
@@ -203,8 +221,10 @@ router.post("/blog/:blogID/post_comment",(req,res)=>{
     email:email
   })
 });
-router.post("/blog/:blogID",(req,res)=>{
-return res.json(blog_details)
+router.get("/blog/:blogID",async (req,res)=>{
+  var blogs= await blog_table.findOne({blog_id:req.params.blogID});
+  res.json(blogs)
+
 });
 
 // router.post('/update/:id', middleware.checkToken,async (req, res) => {

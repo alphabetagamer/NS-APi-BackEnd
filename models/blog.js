@@ -612,7 +612,7 @@ var referral_table = new Schema({
 		user_id:{type:Number}
 	}]
 });
-module.exports = products = mongoose.model('products', products);
+// module.exports = products = mongoose.model('products', products);
 // module.exports = vendor_table = mongoose.model('vendor_table', vendor_table);
 // module.exports = admin_table = mongoose.model('admin_table', admin_table);
 // module.exports = user_table = mongoose.model('user_table', user_table);
@@ -625,4 +625,4 @@ module.exports = products = mongoose.model('products', products);
 // module.exports = brand_table = mongoose.model('brand_table', brand_table);
 // module.exports = testimonial_table= mongoose.model('testimonial_table', testimonial_table);
 // module.exports = pincode_table = mongoose.model('pincode_table', pincode_table);
-// module.exports = blog_table = mongoose.model('blog_table', blog_table);
+module.exports = blog_table = mongoose.model('blog_table', blog_table);
