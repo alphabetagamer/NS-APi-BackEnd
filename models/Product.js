@@ -33,6 +33,19 @@ var products = new Schema({
 	},
 	image_caption:{
 		type:String
+	},
+	pos:{
+		type:Number,
+		unique:true
+	}
+}],
+videos:[{
+	video:{
+		type:String
+	},
+	pos:{
+		type:Number,
+		unique:true
 	}
 }],
 	thumbnails:[{
@@ -51,9 +64,12 @@ var products = new Schema({
 	},
 	categories:[{
 		category:{
-			type:String
-		}
-	}],
+			type:String,
+			
+		},
+		_id:false
+	}
+],
 	flavor:{
 		type:String,
 		required:true
@@ -74,9 +90,13 @@ var products = new Schema({
 		weight:Number
 	}],
 	goals:[{
-		goal:String
+		goal:String,
+		_id:false
 	}],
 	brand_id:{
+		type:Number
+	},
+	rating:{
 		type:Number
 	}
 
@@ -356,7 +376,6 @@ images:[{
 var order_table = new Schema({
 	order_id:{
 		type:Number,
-		required:true,
 		unique:true
 	},
 	user_id:{
@@ -426,8 +445,10 @@ var blog_table = new Schema({
 	},
 	categories:[{
 		category:{
-			type:String
-		}
+			type:String,
+			
+		},
+		_id:false
 	}],
 	publish_date:{
 		type:Date

@@ -2,7 +2,7 @@ var mongoose = require("mongoose"),
     product = require("./models/Product"),
     blog_table=require("./models/blog")
 
-var blog = [{blog_id:2,
+var blog1 = [{blog_id:1,
 title:"Title",
 body:"lorem Ipsum",
 images:[{
@@ -126,8 +126,8 @@ brand_id:2
 //  var refermanager = {redeem_amount : 25, redeem_time: 36000};
 
 function seedDB(){
-    blog.forEach(function(seed){
-        blog_table.create(blog,(err,created)=>{
+    blog1.forEach(function(seed){
+        blog_table.create(seed,(err,created)=>{
             if(err){
                 console.log(err)
             } else{

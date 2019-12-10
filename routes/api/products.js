@@ -1,15 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-var product = require("./../../models/Product"),
-    blog_table=require("./../../models/blog");
+var product = require("./../../models/Product");
+var blog_table=require("./../../models/blog");
+var reviews_table=require("./../../models/reviews");
+var comments_table=require("./../../models/comments");
+var ObjectId = require('mongodb').ObjectId; 
 // const passport = require('passport');
 // const middleware = require("../../middleware/index");
 // const Grid = require('gridfs-stream');
 // const async = require("async");
 const { check, validationResult } = require('express-validator');
 // Load User Model
-const Product = require('../../models/Product');
 const conn = mongoose.createConnection(require('../../config/keys').mongoURI);
 
 //     let gfs;
@@ -75,19 +77,6 @@ router.get(
   //     })
   //     .catch(err => res.status(404).json(err));
   });
-  router.get('/allproducts',async (req, res) => {
-      var prod=await product.find();
-      res.json(prod)
-    //   Product.find().sort({post_date:1}).populate("added_by")
-    //     .then(news => {
-    //       if (!news) {
-    //         errors.nonews = 'There is no news';
-    //         return res.status(404).json(errors);
-    //       }
-    //       res.json(news);
-    //     })
-    //     .catch(err => res.status(404).json(err));
-    });
 var product_schema={
 p_name:"name",
 p_vendor:"vendor",
@@ -115,16 +104,134 @@ p_similar:[{similar:"p_id1"},{similar:"p_id2"}],
 p_similar_vendor:[{similar:"v_id1"},{similar:"v_id2"}]
 
 }
-
+// router.get("/product_details",async(req,res)=>{
+//   var prod=await product.find()
+//   return res.json(prod)
+// });
 router.get("/product_details",async(req,res)=>{
+  try {
+    var cond=[]
+    if(req.query.weight){
+      cond.push({"weight":req.query.weight})
+    }
+    if(req.query.goal){
+      var summ=[]
+      var m_goals=req.query.goal.split(',')
+      for(let a of m_goals){
+        summ.push({"goal":a})
+      }
+      cond.push({"goals":{"$in":summ}})
+    }
+    if(req.query.categories){
+      var summ=[]
+      var m_goals=req.query.categories.split(',')
+      for(let a of m_goals){
+        summ.push({"category":a})
+      }
+      cond.push({"categories":{"$in":summ}})
+    }
+    if(req.query.price){
+      var summ=[]
+      var m_goals=req.query.price.split(',')
+      cond.push({"price":{$lte:m_goals[1],$gte:m_goals[0]}})
+    }
+    if(req.query.brand){
+      cond.push({"brand_id":req.query.brand})
+    }
+    if(req.query.rating){
+      var summ=[]
+      var m_goals=req.query.rating
+      cond.push({"price":{$gte:m_goals}})
+    }
+    console.log(cond)
+    if(req.query.sort=="popularity"){
+      console.log(cond)
+      if(cond.length>0){
+      var prod_w=await product.find({'$and':cond}).sort({"rating":1})
+      console.log(prod_w)
+      res.json(prod_w)
+      }
+      else{
+        var prod_w=await product.find().sort({"rating":1})
+      console.log(prod_w)
+      res.json(prod_w)
+      }
+    }
+    else if(!req.query.sort){
+      if(cond.length>0){
+        console.log("empty sort and filter")
+        var prod_w=await product.find({'$and':cond})
+        console.log(prod_w)
+        res.json(prod_w)
+        }
+        else{
+        var prod_w=await product.find()
+        console.log(prod_w)
+        res.json(prod_w)
+        }
+    }
 
-  return res.json(product_schema)
 
-
+  } catch (error) {
+    console.log(error)
+    res.json(500)
+  }
 });
+// router.get("/product_details/:search/:value?",async(req,res)=>{
+//   var prod=await product.find()
+//   var a = req.params.search
+//   console.log(a)
+//   if(req.params.search!==""){
+//     if(req.params.search=="weight"){
+//       var weight=req.params.value
+//       var prod_w=await product.find({"weight":weight})
+//       return res.json(prod_w)
+//     }
+//     else if(req.params.search=="goal"){
+//       var go=req.params.value
+//       var prod_g=await product.find({"goals":{"$in":[{"goal":go}]}})
+//       return res.json(prod_g)
+//     }
+//     else if(req.params.search=="brand"){
+//       var br=req.params.value
+//       var prod_g=await product.find({"brand_id":br})
+//       return res.json(prod_g)
+//     }
+//     else if(req.params.search=="popularity"){
+//       var prod_g=await product.find()
+//       var arr=[]
+//       for (var i =0;i<Object.keys(prod_g).length;i++){
+//         arr.push(prod[i])
+//       }
+//       console.log(arr)
+//       prod_sorted=arr.sort(function(a,b){return b["product_id"]-a["product_id"] })
+
+//       return res.json(prod_sorted)
+//     }
+//     else if(req.params.search=="category"){
+//       var go=req.params.value
+//       var prod_g=await product.find({"categories":{"$in":[{"category":go}]}})
+//       return res.json(prod_g)
+//     }
+//     else if(req.params.search=="price"){
+//       var go=req.params.value
+//       var rang=go.split("to")
+//       console.log(rang)
+//       var prod_g=await product.find({"price":{$lt:rang[1],$gte:rang[0]}})
+//       return res.json(prod_g)
+//     }
+
+//   }  // return res.json(product_schema)
+
+
+// });
 router.get('/:prodID',async (req, res) => {
   var prod=await product.findOne({product_id:req.params.prodID});
-  res.json(prod)
+  var similar=await product.find({"categories":{"$in":prod["categories"]}})
+  var review=await reviews_table.find({"product_id":req.params.prodID})
+  console.log(similar)
+  console.log(prod["categories"])
+  res.json({"product":prod,"similar":similar,"reviews":review})
 });
 router.post("/signup_verify",(req,res)=>{
 var number = req.body.mobile_no
@@ -137,7 +244,13 @@ else{
 }
 
 });
-
+// router.post("/checkout",(req,res)=>{
+// var state = req.body.state
+// var city = req.body.city
+// var address = req.body.address
+// var pincode = req.body.pincode
+// var payment_mathod = req.body.payment_method
+// });
 var header = {
 link:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
 }
@@ -189,9 +302,66 @@ var blog_listing={
   top_blogs:[{blog:"www.blog.com",views:100},{blog:"www.blog2.com",views:300}]
 }
 router.get("/blog/blog_list",async (req,res)=>{
+  try {
+    var cond=[]
+    if(req.query.categories){
+      var summ=[]
+      var m_goals=req.query.categories.split(',')
+      for(let a of m_goals){
+        summ.push({"category":a})
+      }
+      console.log(summ)
+      cond.push({"categories":{"$in":summ}})
+    }
+    if(req.query.rating){
+      var summ=[]
+      var m_goals=req.query.rating
+      cond.push({"views":{$gte:m_goals}})
+    }
+    if(req.query.sort=="popularity"){
+      console.log(cond)
+      if(cond.length>0){
+      var prod_w=await blog_table.find({'$and':cond}).sort({"views":1})
+      console.log(prod_w)
+      res.json(prod_w)
+      }
+      else{
+        var prod_w=await blog_table.find().sort({"views":1})
+      console.log(prod_w)
+      res.json(prod_w)
+      }
+    }
+    if(req.query.sort=="date"){
+      console.log(cond)
+      if(cond.length>0){
+      var prod_w=await blog_table.find({'$and':cond}).sort({"publish_date":1})
+      console.log(prod_w)
+      res.json(prod_w)
+      }
+      else{
+        var prod_w=await blog_table.find().sort({"publish_date":1})
+      console.log(prod_w)
+      res.json(prod_w)
+      }
+    }
+    else{
+      if(cond.length>0){
+        var prod_w=await blog_table.find({'$and':cond})
+        console.log("empty cat"+prod_w)
+        res.json(prod_w)
+        }
+        else{
+          var prod_w=await blog_table.find()
+        console.log(prod_w)
+        res.json(prod_w)
+        }
+    }
 
-  var blogs= await blog_table.find();
-  res.json(blogs);
+
+  } catch (error) {
+    console.log(error)
+    res.json(500)
+  }
 });
 blog_details={
   blog_image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80",
@@ -223,10 +393,15 @@ router.post("/blog/:blogID/post_comment",(req,res)=>{
 });
 router.get("/blog/:blogID",async (req,res)=>{
   var blogs= await blog_table.findOne({blog_id:req.params.blogID});
-  res.json(blogs)
+  var similar=await product.find({"categories":{"$in":blog["categories"]}})
+  var comments_blog=await comments_table.find({"blog_id":req.params.blogID})
+  console.log(similar)
+  console.log(blog["categories"])
+  res.json({"product":blog,"similar":similar,"comments":comments_blog})
+});
+router.post("/navbar",async(req,res)=>{
 
 });
-
 // router.post('/update/:id', middleware.checkToken,async (req, res) => {
 //   const errors = {};
 //   // console.log("inside update")
