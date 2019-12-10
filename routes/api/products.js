@@ -393,10 +393,10 @@ router.post("/blog/:blogID/post_comment",(req,res)=>{
 });
 router.get("/blog/:blogID",async (req,res)=>{
   var blogs= await blog_table.findOne({blog_id:req.params.blogID});
-  var similar=await blog_table.find({"categories":{"$in":blog["categories"]}})
+  var similar=await blog_table.find({"categories":{"$in":blogs["categories"]}})
   var comments_blog=await comments_table.find({"blog_id":req.params.blogID})
   console.log(similar)
-  console.log(blog["categories"])
+  console.log(blogs["categories"])
   res.json({"product":blogs,"similar":similar,"comments":comments_blog})
 });
 router.post("/navbar",async(req,res)=>{
