@@ -9,6 +9,7 @@ var orders=require("../../models/order");
 var coupon_table=require("../../models/coupon");
 var ObjectId = require('mongodb').ObjectId; 
 var deals=require("../../models/deals");
+var navbar = require("../../models/navbar");
 // const passport = require('passport');
 // const middleware = require("../../middleware/index");
 // const Grid = require('gridfs-stream');
@@ -466,6 +467,10 @@ router.post("/blog/:blogID/post_comment",(req,res)=>{
     date:date,
     email:email
   })
+});
+router.post("/navbar",async(req,res)=>{
+  var nav = await navbar.find()
+  res.json(nav)
 });
 router.get("/blog/:blogID",async (req,res)=>{
   var blogs= await blog_table.findOne({blog_id:req.params.blogID});

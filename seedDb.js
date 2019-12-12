@@ -2,7 +2,8 @@ var mongoose = require("mongoose"),
     product = require("./models/Product"),
     blog_table=require("./models/blog"),
     orders = require('./models/order'),
-    deals = require('./models/deals')
+    deals = require('./models/deals'),
+    navbar = require("./models/navbar")
 
 var blog1 = [{blog_id:1,
 title:"Title",
@@ -155,6 +156,25 @@ var orders2 = [{
         vendor_id:1
     }]
 }]
+var nv={
+    entries:[{
+        name:"Protein",
+        subentries:[{
+            name:"abc",
+            url:"abc.com"
+        }]
+    },{
+    name:"Bars",
+    subentries:[{
+        name:"abc",
+        url:"abc.com"
+    },{
+        name:"abc",
+        url:"abc.com"
+    }]
+}
+    ]
+}
 // var user = {name: "Daphnis", email:"daphnis@gmail.com",age:29,refer_code:"daph123", state:"delhi", city:"West delhi",gender:"female",phone:9999999999,device_id:"moto 2011"
 //             ,use_time:10,active_time:9,total_news_read:4,refer_friend_earning_time:0,total_ads_clicked:6,total_ads_viewed:4,total_app_usage_time:12,total_ad_time:7,total_earnings:300
 //             ,credit_history:[{amount:200,status:"complete"},{amount:100,status:"complete"}],redeem_history:[{amount:250,status:"complete"},{amount:50,status:"complete"}]
@@ -196,6 +216,8 @@ function seedDB(){
             console.log("refermanager created with id "+ created._id )
         }
     })});
+    var a=navbar.create(nv)
+    console.log(a)
     // data.forEach(function(seed){
     //     News.create(seed,function(err,news){
     //         if(err){
