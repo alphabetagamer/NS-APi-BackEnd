@@ -261,11 +261,7 @@ router.post("/coupon",async (req,res)=>{
 });
 router.post("/checkout", async (req,res)=>{
 try {
-  
-} catch (error) {
-  res.json({error:error})
-}
-  var state = req.body.state 
+var state = req.body.state 
 var city = req.body.city
 var address = req.body.address
 var pincode = req.body.pincode
@@ -287,7 +283,11 @@ var add={address:address,city:city,pincode:pincode,state:state}
 var insert_order=await orders.create({user_id:user,items:items_re,total:tot,order_date:date,payment_method:payment_method,state:"ongoing",address:add})
 // var insert_order=await orders.create({user_id:user})
 
-res.json(insert_order)
+res.json({success:insert_order.id})
+} catch (error) {
+  res.json({error:error})
+}
+
 
 });
 var header = {
