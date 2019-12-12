@@ -319,9 +319,8 @@ router.post("/forgot_pass",check("email","Please input correct email").isEmail()
   }
   return res.json({status:"Working on finding your account"})
 });
-router.post("/home",async (req,res)=>{
-  // var date = req.body.date
-  // var offers= await deals.find({date:date})
+router.post("/topseller",async (req,res)=>{
+
   var best = await orders.find({})
   var products_sold=[]
   console.log(best)
@@ -335,8 +334,28 @@ router.post("/home",async (req,res)=>{
   var num = products_sold[i];
   counts[num] = counts[num] ? counts[num] + 1 : 1;
 }
-console.log(products_sold)
-res.json(counts)
+var items = Object.keys(counts).map(function(key) {
+  return [key, counts[key]];
+});
+items.sort(function(first, second) {
+  return second[1] - first[1];
+});
+console.log(items)
+var products=[]
+for (let a of items){
+// var obj ={}
+// var name=a[0]
+// obj[name]=a[1]
+// products.push(obj)
+var prod = await product.find({product_id:a[0]})
+products.push(prod)
+}
+res.json(products)
+});
+router.post("/banner",async(req,res)=>{
+  var date = req.body.date
+  var offers= await deals.find({date:date})
+  res.json(offers)
 });
 var blog_listing={
   banner:[{
