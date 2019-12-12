@@ -1,6 +1,8 @@
 var mongoose = require("mongoose"),
     product = require("./models/Product"),
-    blog_table=require("./models/blog")
+    blog_table=require("./models/blog"),
+    orders = require('./models/order'),
+    deals = require('./models/deals')
 
 var blog1 = [{blog_id:1,
 title:"Title",
@@ -117,6 +119,42 @@ brand_id:2
     }],
     brand_id:2
     }];
+var offers=[{
+        deals:
+        [{
+            url:"url.com",
+        image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"}],
+    date:"2019-07-18T21:33:46.097Z"
+}]
+var orders2 = [{
+    order_id:1,
+    user_id:1,
+    items:[{
+        product_id:2,
+        vendor_id:2
+    }]
+},{
+    order_id:2,
+    user_id:2,
+    items:[{
+        product_id:2,
+        vendor_id:2
+    }]
+},{
+    user_id:3,
+    order_id:3,
+    items:[{
+        product_id:2,
+        vendor_id:2
+    }]
+},{
+    user_id:4,
+    order_id:4,
+    items:[{
+        product_id:1,
+        vendor_id:1
+    }]
+}]
 // var user = {name: "Daphnis", email:"daphnis@gmail.com",age:29,refer_code:"daph123", state:"delhi", city:"West delhi",gender:"female",phone:9999999999,device_id:"moto 2011"
 //             ,use_time:10,active_time:9,total_news_read:4,refer_friend_earning_time:0,total_ads_clicked:6,total_ads_viewed:4,total_app_usage_time:12,total_ad_time:7,total_earnings:300
 //             ,credit_history:[{amount:200,status:"complete"},{amount:100,status:"complete"}],redeem_history:[{amount:250,status:"complete"},{amount:50,status:"complete"}]
@@ -143,7 +181,21 @@ function seedDB(){
             console.log("refermanager created with id "+ created._id )
         }
     })});
-    
+    offers.forEach(function(seed){deals.create(seed,(err,created)=>{
+        if(err){
+            console.log(err)
+        }
+        else{
+            console.log("refermanager created with id "+ created._id )
+        }
+    })});
+    orders2.forEach(function(seed){orders.create(seed,(err,created)=>{
+        if(err){
+            console.log(err)
+        } else{
+            console.log("refermanager created with id "+ created._id )
+        }
+    })});
     // data.forEach(function(seed){
     //     News.create(seed,function(err,news){
     //         if(err){

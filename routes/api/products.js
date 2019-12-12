@@ -5,7 +5,10 @@ var product = require("./../../models/Product");
 var blog_table=require("./../../models/blog");
 var reviews_table=require("./../../models/reviews");
 var comments_table=require("./../../models/comments");
+var orders=require("../../models/order");
+var coupon_table=require("../../models/coupon");
 var ObjectId = require('mongodb').ObjectId; 
+var deals=require("../../models/deals");
 // const passport = require('passport');
 // const middleware = require("../../middleware/index");
 // const Grid = require('gridfs-stream');
@@ -226,7 +229,7 @@ router.get("/product_details",async(req,res)=>{
 
 // });
 router.get('/:prodID',async (req, res) => {
-  var prod=await product.findOne({product_id:req.params.prodID});
+  var prod=await product.findOne({'product_id':req.params.prodID});
   var similar=await product.find({"categories":{"$in":prod["categories"]}})
   var review=await reviews_table.find({"product_id":req.params.prodID})
   console.log(similar)
@@ -244,13 +247,49 @@ else{
 }
 
 });
-// router.post("/checkout",(req,res)=>{
-// var state = req.body.state
-// var city = req.body.city
-// var address = req.body.address
-// var pincode = req.body.pincode
-// var payment_mathod = req.body.payment_method
-// });
+router.post("/coupon",async (req,res)=>{
+  var coupon=req.body.coupon
+  console.log(coupon)
+  var check= await coupon_table.findOne({'coupon_code':coupon})
+  if(check==null){
+    res.json({status:"Invalid"})
+  }
+  else{
+    res.json(check)
+  }
+
+});
+router.post("/checkout", async (req,res)=>{
+try {
+  
+} catch (error) {
+  res.json({error:error})
+}
+  var state = req.body.state 
+var city = req.body.city
+var address = req.body.address
+var pincode = req.body.pincode
+var payment_method = req.body.payment_method
+var user = req.body.user
+var items = req.body.user
+var items_re=[]
+for (let a of items)
+{
+items_re.push({"vendor_id":a[0],"product_id":a[1]})
+}
+var date = req.body.date
+var total = req.body.total
+var coupon_cashback= req.body.cashback
+var tax = req.body.tax
+var discount = req.body.discount
+var tot={"net_total":total,"tax":tax,"discount":discount,"cashback":coupon_cashback}
+var add={address:address,city:city,pincode:pincode,state:state}
+var insert_order=await orders.create({user_id:user,items:items_re,total:tot,order_date:date,payment_method:payment_method,state:"ongoing",address:add})
+// var insert_order=await orders.create({user_id:user})
+
+res.json(insert_order)
+
+});
 var header = {
 link:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
 }
@@ -280,7 +319,25 @@ router.post("/forgot_pass",check("email","Please input correct email").isEmail()
   }
   return res.json({status:"Working on finding your account"})
 });
-
+router.post("/home",async (req,res)=>{
+  // var date = req.body.date
+  // var offers= await deals.find({date:date})
+  var best = await orders.find({})
+  var products_sold=[]
+  console.log(best)
+  for(let a of best){
+  for(let b of a["items"]){
+    products_sold.push(b["product_id"])
+  }
+}
+ var counts={}
+ for (var i = 0; i < products_sold.length; i++) {
+  var num = products_sold[i];
+  counts[num] = counts[num] ? counts[num] + 1 : 1;
+}
+console.log(products_sold)
+res.json(counts)
+});
 var blog_listing={
   banner:[{
     banner:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"},{
@@ -393,15 +450,16 @@ router.post("/blog/:blogID/post_comment",(req,res)=>{
 });
 router.get("/blog/:blogID",async (req,res)=>{
   var blogs= await blog_table.findOne({blog_id:req.params.blogID});
-  var similar=await product.find({"categories":{"$in":blog["categories"]}})
+  var similar=await blog_table.find({"categories":{"$in":blogs["categories"]}})
   var comments_blog=await comments_table.find({"blog_id":req.params.blogID})
   console.log(similar)
-  console.log(blog["categories"])
+  console.log(blogs["categories"])
   res.json({"blogs":blogs,"similar":similar,"comments":comments_blog})
 });
 router.post("/navbar",async(req,res)=>{
 
 });
+
 // router.post('/update/:id', middleware.checkToken,async (req, res) => {
 //   const errors = {};
 //   // console.log("inside update")
