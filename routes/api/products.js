@@ -473,7 +473,9 @@ router.get("/blog/:blogID",async (req,res)=>{
   var comments_blog=await comments_table.find({"blog_id":req.params.blogID})
   console.log(similar)
   console.log(blogs["categories"])
+
   res.json({"blogs":blogs,"similar":similar,"comments":comments_blog})
+
 });
 router.post("/navbar",async(req,res)=>{
 
