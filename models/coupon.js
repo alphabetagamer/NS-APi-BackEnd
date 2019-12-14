@@ -623,7 +623,12 @@ var coupon_table = new Schema({
 		all_user:{
 			type:Boolean,
 			default:false
-		}
+		},
+		select_user:[{
+		user_id:{
+			type:Number
+		}	
+		}]
 
 	}
 });
