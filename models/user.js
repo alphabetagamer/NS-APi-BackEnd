@@ -98,9 +98,6 @@ videos:[{
 	},
 	rating:{
 		type:Number
-	},
-	page:{
-		type:String
 	}
 
 
@@ -252,11 +249,11 @@ var user_table = new Schema({
 		unique:true,
 		required:true
 	},
-	username: {
-    type: String,
-	required: true,
-	unique:true
-	  },
+	// username: {
+    // type: String,
+	// required: true,
+	// unique:true
+	//   },
 	  name:{
 		  first_name:{
 			  type:String
@@ -264,10 +261,6 @@ var user_table = new Schema({
 		  last_name:{
 			  type:String
 		  }
-	  },
-	  password:{
-		  type:String,
-		  required:true
 	  },
 	  wallet:{
 		  wallet_id:{
@@ -283,26 +276,30 @@ var user_table = new Schema({
 		  minlength:10,
 		  maxlength:10
 	  },
-	  address:{
+	  address:[{
 		  address:{
-			  type:String
-		  },
-		  city:{
-			  type:String
+			  type:String,
+			  required:true
 		  },
 		  state:{
-			  type:String
+			  type:String,
+			  required:true
 		  },
 		  pin:{
-			  type:String
+			  type:String,
+			  required:true
 		  },
-		  country:{
-			  type:String
+		  name:{
+			  type:String,
+			  required:true
 		  }
-	  },
+	  }],
 	  wishlist:[{
 		  product_id:{
 			  type:Number
+		  },
+		  date:{
+			type:Date
 		  }
 	  }],
 	  join_date:{
@@ -450,8 +447,7 @@ var blog_table = new Schema({
 		category:{
 			type:String,
 			
-		},
-		_id:false
+		}
 	}],
 	publish_date:{
 		type:Date
@@ -636,10 +632,10 @@ var referral_table = new Schema({
 		user_id:{type:Number}
 	}]
 });
-module.exports = products = mongoose.model('products', products);
+// module.exports = products = mongoose.model('products', products);
 // module.exports = vendor_table = mongoose.model('vendor_table', vendor_table);
 // module.exports = admin_table = mongoose.model('admin_table', admin_table);
-// module.exports = user_table = mongoose.model('user_table', user_table);
+module.exports = user_table = mongoose.model('user_table', user_table);
 // module.exports = cashback_table = mongoose.model('cashback_table', cashback_table);
 // module.exports = reviews_table = mongoose.model('reviews_table', reviews_table);
 // module.exports = order_table = mongoose.model('order_table', order_table);

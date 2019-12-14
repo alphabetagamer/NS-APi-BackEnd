@@ -10,8 +10,13 @@ var coupon_table=require("../../models/coupon");
 var ObjectId = require('mongodb').ObjectId; 
 var deals=require("../../models/deals");
 var navbar = require("../../models/navbar");
+var jwt_decode = require("jwt-decode");
+var user_table = require("../../models/user");
+var jwt = require("jsonwebtoken");
+var refer=require("../../models/refer");
+const keys = require('../../config/keys');
 // const passport = require('passport');
-// const middleware = require("../../middleware/index");
+const middleware = require("../../middleware/index");
 // const Grid = require('gridfs-stream');
 // const async = require("async");
 const { check, validationResult } = require('express-validator');
@@ -237,8 +242,9 @@ router.get('/:prodID',async (req, res) => {
   console.log(prod["categories"])
   res.json({"product":prod,"similar":similar,"reviews":review})
 });
-router.post("/signup_verify",(req,res)=>{
+router.post("/signup",(req,res)=>{
 var number = req.body.mobile_no
+
 console.log(req.body.mobile_no)
 if (number.length == 10){
   return res.json({status:"SignedUp"})
@@ -247,6 +253,105 @@ else{
   return res.json({status:"Incorrect number"})
 }
 
+});
+router.post("/signup_comp",async(req,res)=>{
+  var f_name = req.body.fname
+  var l_name = req.body.lname
+  var email = req.body.email
+  var mob = req.body.mobile
+  try{
+  if(req.body.ref.length>0){
+    var refer2=await refer.update({referral_code:req.body.ref},{$push:{referred:{user_id:mob}}},(err,created)=>{
+      if(err){
+        return res.json({status:"Invalid Referral code"})
+      }
+      else{
+        return res.json({status:"referred"})
+      }
+    });
+    var refer2=await refer.create({user_id:req.body.mobile,referral_code:"!@#$"})
+  }
+}
+catch(err){
+  console.log("ERROR")
+}
+  var newuser=await user_table.create({name:{first_name:f_name,last_name:l_name},email:email,referral_code:'ref',mobile:mob,user_id:mob},(err,created)=>{
+    if(err){
+      console.log(err)
+      return res.json({status:"Unable to signup"})
+    }
+    else{
+      return res.json({status:"signed up"})
+    }
+  });
+  
+
+  });
+  router.post("/account_details",middleware.checkToken,async (req,res)=>{
+    console.log(req.user._id)
+    if(req.body.fname && req.body.lname && req.body.email && req.body.mobile){
+    var update = await user_table.update({'_id':req.user._id},{name:{first_name:req.body.fname,last_name:req.body.lname},email:req.body.email,mobile:req.body.mobile})
+      return res.json({status:"Success"})
+  }
+  else{
+    var up = await user_table.find({"_id":req.user._id})
+    return res.json(up)
+  }
+  });
+  router.post("/address_change",middleware.checkToken,async(req,res)=>{
+    if(req.body.type=="new"){
+    var update = user_table.update({'_id':req.user._id},{$push:{address:{state:req.body.state,pin:req.body.pincode,address:req.body.address,name:req.body.name}}},(err,created)=>{
+      if(err){
+        res.json({error:err})
+      }else{
+        res.json({success:true})
+      }
+    })
+
+
+    }
+    else if(req.body.type=="update"){
+      var update = user_table.update({"_id":req.user._id,'address.name':req.body.name},{$set:{'address.$.state':req.body.state,'address.$.pin':req.body.pincode,'address.$.address':req.body.address,'address.$.name':req.body.name}},(err,created)=>{
+        if(err){
+          res.json({error:err})
+        }else{
+          res.json({success:true})
+        }
+      })
+  
+    }
+    else{
+      res.json({error:"invalid call"})
+    }
+  });
+  router.post("/orders",middleware.checkToken,async(req,res)=>{
+    var orders= orders.find({user_id:req.user.mobile})
+    var items =[]
+    for (let a of orders){
+      var orders1={}
+      for (let c of a["items"]){
+      var f= await products.find({product_id:c["product_id"]})
+      orders1.a["order_id"]=f
+
+    }
+    items.push({items:orders1,details:a})
+  }
+  return res.json(items)
+  try {
+    if(req.body.type=="again"){
+      var f=await user_table.update({'_id':req.user._id},{$push:{cart_items:{product_id:req.body.id}}},(err,created)=>{
+        if(err){
+          res.json({error:err})
+        }else{
+          res.json({success:true})
+        }
+      })
+    }
+    
+  } catch (error) {
+    
+  }
+ 
 });
 router.post("/coupon",async (req,res)=>{
   var coupon=req.body.coupon
@@ -258,6 +363,49 @@ router.post("/coupon",async (req,res)=>{
   else{
     res.json(check)
   }
+
+});
+router.post("/coupon_page",middleware.checkToken,async(req,res)=>{
+var f= await coupon_table.find({$or:[{select_user:{user_id:req.user.mobile}},{'coupon_type.all_user':true}]})
+return res.json(f)
+});
+router.post("/wishlist",middleware.checkToken,async(req,res)=>{
+  try{
+  if(req.body.type=="cart"){
+    var item=req.body.product_id
+    var f=await user_table.update({'_id':req.user._id},{$push:{cart_items:{product_id:req.body.id}}},(err,created)=>{
+      if(err){
+        return res.json({error:err})
+      }else{
+        return res.json({success:true})
+      }
+    })
+  }
+  if(req.body.type=="remove"){
+    var item=req.body.product_id
+    var f=await user_table.update({'_id':req.user._id},{$pull:{cart_items:{product_id:req.body.id}}},(err,created)=>{
+      if(err)
+      {
+        res.json({error:err})
+      }else{
+        res.json({success:true})
+      }
+    });
+  }
+}
+catch(err){
+  console.log(err)
+}
+  var wishlist_items=await user_table.findOne({'_id':req.user._id})
+  var wishlist_items = wishlist_items["wishlist"]
+  var items=[]
+  for(let a of wishlist_items){
+    var f=await products.find({product_id:a["product_id"]})
+    items.push(f)
+  }
+  return res.json(items)
+});
+router.post("/cashback",async(req,res)=>{
 
 });
 router.post("/checkout", async (req,res)=>{
@@ -308,6 +456,30 @@ if(!errors.isEmpty()){
 
 }
 return res.json({status:"SignedUP"})
+});
+router.post("/login",[check('mobile',"please enter a valid 10 digit phone number").isLength({min:10})],async (req,res)=>{
+  var login_c=await user_table.findOne({mobile:req.body.mobile})
+  console.log(login_c)
+  var errors={};
+  if(login_c){
+    const payload = { id: login_c.id, mobile:login_c.mobile }; // Create JWT Payload
+       // Sign Token
+        jwt.sign(
+          payload,
+          keys.secretOrKey,
+          { expiresIn: 360000 },
+          (err, token) => {
+            res.json({
+              success: true,
+              token: 'Bearer ' + token
+            });
+          }
+        );
+  }
+  else {
+    errors.password = 'Password incorrect';
+    return res.status(400).json(errors);
+  }
 });
 // @route   GET api/news/:id
 // @desc    Get  news ID
