@@ -16,6 +16,7 @@ var jwt = require("jsonwebtoken");
 var refer=require("../../models/refer");
 const keys = require('../../config/keys');
 // const passport = require('passport');
+var cashback = require('../../models/cashback');
 const middleware = require("../../middleware/index");
 // const Grid = require('gridfs-stream');
 // const async = require("async");
@@ -289,9 +290,15 @@ catch(err){
   });
   router.post("/account_details",middleware.checkToken,async (req,res)=>{
     console.log(req.user._id)
-    if(req.body.fname && req.body.lname && req.body.email && req.body.mobile){
-    var update = await user_table.update({'_id':req.user._id},{name:{first_name:req.body.fname,last_name:req.body.lname},email:req.body.email,mobile:req.body.mobile})
-      return res.json({status:"Success"})
+    if(req.body.fname && req.body.lname && req.body.email && req.body.mobile && req.body.username){
+    var update = await user_table.update({'_id':req.user._id},{name:{first_name:req.body.fname,last_name:req.body.lname},email:req.body.email,mobile:req.body.mobile,user_id:req.user.mobile,username:req.body.username},function(err,completed){
+      if(err){
+        res.json({error:err})
+      }else{
+        return res.json({status:"Success"})
+      }
+    })
+      
   }
   else{
     var up = await user_table.find({"_id":req.user._id})
@@ -325,6 +332,20 @@ catch(err){
     }
   });
   router.post("/orders",middleware.checkToken,async(req,res)=>{
+    try {
+      if(req.body.type=="again"){
+        var f=await user_table.update({'_id':req.user._id},{$push:{cart_items:{product_id:req.body.id}}},(err,created)=>{
+          if(err){
+            res.json({error:err})
+          }else{
+            res.json({success:true})
+          }
+        })
+      }
+      
+    } catch (error) {
+      
+    }
     var orders= orders.find({user_id:req.user.mobile})
     var items =[]
     for (let a of orders){
@@ -337,20 +358,7 @@ catch(err){
     items.push({items:orders1,details:a})
   }
   return res.json(items)
-  try {
-    if(req.body.type=="again"){
-      var f=await user_table.update({'_id':req.user._id},{$push:{cart_items:{product_id:req.body.id}}},(err,created)=>{
-        if(err){
-          res.json({error:err})
-        }else{
-          res.json({success:true})
-        }
-      })
-    }
-    
-  } catch (error) {
-    
-  }
+  
  
 });
 router.post("/coupon",async (req,res)=>{
@@ -406,7 +414,13 @@ catch(err){
   return res.json(items)
 });
 router.post("/cashback",async(req,res)=>{
-
+try{
+  var g =await cashback.find({user_id:req.body.mobile})
+  return res.json(g)
+}
+catch(err){
+console.log(err)
+}
 });
 router.post("/checkout", async (req,res)=>{
 try {
@@ -622,22 +636,22 @@ blog_details={
   similar_blogs:[{category:"Health",blogs:[{blog:"www.blog3.com"},{blog1:"www.blog4.com"}]}]
 
 }
-router.post("/blog/:blogID/post_comment",(req,res)=>{
-  var username = req.body.username
+router.post("/blog/:blogID/post_comment",middleware.checkToken,(req,res)=>{
+  var name = req.user.username
   var comment=req.body.comment
   var blog_id=req.params.blogID
-  var replyTo=""
+  var replyTo="null"
   var date=req.body.date
-  var email=req.body.email
-  if(req.body.replyTo){
+  var email=req.user.email
+  try{if(req.body.replyTo){
     replyTo=req.body.replyTo
-  }
-  return res.json({
-    user:username,
-    user_comment:comment,
-    blog_id:blog_id,
-    date:date,
-    email:email
+  }}catch(err){console.log(err)}
+  var add_c = comments_table.create({blog_id:blog_id,text:comment,user_id:req.user._id,parent_comment_id:replyTo,date:date,username:req.user.username},function(err,completed){
+    if(err){
+      res.json(err)
+    }else{
+      res.json({success:true})
+    }
   })
 });
 router.post("/navbar",async(req,res)=>{
@@ -654,8 +668,26 @@ router.get("/blog/:blogID",async (req,res)=>{
   res.json({"blogs":blogs,"similar":similar,"comments":comments_blog})
 
 });
-router.post("/navbar",async(req,res)=>{
+router.post("/header",middleware.checkToken,async(req,res)=>{
+if(req.user._id){
+  var user = req.user._id
+var sum_wishlist=user_table.findOne({"_id":user},function(err,results){
+  if(err){
+    res.json(err)
+  }else{
+    var wishl=results.wishlist.length
+    var cart = results.cart_items.length
+    // console.log(results)
+    // console.log(wishl)
+    // console.log(cart)
 
+    res.json({wishlist_no:wishl,cart_no:cart})
+  }
+})
+}
+else{
+  res.json({status:"Not logged in"})
+}
 });
 
 // router.post('/update/:id', middleware.checkToken,async (req, res) => {
