@@ -357,9 +357,10 @@ catch(err){
       
     }
     console.log(req.user)
-    var orders= orders.find({user_id:req.user.mobile})
+    var ordes= await orders.find({user_id:req.user.mobile})
+    if(ordes.length>0){
     var items =[]
-    for (let a of orders){
+    for (let a of ordes){
       var orders1={}
       for (let c of a["items"]){
       var f= await products.find({product_id:c["product_id"]})
@@ -369,7 +370,10 @@ catch(err){
     items.push({items:orders1,details:a})
   }
   return res.json(items)
-  
+}
+else{
+  res.json([])
+}
  
 });
 router.post("/coupon",async (req,res)=>{
