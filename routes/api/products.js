@@ -260,6 +260,7 @@ router.post("/signup_comp",async(req,res)=>{
   var l_name = req.body.lname
   var email = req.body.email
   var mob = req.body.mobile
+  var name = req.body.username
   try{
   if(req.body.ref.length>0){
     var refer2=await refer.update({referral_code:req.body.ref},{$push:{referred:{user_id:mob}}},(err,created)=>{
@@ -276,7 +277,7 @@ router.post("/signup_comp",async(req,res)=>{
 catch(err){
   console.log("ERROR")
 }
-  var newuser=await user_table.create({name:{first_name:f_name,last_name:l_name},email:email,referral_code:'ref',mobile:mob,user_id:mob},(err,created)=>{
+  var newuser=await user_table.create({name:{first_name:f_name,last_name:l_name},email:email,referral_code:'ref',mobile:mob,user_id:mob,username:name},(err,created)=>{
     if(err){
       console.log(err)
       return res.json({status:"Unable to signup"})
