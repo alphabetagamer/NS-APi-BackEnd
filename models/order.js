@@ -379,7 +379,7 @@ var order_table = new Schema({
 		unique:true
 	},
 	user_id:{
-		type:Number,
+		type:String,
 		required:true
 	},
 	items:[{

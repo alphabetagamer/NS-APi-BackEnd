@@ -423,7 +423,7 @@ var blog_table = new Schema({
 	}],
 	views:Number,
 	user_id:{
-		type:Number
+		type:String
 	},
 	categories:[{
 		category:{
@@ -435,7 +435,7 @@ var blog_table = new Schema({
 	},
 	likes:[{
 		user_id:{
-			type:Number
+			type:String
 		}
 	}]
 });

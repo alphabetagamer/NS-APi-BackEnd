@@ -23,7 +23,9 @@
     "jwt-decode": "^2.2.0",
     "mongoose": "^5.7.13",
     "passport": "^0.4.0",
-    "passport-oauth": "^1.0.0"
+    "passport-oauth": "^1.0.0",
+    "request": "^2.88.0",
+    "unirest": "^0.6.0"
   },
   "devDependencies": {
     "nodemon": "^1.17.3"

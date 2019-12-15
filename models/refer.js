@@ -631,7 +631,7 @@ var referral_table = new Schema({
 		type:String
 	},
 	referred:[{
-		user_id:{type:Number}
+		user_id:{type:String}
 	}]
 });
 // module.exports = products = mongoose.model('products', products);

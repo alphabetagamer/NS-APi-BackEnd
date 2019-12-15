@@ -245,7 +245,7 @@ var admin_table = new Schema({
 });
 var user_table = new Schema({
 	user_id:{
-		type:Number,
+		type:String,
 		unique:true,
 		required:true
 	},
@@ -264,7 +264,7 @@ var user_table = new Schema({
 	  },
 	  wallet:{
 		  wallet_id:{
-			  type:Number,
+			  type:String,
 			  unique:true
 		  },
 		  wallet_balance:{
