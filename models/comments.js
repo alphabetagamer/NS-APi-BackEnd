@@ -472,7 +472,7 @@ var comments_table = new Schema({
 		type:String
 	},
 	user_id:{
-		type:Number
+		type:String
 	},
 	username:{
 		type:Number

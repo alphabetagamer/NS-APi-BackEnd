@@ -307,7 +307,7 @@ catch(err){
   });
   router.post("/address_change",middleware.checkToken,async(req,res)=>{
     if(req.body.type=="new"){
-    var update = user_table.update({'_id':req.user._id},{$push:{address:{state:req.body.state,pin:req.body.pincode,address:req.body.address,name:req.body.name}}},(err,created)=>{
+    var update =await  user_table.update({'_id':req.user._id},{$push:{address:{state:req.body.state,pin:req.body.pincode,address:req.body.address,name:req.body.name,city:req.body.city,country:req.body.country}}},(err,created)=>{
       if(err){
         res.json({error:err})
       }else{
@@ -318,7 +318,7 @@ catch(err){
 
     }
     else if(req.body.type=="update"){
-      var update = user_table.update({"_id":req.user._id,'address.name':req.body.name},{$set:{'address.$.state':req.body.state,'address.$.pin':req.body.pincode,'address.$.address':req.body.address,'address.$.name':req.body.name}},(err,created)=>{
+      var update = await user_table.update({"_id":req.user._id,'address.name':req.body.name},{$set:{'address.$.state':req.body.state,'address.$.pin':req.body.pincode,'address.$.address':req.body.address,'address.$.name':req.body.name,'address.$.city':req.body.city,'address.$.country':req.body.country}},(err,created)=>{
         if(err){
           res.json({error:err})
         }else{
@@ -326,6 +326,16 @@ catch(err){
         }
       })
   
+    }
+    else if(req.body.type=="delete"){
+      var dele= await user_table.update({"_id":req.user._id},{$pull:{address:{"name":req.body.name}}},function(err,comp){
+        if(err){
+          res.json(err)
+        }
+        else{
+          res.json({success:"deleted"})
+        }
+      });
     }
     else{
       res.json({error:"invalid call"})
@@ -346,6 +356,7 @@ catch(err){
     } catch (error) {
       
     }
+    console.log(req.user)
     var orders= orders.find({user_id:req.user.mobile})
     var items =[]
     for (let a of orders){
@@ -637,16 +648,16 @@ blog_details={
 
 }
 router.post("/blog/:blogID/post_comment",middleware.checkToken,(req,res)=>{
-  var name = req.user.username
+
   var comment=req.body.comment
   var blog_id=req.params.blogID
-  var replyTo="null"
+  var replyTo=-1
   var date=req.body.date
   var email=req.user.email
   try{if(req.body.replyTo){
     replyTo=req.body.replyTo
   }}catch(err){console.log(err)}
-  var add_c = comments_table.create({blog_id:blog_id,text:comment,user_id:req.user._id,parent_comment_id:replyTo,date:date,username:req.user.username},function(err,completed){
+  var add_c = comments_table.create({blog_id:blog_id,text:comment,user_id:req.user._id,parent_comment_id:replyTo,username:req.user.username},function(err,completed){
     if(err){
       res.json(err)
     }else{
