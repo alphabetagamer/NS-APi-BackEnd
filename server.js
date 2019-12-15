@@ -26,7 +26,7 @@ mongoose
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
-seeddb();
+// seeddb();
 
 // // Passport middleware
 // app.use(passport.initialize());
