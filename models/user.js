@@ -249,11 +249,11 @@ var user_table = new Schema({
 		unique:true,
 		required:true
 	},
-	// username: {
-    // type: String,
-	// required: true,
-	// unique:true
-	//   },
+	username: {
+    type: String,
+	required: true,
+	unique:true
+	  },
 	  name:{
 		  first_name:{
 			  type:String
@@ -290,6 +290,14 @@ var user_table = new Schema({
 			  required:true
 		  },
 		  name:{
+			  type:String,
+			  required:true
+		  },
+		  city:{
+			type:String,
+			required:true
+		  },
+		  country:{
 			  type:String,
 			  required:true
 		  }

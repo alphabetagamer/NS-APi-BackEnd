@@ -462,7 +462,6 @@ var blog_table = new Schema({
 var comments_table = new Schema({
 	comment_id:{
 		type:Number,
-		required:true,
 		unique:true
 	},
 	blog_id:{
@@ -473,6 +472,9 @@ var comments_table = new Schema({
 		type:String
 	},
 	user_id:{
+		type:String
+	},
+	username:{
 		type:Number
 	},
 	parent_comment_id:{

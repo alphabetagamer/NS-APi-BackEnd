@@ -636,11 +636,11 @@ var referral_table = new Schema({
 		user_id:{type:Number}
 	}]
 });
-module.exports = products = mongoose.model('products', products);
+// module.exports = products = mongoose.model('products', products);
 // module.exports = vendor_table = mongoose.model('vendor_table', vendor_table);
 // module.exports = admin_table = mongoose.model('admin_table', admin_table);
 // module.exports = user_table = mongoose.model('user_table', user_table);
-// module.exports = cashback_table = mongoose.model('cashback_table', cashback_table);
+ module.exports = cashback_table = mongoose.model('cashback_table', cashback_table);
 // module.exports = reviews_table = mongoose.model('reviews_table', reviews_table);
 // module.exports = order_table = mongoose.model('order_table', order_table);
 // module.exports = comments_table = mongoose.model('comments_table', comments_table);
