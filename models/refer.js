@@ -626,7 +626,7 @@ var coupon_table = new Schema({
 	}
 });
 var referral_table = new Schema({
-	user_id:Number,
+	user_id:String,
 	referral_code:{
 		type:String
 	},

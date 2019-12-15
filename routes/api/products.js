@@ -118,6 +118,34 @@ p_similar_vendor:[{similar:"v_id1"},{similar:"v_id2"}]
 //   var prod=await product.find()
 //   return res.json(prod)
 // });
+router.post("/post_review",middleware.checkToken, async (req,res)=>{
+  if(req.body.type == "new"){
+    var cr = reviews_table.create({product_id:req.body.id,rating:req.body.rating,review_text:req.body.text,author_id:req.user._id},function(err,comp){
+      if(err){
+        res.json(err)
+      }else{
+        res.json({success:true})
+      }
+    });
+  }else if(req.body.type=="delete"){
+    var cr = reviews_table.deleteOne({product_id:req.body.id},function(err,comp){
+      if(err){
+        res.json(err)
+      }else{
+        res.json({success:true})
+      }
+    });
+  }else if(req.body.type=="edit"){
+    var cr = reviews_table.update({product_id:req.body.id},{rating:req.body.rating,review_text:req.body.text,author_id:req.user._id},function(err,comp){
+      if(err){
+        res.json(err)
+      }else{
+        res.json({success:true})
+      }
+    });
+
+  }
+});
 router.get("/product_details",async(req,res)=>{
   try {
     var cond=[]
@@ -263,30 +291,43 @@ router.post("/signup_comp",async(req,res)=>{
   var name = req.body.username
   try{
   if(req.body.ref.length>0){
-    var refer2=await refer.update({referral_code:req.body.ref},{$push:{referred:{user_id:mob}}},(err,created)=>{
+    var c = await user_table.find({referral_code:req.body.ref})
+    var newuser=await user_table.create({name:{first_name:f_name,last_name:l_name},email:email,referral_code:"default",mobile:mob,user_id:mob,username:name},function(err,created){
       if(err){
-        return res.json({status:"Invalid Referral code"})
+        console.log(err)
+        return res.json({status:"Unable to signup"})
       }
       else{
-        return res.json({status:"referred"})
+        console.log(created)
+        var refer2= refer.create({user_id:created.id,referral_code:"default"})
+        var refer2= refer.update({referral_code:req.body.ref},{$push:{referred:{user_id:created.id}}},(err,created)=>{
+          if(err){
+            return res.json({status:"Invalid Referral code"})
+          }
+          else{
+            return res.json({status:"referred"})
+          }
+        });
       }
     });
-    var refer2=await refer.create({user_id:req.body.mobile,referral_code:"!@#$"})
+    
+   
   }
 }
 catch(err){
   console.log("ERROR")
 }
-  var newuser=await user_table.create({name:{first_name:f_name,last_name:l_name},email:email,referral_code:'ref',mobile:mob,user_id:mob,username:name},(err,created)=>{
+  var newuser=await user_table.create({name:{first_name:f_name,last_name:l_name},email:email,referral_code:'default',mobile:mob,user_id:mob,username:name},function(err,created){
     if(err){
       console.log(err)
       return res.json({status:"Unable to signup"})
     }
     else{
+      console.log(created)
+      var refer2= refer.create({user_id:created.id,referral_code:"default"})
       return res.json({status:"signed up"})
     }
   });
-  
 
   });
   router.post("/account_details",middleware.checkToken,async (req,res)=>{
@@ -452,9 +493,9 @@ catch(err){
   }
   return res.json(items)
 });
-router.post("/cashback",async(req,res)=>{
+router.post("/cashback",middleware.checkToken,async(req,res)=>{
 try{
-  var g =await cashback.find({user_id:req.body.mobile})
+  var g =await cashback.find({user_id:req.user._id})
   return res.json(g)
 }
 catch(err){
@@ -674,8 +715,8 @@ blog_details={
   similar_blogs:[{category:"Health",blogs:[{blog:"www.blog3.com"},{blog1:"www.blog4.com"}]}]
 
 }
-router.post("/blog/:blogID/post_comment",middleware.checkToken,(req,res)=>{
-
+router.post("/blog/:blogID/post_comment",middleware.checkToken,async (req,res)=>{
+if(req.body.type=="new"){
   var comment=req.body.comment
   var blog_id=req.params.blogID
   var replyTo=-1
@@ -691,6 +732,16 @@ router.post("/blog/:blogID/post_comment",middleware.checkToken,(req,res)=>{
       res.json({success:true})
     }
   })
+}
+else if (req.body.type=="delete"){
+  var s= await comments_table.remove({"_id":req.body.id},function(err,succ){
+    if(err){
+      res.json(err)
+    }else{
+      res.json({success:true})
+    }
+  })
+}
 });
 router.post("/navbar",async(req,res)=>{
   var nav = await navbar.find()
