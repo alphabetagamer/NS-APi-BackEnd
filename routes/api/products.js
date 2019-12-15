@@ -308,7 +308,7 @@ catch(err){
   });
   router.post("/address_change",middleware.checkToken,async(req,res)=>{
     if(req.body.type=="new"){
-    var update =await  user_table.update({'_id':req.user._id},{$push:{address:{state:req.body.state,pin:req.body.pincode,address:req.body.address,name:req.body.name,city:req.body.city,country:req.body.country}}},(err,created)=>{
+    var update = user_table.update({'_id':req.user._id},{$push:{address:{state:req.body.state,pin:req.body.pincode,address:req.body.address,name:req.body.name,city:req.body.city,country:req.body.country}}},function (err,created){
       if(err){
         res.json({error:err})
       }else{
@@ -319,7 +319,7 @@ catch(err){
 
     }
     else if(req.body.type=="update"){
-      var update = await user_table.update({"_id":req.user._id,'address.name':req.body.name},{$set:{'address.$.state':req.body.state,'address.$.pin':req.body.pincode,'address.$.address':req.body.address,'address.$.name':req.body.name,'address.$.city':req.body.city,'address.$.country':req.body.country}},(err,created)=>{
+      const update = user_table.update({"_id":req.user._id,'address.name':req.body.name},{$set:{'address.$.state':req.body.state,'address.$.pin':req.body.pincode,'address.$.address':req.body.address,'address.$.name':req.body.name,'address.$.city':req.body.city,'address.$.country':req.body.country}},function(err,created){
         if(err){
           res.json({error:err})
         }else{
@@ -329,7 +329,7 @@ catch(err){
   
     }
     else if(req.body.type=="delete"){
-      var dele= await user_table.update({"_id":req.user._id},{$pull:{address:{"name":req.body.name}}},function(err,comp){
+      const dele= await user_table.update({"_id":req.user._id},{$pull:{address:{"name":req.body.name}}},function(err,comp){
         if(err){
           res.json(err)
         }
@@ -359,13 +359,15 @@ catch(err){
     }
     console.log(req.user)
     var ordes= await orders.find({user_id:req.user.mobile})
+    console.log(ordes)
     if(ordes.length>0){
     var items =[]
     for (let a of ordes){
       var orders1={}
+      console.log(a)
       for (let c of a["items"]){
-      var f= await products.find({product_id:c["product_id"]})
-      orders1.a["order_id"]=f
+      var f= await product.find({product_id:c["product_id"]})
+      orders1[a["order_id"]]=f
 
     }
     items.push({items:orders1,details:a})
@@ -397,7 +399,7 @@ router.post("/wishlist",middleware.checkToken,async(req,res)=>{
   try{
   if(req.body.type=="cart"){
     var item=req.body.product_id
-    var f=await user_table.update({'_id':req.user._id},{$push:{cart_items:{product_id:req.body.id}}},(err,created)=>{
+    var f=await user_table.update({'_id':req.user._id},{$push:{cart_items:{product_id:item}}},(err,created)=>{
       if(err){
         return res.json({error:err})
       }else{
@@ -407,7 +409,7 @@ router.post("/wishlist",middleware.checkToken,async(req,res)=>{
   }
   if(req.body.type=="remove"){
     var item=req.body.product_id
-    var f=await user_table.update({'_id':req.user._id},{$pull:{cart_items:{product_id:req.body.id}}},(err,created)=>{
+    var f=await user_table.update({'_id':req.user._id},{$pull:{wishlist:{product_id:item}}},(err,created)=>{
       if(err)
       {
         res.json({error:err})
@@ -416,15 +418,36 @@ router.post("/wishlist",middleware.checkToken,async(req,res)=>{
       }
     });
   }
+  if(req.body.type=="add"){
+    var item=req.body.product_id
+    var f= user_table.update({'_id':req.user._id},{$push:{wishlist:{product_id:req.body.product_id}}},(err,created)=>{
+      if(err)
+      {
+        res.json({error:err})
+      }else{
+        res.json({success:true})
+      }
+    });
+  }
+  
 }
 catch(err){
   console.log(err)
 }
   var wishlist_items=await user_table.findOne({'_id':req.user._id})
+
   var wishlist_items = wishlist_items["wishlist"]
   var items=[]
   for(let a of wishlist_items){
-    var f=await products.find({product_id:a["product_id"]})
+    var f= await product.findOne({product_id:a["product_id"]},function(err,success){
+      if(err){
+        console.log(err)
+        res.json(err)
+      }else{
+        console.log(success)
+      }
+    })
+    console.log(f)
     items.push(f)
   }
   return res.json(items)
@@ -461,7 +484,6 @@ var tot={"net_total":total,"tax":tax,"discount":discount,"cashback":coupon_cashb
 var add={address:address,city:city,pincode:pincode,state:state}
 var insert_order=await orders.create({user_id:user,items:items_re,total:tot,order_date:date,payment_method:payment_method,state:"ongoing",address:add})
 // var insert_order=await orders.create({user_id:user})
-
 res.json({success:insert_order.id})
 } catch (error) {
   res.json({error:error})
@@ -657,7 +679,7 @@ router.post("/blog/:blogID/post_comment",middleware.checkToken,(req,res)=>{
   var comment=req.body.comment
   var blog_id=req.params.blogID
   var replyTo=-1
-  var date=req.body.date
+  //var date=req.body.date
   var email=req.user.email
   try{if(req.body.replyTo){
     replyTo=req.body.replyTo
