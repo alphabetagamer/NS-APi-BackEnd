@@ -626,7 +626,7 @@ var coupon_table = new Schema({
 		},
 		select_user:[{
 		user_id:{
-			type:Number
+			type:String
 		}	
 		}]
 

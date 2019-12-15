@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+var request = require('request');
 const mongoose = require('mongoose');
 var product = require("./../../models/Product");
 var blog_table=require("./../../models/blog");
@@ -14,6 +15,7 @@ var jwt_decode = require("jwt-decode");
 var user_table = require("../../models/user");
 var jwt = require("jsonwebtoken");
 var refer=require("../../models/refer");
+var testimonial = require("../../models/testimonials");
 const keys = require('../../config/keys');
 // const passport = require('passport');
 var cashback = require('../../models/cashback');
@@ -120,7 +122,7 @@ p_similar_vendor:[{similar:"v_id1"},{similar:"v_id2"}]
 // });
 router.post("/post_review",middleware.checkToken, async (req,res)=>{
   if(req.body.type == "new"){
-    var cr = reviews_table.create({product_id:req.body.id,rating:req.body.rating,review_text:req.body.text,author_id:req.user._id},function(err,comp){
+    var cr = reviews_table.create({product_id:req.body.id,rating:req.body.rating,review_text:req.body.text,author_id:req.user.user_id},function(err,comp){
       if(err){
         res.json(err)
       }else{
@@ -136,7 +138,7 @@ router.post("/post_review",middleware.checkToken, async (req,res)=>{
       }
     });
   }else if(req.body.type=="edit"){
-    var cr = reviews_table.update({product_id:req.body.id},{rating:req.body.rating,review_text:req.body.text,author_id:req.user._id},function(err,comp){
+    var cr = reviews_table.update({product_id:req.body.id},{rating:req.body.rating,review_text:req.body.text,author_id:req.user.user_id},function(err,comp){
       if(err){
         res.json(err)
       }else{
@@ -271,6 +273,10 @@ router.get('/:prodID',async (req, res) => {
   console.log(prod["categories"])
   res.json({"product":prod,"similar":similar,"reviews":review})
 });
+router.post("/testimonial",async(req,res)=>{
+  var s=testimonial.find()
+  res.json(s)
+});
 router.post("/signup",(req,res)=>{
 var number = req.body.mobile_no
 
@@ -283,57 +289,151 @@ else{
 }
 
 });
+router.post("/tool",(req,res)=>{
+  console.log(req.body)
+  console.log(req.body.wgl)
+  var goal_weight=req.body.goalw
+  var age = req.body.inputEmail4
+  var name = req.body.name
+  var weight = req.body.Weight
+  var height = req.body.Height
+  var meals = req.body.Meals
+  var losegain = req.body.wgl
+  var gender = req.body.gridRadios
+  var diet= req.body.inlineRadioOptions2
+  var goal = req.body.inlineRadioOptions
+  var bodyfat=req.body.inlineRadioOptions3
+  var lifestyle = req.body.inlineRadioOptions4
+
+  var bmr=0
+  if(gender=="Female"){
+    bmr=10*weight+6.25*height-5*age-161
+  }else{
+    bmr=9*weight+6.25*height-5*age+5
+  }
+  if(goal=="Loose Weight"){
+    bmr=bmr*0.88
+  }
+  else{
+    bmr=bmr*1.18
+  }
+  var seed = bmr;
+function random() {
+    var x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
+}
+  var days=[]
+  for (var i=0;i<7;i++){
+    var day=[]
+    for (var c=0;c<meals;c++){
+      var cal=bmr/meals
+      cal=cal*random()
+      // while(Math.floor(cal)<15){
+      //   var g=cal*random()
+      //   cal=g
+      // }
+      day.push({calorie:cal})
+    }
+    days.push(day)
+  }
+  console.log(days)
+  // var options = {
+  //   method: 'GET',
+  //   url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/mealplans/generate',
+  //   qs: {targetCalories: bmr*7, timeFrame: 'week'},
+  //   headers: {
+  //     'x-rapidapi-host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
+  //     'x-rapidapi-key': 'e605ec1c2cmshf06bf65422f60f8p19c5bcjsn2785f088e33a'
+  //   }
+  // };
+  var c =request("https://api.spoonacular.com/recipes/mealplans/generate?timeFrame=week&apiKey=0aef793f5f7545b9b2d0e623cd8a5dd5&targetCalories="+bmr*7, function (error, response, body) {
+    if (error) throw new Error(error);
+    console.log(body)
+  res.json(body)
+  });
+});
+router.post("/toolshort",(req,res)=>{
+  console.log(req.body)
+  console.log(req.body.wgl)
+  var age = req.body.inputEmail4
+  var gender = req.body.gridRadios
+  var diet= req.body.inlineRadioOptions2
+  var goal = req.body.inlineRadioOptions
+  var bmr=0
+  if(gender=="Female"){
+    bmr=9*60+6.25*150-5*age-161
+  }else{
+    bmr=10*75+6.25*175-5*age+5
+  }
+  if(goal=="Loose Weight"){
+    bmr=bmr*0.88
+  }
+  else{
+    bmr=bmr*1.18
+  }
+  var c =request("https://api.spoonacular.com/recipes/mealplans/generate?timeFrame=week&apiKey=0aef793f5f7545b9b2d0e623cd8a5dd5&targetCalories="+bmr*7, function (error, response, body) {
+    if (error) throw new Error(error);
+    console.log(body)
+  res.json(body)
+  });
+  
+});
 router.post("/signup_comp",async(req,res)=>{
   var f_name = req.body.fname
   var l_name = req.body.lname
   var email = req.body.email
   var mob = req.body.mobile
   var name = req.body.username
+  var ref = new mongoose.mongo.ObjectId()
+  var newId = new mongoose.mongo.ObjectId();
+  var wallet_id= new mongoose.mongo.ObjectId();
   try{
-  if(req.body.ref.length>0){
-    var c = await user_table.find({referral_code:req.body.ref})
-    var newuser=await user_table.create({name:{first_name:f_name,last_name:l_name},email:email,referral_code:"default",mobile:mob,user_id:mob,username:name},function(err,created){
+  if(req.body.ref){
+    var newuser=await user_table.create({name:{first_name:f_name,last_name:l_name},email:email,referral_code:ref,mobile:mob,user_id:newId,username:name,wallet:{wallet_id:wallet_id}},function(err,created){
       if(err){
         console.log(err)
         return res.json({status:"Unable to signup"})
       }
       else{
         console.log(created)
-        var refer2= refer.create({user_id:created.id,referral_code:"default"})
-        var refer2= refer.update({referral_code:req.body.ref},{$push:{referred:{user_id:created.id}}},(err,created)=>{
+        
+        var refer2= refer.create({user_id:created.user_id,referral_code:ref})
+        var re= refer.update({referral_code:req.body.ref},{$push:{referred:{user_id:created.user_id}}},(err,created)=>{
           if(err){
-            return res.json({status:"Invalid Referral code"})
+            console.log(err)
+             res.json({status:"Invalid Referral code"})
           }
           else{
-            return res.json({status:"referred"})
+             res.json({status:"referred"})
           }
+        
         });
+      
       }
     });
-    
-   
+  }else
+  {  var newuser=await user_table.create({name:{first_name:f_name,last_name:l_name},email:email,referral_code:ref,mobile:mob,user_id:newId,username:name,wallet:{wallet_id:wallet_id}},function(err,created){
+      if(err){
+        console.log(err)
+        return res.json({status:"Unable to signup"})
+      }
+      else{
+        console.log(created)
+        var refer2= refer.create({user_id:created.id,referral_code:ref})
+        return res.json({status:"signed up"})
+      }
+    });
   }
 }
 catch(err){
-  console.log("ERROR")
+  console.log(err)
 }
-  var newuser=await user_table.create({name:{first_name:f_name,last_name:l_name},email:email,referral_code:'default',mobile:mob,user_id:mob,username:name},function(err,created){
-    if(err){
-      console.log(err)
-      return res.json({status:"Unable to signup"})
-    }
-    else{
-      console.log(created)
-      var refer2= refer.create({user_id:created.id,referral_code:"default"})
-      return res.json({status:"signed up"})
-    }
-  });
 
   });
   router.post("/account_details",middleware.checkToken,async (req,res)=>{
-    console.log(req.user._id)
+    console.log(req.user.user_id)
     if(req.body.fname && req.body.lname && req.body.email && req.body.mobile && req.body.username){
-    var update = await user_table.update({'_id':req.user._id},{name:{first_name:req.body.fname,last_name:req.body.lname},email:req.body.email,mobile:req.body.mobile,user_id:req.user.mobile,username:req.body.username},function(err,completed){
+    var update = await user_table.update({"user_id":req.user.user_id},{name:{first_name:req.body.fname,last_name:req.body.lname},email:req.body.email,mobile:req.body.mobile,username:req.body.username},function(err,completed){
       if(err){
         res.json({error:err})
       }else{
@@ -343,13 +443,13 @@ catch(err){
       
   }
   else{
-    var up = await user_table.find({"_id":req.user._id})
+    var up = await user_table.find({"user_id":req.user.user_id})
     return res.json(up)
   }
   });
   router.post("/address_change",middleware.checkToken,async(req,res)=>{
     if(req.body.type=="new"){
-    var update = user_table.update({'_id':req.user._id},{$push:{address:{state:req.body.state,pin:req.body.pincode,address:req.body.address,name:req.body.name,city:req.body.city,country:req.body.country}}},function (err,created){
+    var update = user_table.update({"user_id":req.user.user_id},{$push:{address:{state:req.body.state,pin:req.body.pincode,address:req.body.address,name:req.body.name,city:req.body.city,country:req.body.country}}},function (err,created){
       if(err){
         res.json({error:err})
       }else{
@@ -360,7 +460,7 @@ catch(err){
 
     }
     else if(req.body.type=="update"){
-      const update = user_table.update({"_id":req.user._id,'address.name':req.body.name},{$set:{'address.$.state':req.body.state,'address.$.pin':req.body.pincode,'address.$.address':req.body.address,'address.$.name':req.body.name,'address.$.city':req.body.city,'address.$.country':req.body.country}},function(err,created){
+      const update = user_table.update({"user_id":req.user.user_id,'address.name':req.body.name},{$set:{'address.$.state':req.body.state,'address.$.pin':req.body.pincode,'address.$.address':req.body.address,'address.$.name':req.body.name,'address.$.city':req.body.city,'address.$.country':req.body.country}},function(err,created){
         if(err){
           res.json({error:err})
         }else{
@@ -370,7 +470,7 @@ catch(err){
   
     }
     else if(req.body.type=="delete"){
-      const dele= await user_table.update({"_id":req.user._id},{$pull:{address:{"name":req.body.name}}},function(err,comp){
+      const dele= await user_table.update({"user_id":req.user.user_id},{$pull:{address:{"name":req.body.name}}},function(err,comp){
         if(err){
           res.json(err)
         }
@@ -386,7 +486,7 @@ catch(err){
   router.post("/orders",middleware.checkToken,async(req,res)=>{
     try {
       if(req.body.type=="again"){
-        var f=await user_table.update({'_id':req.user._id},{$push:{cart_items:{product_id:req.body.id}}},(err,created)=>{
+        var f=await user_table.update({"user_id":req.user.user_id},{$push:{cart_items:{product_id:req.body.id}}},(err,created)=>{
           if(err){
             res.json({error:err})
           }else{
@@ -440,7 +540,7 @@ router.post("/wishlist",middleware.checkToken,async(req,res)=>{
   try{
   if(req.body.type=="cart"){
     var item=req.body.product_id
-    var f=await user_table.update({'_id':req.user._id},{$push:{cart_items:{product_id:item}}},(err,created)=>{
+    var f=await user_table.update({"user_id":req.user.user_id},{$push:{cart_items:{product_id:item}}},(err,created)=>{
       if(err){
         return res.json({error:err})
       }else{
@@ -450,7 +550,7 @@ router.post("/wishlist",middleware.checkToken,async(req,res)=>{
   }
   if(req.body.type=="remove"){
     var item=req.body.product_id
-    var f=await user_table.update({'_id':req.user._id},{$pull:{wishlist:{product_id:item}}},(err,created)=>{
+    var f=await user_table.update({"user_id":req.user.user_id},{$pull:{wishlist:{product_id:item}}},(err,created)=>{
       if(err)
       {
         res.json({error:err})
@@ -461,7 +561,7 @@ router.post("/wishlist",middleware.checkToken,async(req,res)=>{
   }
   if(req.body.type=="add"){
     var item=req.body.product_id
-    var f= user_table.update({'_id':req.user._id},{$push:{wishlist:{product_id:req.body.product_id}}},(err,created)=>{
+    var f= user_table.update({"user_id":req.user.user_id},{$push:{wishlist:{product_id:req.body.product_id}}},(err,created)=>{
       if(err)
       {
         res.json({error:err})
@@ -475,7 +575,7 @@ router.post("/wishlist",middleware.checkToken,async(req,res)=>{
 catch(err){
   console.log(err)
 }
-  var wishlist_items=await user_table.findOne({'_id':req.user._id})
+  var wishlist_items=await user_table.findOne({"user_id":req.user.user_id})
 
   var wishlist_items = wishlist_items["wishlist"]
   var items=[]
@@ -495,7 +595,7 @@ catch(err){
 });
 router.post("/cashback",middleware.checkToken,async(req,res)=>{
 try{
-  var g =await cashback.find({user_id:req.user._id})
+  var g =await cashback.find({user_id:req.user.user_id})
   return res.json(g)
 }
 catch(err){
@@ -725,7 +825,7 @@ if(req.body.type=="new"){
   try{if(req.body.replyTo){
     replyTo=req.body.replyTo
   }}catch(err){console.log(err)}
-  var add_c = comments_table.create({blog_id:blog_id,text:comment,user_id:req.user._id,parent_comment_id:replyTo,username:req.user.username},function(err,completed){
+  var add_c = comments_table.create({blog_id:blog_id,text:comment,user_id:req.user.user_id,parent_comment_id:replyTo,username:req.user.username},function(err,completed){
     if(err){
       res.json(err)
     }else{
@@ -758,9 +858,9 @@ router.get("/blog/:blogID",async (req,res)=>{
 
 });
 router.post("/header",middleware.checkToken,async(req,res)=>{
-if(req.user._id){
-  var user = req.user._id
-var sum_wishlist=user_table.findOne({"_id":user},function(err,results){
+if(req.user.user_id){
+  var user = req.user.user_id
+var sum_wishlist=user_table.findOne({"user_id":user},function(err,results){
   if(err){
     res.json(err)
   }else{

@@ -62,6 +62,9 @@ videos:[{
 	long_desc:{
 		type:String
 	},
+	prime_category:{
+		type:String
+	},
 	categories:[{
 		category:{
 			type:String,
