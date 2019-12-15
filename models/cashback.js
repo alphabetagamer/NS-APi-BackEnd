@@ -329,7 +329,7 @@ var user_table = new Schema({
 });
 var cashback_table = new Schema({
 	user_id:{
-		type:Number,
+		type:String,
 		required:true
 	},
 	order_id:{

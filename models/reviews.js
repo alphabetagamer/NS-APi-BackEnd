@@ -347,7 +347,6 @@ var cashback_table = new Schema({
 var reviews_table= new Schema({
 review_id:{
 	type:Number,
-	required:true,
 	unique:true
 },
 product_id:{
