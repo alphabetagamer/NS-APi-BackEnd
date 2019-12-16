@@ -483,6 +483,45 @@ catch(err){
       res.json({error:"invalid call"})
     }
   });
+  router.post("/cart",middleware.checkToken,async(req,res)=>{
+    try {
+      if(req.body.type=="remove"){
+        var pid=req.body.id
+        var f=await user_table.update({"user_id":req.user.user_id},{$pull:{cart_items:{product_id:pid}}},(err,created)=>{
+          if(err)
+          {
+            res.json({error:err})
+          }else{
+            res.json({success:true})
+          }
+        });
+      }
+      else if(req.body.type=="add"){
+        var pid=req.body.id
+        var f= user_table.update({"user_id":req.user.user_id},{$push:{cart_items:{product_id:pid}}},(err,created)=>{
+          if(err)
+          {
+            res.json({error:err})
+          }else{
+            res.json({success:true})
+          }
+        });
+      }
+    } catch (error) {
+      console.log(error)
+    }
+    var f = await user_table.findOne({"user_id":req.user.user_id});
+    var items=[]
+    console.log(f['cart_items'])
+    console.log(f)
+    for (let c of f["cart_items"]){
+      var k = await product.find({"product_id":c['product_id']})
+      items.push(k)
+    }
+    return res.json(items)
+    
+
+  });
   router.post("/orders",middleware.checkToken,async(req,res)=>{
     try {
       if(req.body.type=="again"){
