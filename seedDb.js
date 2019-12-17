@@ -3,8 +3,9 @@ var mongoose = require("mongoose"),
     blog_table=require("./models/blog"),
     orders = require('./models/order'),
     deals = require('./models/deals'),
-    navbar = require("./models/navbar")
-    cashback = require('./models/cashback')
+    navbar = require("./models/navbar"),
+    cashback = require('./models/cashback'),
+    deals_home=require("./models/deals_home")
 var blog1 = [{blog_id:1,
 title:"Title",
 body:"lorem Ipsum",
@@ -66,6 +67,7 @@ thumbnails:[{
     thumbnail:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
     }],
 short_desc:"SHort Description",
+primary_category:"whey",
 long_desc:"The best whey powder in the market",
 categories:[{
     category:
@@ -90,6 +92,7 @@ brand_id:2
     name: "Whey Protein2",
     vendor_id:3,
     price:1800,
+    primary_category:"whey",
     discount:20,
     images:[{
         image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
@@ -126,7 +129,7 @@ var offers=[{
             url:"url.com",
         image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"}],
     date:"2019-07-18T21:33:46.097Z"
-}]
+}];
 var orders2 = [{
     order_id:1,
     user_id:"5df68a58cca8e623e055646f",
@@ -188,6 +191,17 @@ var ca=[{
     date:"2019-07-18T21:33:46.097Z",
     amount:200
 }]
+var deals1 = [{deal :[{
+	product_id:2,
+	discount:20,
+	date_end:"2019-07-18T21:33:46.097Z",
+},{
+	product_id:3,
+	discount:40,
+	date_end:"2019-07-18T21:33:46.097Z",
+}],
+	date:"2019-07-18T21:33:46.097Z"
+	}]
 // var user = {name: "Daphnis", email:"daphnis@gmail.com",age:29,refer_code:"daph123", state:"delhi", city:"West delhi",gender:"female",phone:9999999999,device_id:"moto 2011"
 //             ,use_time:10,active_time:9,total_news_read:4,refer_friend_earning_time:0,total_ads_clicked:6,total_ads_viewed:4,total_app_usage_time:12,total_ad_time:7,total_earnings:300
 //             ,credit_history:[{amount:200,status:"complete"},{amount:100,status:"complete"}],redeem_history:[{amount:250,status:"complete"},{amount:50,status:"complete"}]
@@ -197,8 +211,17 @@ var ca=[{
 //  var refermanager = {redeem_amount : 25, redeem_time: 36000};
 
 function seedDB(){
-    blog1.forEach(function(seed){
-        blog_table.create(seed,(err,created)=>{
+    // blog1.forEach(function(seed){
+    //     blog_table.create(seed,(err,created)=>{
+    //         if(err){
+    //             console.log(err)
+    //         } else{
+    //             console.log("refermanager created with id "+ created._id )
+    //         }
+    //     })
+    // });
+    deals1.forEach(function(seed){
+        deals_home.create(seed,(err,created)=>{
             if(err){
                 console.log(err)
             } else{
@@ -207,37 +230,38 @@ function seedDB(){
         })
     });
     
-    prod.forEach(function(seed){product.create(seed,(err,created)=>{
-        if(err){
-            console.log(err)
-        } else{
-            console.log("refermanager created with id "+ created._id )
-        }
-    })});
-    offers.forEach(function(seed){deals.create(seed,(err,created)=>{
-        if(err){
-            console.log(err)
-        }
-        else{
-            console.log("refermanager created with id "+ created._id )
-        }
-    })});
-    orders2.forEach(function(seed){orders.create(seed,(err,created)=>{
-        if(err){
-            console.log(err)
-        } else{
-            console.log("refermanager created with id "+ created._id )
-        }
-    })});
-    var a=navbar.create(nv)
-    console.log(a)
-    ca.forEach(function(seed){cashback.create(seed,(err,created)=>{
-        if(err){
-            console.log(err)
-        } else{
-            console.log("refermanager created with id "+ created._id )
-        }
-    })});
+    // prod.forEach(function(seed){product.create(seed,(err,created)=>{
+    //     if(err){
+    //         console.log(err)
+    //     } else{
+    //         console.log("refermanager created with id "+ created._id )
+    //     }
+    // })});
+    // offers.forEach(function(seed){
+    //     deals.create(seed,(err,created)=>{
+    //     if(err){
+    //         console.log(err)
+    //     }
+    //     else{
+    //         console.log("refermanager created with id "+ created._id )
+    //     }
+    // })});
+    // orders2.forEach(function(seed){orders.create(seed,(err,created)=>{
+    //     if(err){
+    //         console.log(err)
+    //     } else{
+    //         console.log("refermanager created with id "+ created._id )
+    //     }
+    // })});
+    // var a=navbar.create(nv)
+    // console.log(a)
+    // ca.forEach(function(seed){cashback.create(seed,(err,created)=>{
+    //     if(err){
+    //         console.log(err)
+    //     } else{
+    //         console.log("refermanager created with id "+ created._id )
+    //     }
+    // })});
     // data.forEach(function(seed){
     //     News.create(seed,function(err,news){
     //         if(err){

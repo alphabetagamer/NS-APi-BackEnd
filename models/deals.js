@@ -571,6 +571,7 @@ date:{
 	type:Date
 }
 });
+
 var coupon_table = new Schema({
 	coupon_code:{
 		type:String,

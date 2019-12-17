@@ -196,7 +196,6 @@ router.get("/product_details",async(req,res)=>{
       }
       else{
         var prod_w=await product.find().sort({"rating":1})
-      console.log(prod_w)
       res.json(prod_w)
       }
     }
@@ -558,10 +557,15 @@ catch(err){
     var lineReader = require('readline').createInterface({
       input: require('fs').createReadStream('./exe.txt')
     });
-    
+   //exer.create({exercise:[{name:"one",muscle:"one"}]})
     lineReader.on('line', function (line) {
       var k=line.split(',')
-      var c= exer.update({},{$push:{exercise:{name:k[0],muscle:k[1]}}})
+      var c= exer.findByIdAndUpdate("5df935bda036ad2cb4e62b6e",{$push:{exercise:{name:k[0],muscle:k[1]}}},function(err,comp){
+        if(err){
+          console.log(err)
+        }
+
+      })
     });
     res.json({success:true})
   });
@@ -570,16 +574,24 @@ catch(err){
     //   var js=JSON.parse(body)
     //   res.json(js)
     // });
-    var lineReader = require('readline').createInterface({
-      input: require('fs').createReadStream('./exe.txt')
-    });
-    
-    lineReader.on('line', function (line) {
-      var k=line.split(',')
-      var c= exer.update({},{$push:{exercise:{name:k[0],muscle:k[1]}}})
-    });
-    res.json({success:true})
-  });
+    var c = await exer.findOne({"_id":"5df935bda036ad2cb4e62b6e"})
+    function getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  var exercise = []
+  for (var i =0;i<=9;i++){
+    var r=getRandomInt(1,897)
+    var h=getRandomInt(8,17)
+    var k=c["exercise"][r].toObject()
+    k.reps= h
+    k["_id"]= undefined
+    console.log(k)
+    exercise.push(k)
+  }
+  res.json(exercise)
+});
   router.post("/orders",middleware.checkToken,async(req,res)=>{
     try {
       if(req.body.type=="again"){
@@ -832,18 +844,21 @@ router.post("/banner",async(req,res)=>{
 });
 router.post("/deals",async(req,res)=>{
 var date = req.body.date
-var c = deals_home.find({date:date},function(err,comp){
+var c = await deals_home.find({date:date},function(err,comp){
   if(err){
     res.json(err)
   }
 });
+console.log(c)
 var items=[]
 for(let a of c){
   for (b of a["deal"]){
-    items.push(product.find({product_id:b["product_id"]}))
+    var temp= await product.findOne({product_id:b["product_id"]})
+    temp["discount"]=b["discount"]
+    items.push(temp)
   }
 }
-res.json({deals:c,items:items})
+res.json({items:items})
 });
 var blog_listing={
   banner:[{
