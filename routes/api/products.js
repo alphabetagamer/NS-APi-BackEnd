@@ -3,6 +3,7 @@ const router = express.Router();
 var request = require('request');
 const mongoose = require('mongoose');
 var product = require("./../../models/Product");
+var exer = require("../../models/exercise");
 var blog_table=require("./../../models/blog");
 var reviews_table=require("./../../models/reviews");
 var comments_table=require("./../../models/comments");
@@ -10,6 +11,7 @@ var orders=require("../../models/order");
 var coupon_table=require("../../models/coupon");
 var ObjectId = require('mongodb').ObjectId; 
 var deals=require("../../models/deals");
+var deals_home=require("../../models/deals_home");
 var navbar = require("../../models/navbar");
 var jwt_decode = require("jwt-decode");
 var user_table = require("../../models/user");
@@ -17,6 +19,7 @@ var jwt = require("jsonwebtoken");
 var refer=require("../../models/refer");
 var testimonial = require("../../models/testimonials");
 const keys = require('../../config/keys');
+var fs = require('fs');
 // const passport = require('passport');
 var cashback = require('../../models/cashback');
 const middleware = require("../../middleware/index");
@@ -522,6 +525,61 @@ catch(err){
     
 
   });
+  router.post("/product_rec",async(req,res)=>{
+    var c = await product.find();
+    function shuffle(c) {
+      var currentIndex = c.length, temporaryValue, randomIndex;
+    
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+    
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+    
+        // And swap it with the current element.
+        temporaryValue = c[currentIndex];
+        c[currentIndex] = c[randomIndex];
+        c[randomIndex] = temporaryValue;
+      }
+    
+      return c
+    }
+    console.log(c)
+    var k = shuffle(c)
+  
+    res.json(k)
+  });
+  router.post("/iniwork",middleware.checkToken,async(req,res)=>{
+    // var g=request("https://wger.de/api/v2/exercise",function(error,response,body){
+    //   var js=JSON.parse(body)
+    //   res.json(js)
+    // });
+    var lineReader = require('readline').createInterface({
+      input: require('fs').createReadStream('./exe.txt')
+    });
+    
+    lineReader.on('line', function (line) {
+      var k=line.split(',')
+      var c= exer.update({},{$push:{exercise:{name:k[0],muscle:k[1]}}})
+    });
+    res.json({success:true})
+  });
+  router.post("/workout",middleware.checkToken,async(req,res)=>{
+    // var g=request("https://wger.de/api/v2/exercise",function(error,response,body){
+    //   var js=JSON.parse(body)
+    //   res.json(js)
+    // });
+    var lineReader = require('readline').createInterface({
+      input: require('fs').createReadStream('./exe.txt')
+    });
+    
+    lineReader.on('line', function (line) {
+      var k=line.split(',')
+      var c= exer.update({},{$push:{exercise:{name:k[0],muscle:k[1]}}})
+    });
+    res.json({success:true})
+  });
   router.post("/orders",middleware.checkToken,async(req,res)=>{
     try {
       if(req.body.type=="again"){
@@ -725,10 +783,8 @@ router.post("/forgot_pass",check("email","Please input correct email").isEmail()
   return res.json({status:"Working on finding your account"})
 });
 router.post("/topseller",async (req,res)=>{
-
   var best = await orders.find({})
   var products_sold=[]
-  console.log(best)
   for(let a of best){
   for(let b of a["items"]){
     products_sold.push(b["product_id"])
@@ -745,22 +801,49 @@ var items = Object.keys(counts).map(function(key) {
 items.sort(function(first, second) {
   return second[1] - first[1];
 });
-console.log(items)
+
 var products=[]
 for (let a of items){
 // var obj ={}
 // var name=a[0]
 // obj[name]=a[1]
 // products.push(obj)
-var prod = await product.find({product_id:a[0]})
+var prod = await product.findOne({product_id:a[0]})
 products.push(prod)
 }
+if(req.body.category){
+  var cat=[]
+    for(let a of products){
+      if(a["prime_category"]==req.body.category){
+        
+        cat.push(a)
+      }
+    }
+    res.json(cat)
+}
+else{
 res.json(products)
+}
 });
 router.post("/banner",async(req,res)=>{
   var date = req.body.date
   var offers= await deals.find({date:date})
   res.json(offers)
+});
+router.post("/deals",async(req,res)=>{
+var date = req.body.date
+var c = deals_home.find({date:date},function(err,comp){
+  if(err){
+    res.json(err)
+  }
+});
+var items=[]
+for(let a of c){
+  for (b of a["deal"]){
+    items.push(product.find({product_id:b["product_id"]}))
+  }
+}
+res.json({deals:c,items:items})
 });
 var blog_listing={
   banner:[{
