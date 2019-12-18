@@ -460,10 +460,10 @@ var blog_table = new Schema({
 });
 
 var comments_table = new Schema({
-	comment_id:{
-		type:Number,
-		unique:true
-	},
+	// comment_id:{
+	// 	type:String,
+	// 	unique:true
+	// },
 	blog_id:{
 		type:Number,
 		required:true
