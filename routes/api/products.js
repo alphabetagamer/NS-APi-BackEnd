@@ -954,6 +954,7 @@ blog_details={
 }
 router.post("/blog/:blogID/post_comment",middleware.checkToken,async (req,res)=>{
 if(req.body.type=="new"){
+  var id = new mongoose.mongo.ObjectId();
   var comment=req.body.comment
   var blog_id=req.params.blogID
   var replyTo=-1
@@ -962,7 +963,7 @@ if(req.body.type=="new"){
   try{if(req.body.replyTo){
     replyTo=req.body.replyTo
   }}catch(err){console.log(err)}
-  var add_c = comments_table.create({blog_id:blog_id,text:comment,user_id:req.user.user_id,parent_comment_id:replyTo,username:req.user.username},function(err,completed){
+  var add_c = comments_table.create({blog_id:blog_id,text:comment,user_id:req.user.user_id,parent_comment_id:replyTo,username:req.user.username,comment_id:id},function(err,completed){
     if(err){
       res.json(err)
     }else{
