@@ -24,6 +24,11 @@ var products = new Schema({
 		max:100,
     required:true
 	},
+	discount_percent:{
+		type:Number,
+		min:0,
+		max:100
+	},
 	images:[{
 		image:{
 		type:String
