@@ -181,11 +181,11 @@ router.post("/tool",(req,res)=>{
   var height = req.body.Height
   var meals = req.body.Meals
   var losegain = req.body.wgl
-  var gender = req.body.gridRadios
-  var diet= req.body.inlineRadioOptions2
-  var goal = req.body.inlineRadioOptions
-  var bodyfat=req.body.inlineRadioOptions3
-  var lifestyle = req.body.inlineRadioOptions4
+  var gender = req.body.gender
+  var diet= req.body.diet
+  var goal = req.body.goal
+  var bodyfat=req.body.bodyfat
+  var lifestyle = req.body.lifestyle
 
   var bmr=0
   if(gender=="Female"){
@@ -283,6 +283,45 @@ router.post("/shipping",async(req,res)=>{
 } else{
   res.json({success:"false"})
 }
+});
+router.post("/insta_posts",(req,res)=>{
+  var posts=[]
+  var j=0
+    var i=0
+    var posts=[]
+  var a =  request("https://graph.facebook.com/v5.0/17841407933359107/media?access_token=EAAjuLgrjtMcBAK6M4vlR8CoOBF9pJu0O2FDhxLTBgvVAQYfo3TmwaMP6r3qQyFBPUJdHrhLCJ1vFiEyu8o4WRIgJnk2lb9uypypZCyG1hszlRCH89AHF3xOZBEJS5DOETaDKrz2sEATjQavPXy7aSyZBJSwdqvGLnshZBBjRUQzxaYGj3C2YXapgHR5SvMoZD",function(err,response,body){
+  if(err){
+    res.json(err)
+  }  
+     var k = body.replace("/","");
+     var g=JSON.parse(k)
+     var dat =g.data
+     var i=0
+    accountdata(g.data);
+});
+function accountdata(a){
+  for( i=0;i<5;i++){
+    gj=a[i]
+    var post= request("https://graph.facebook.com/"+gj.id+"?fields=id,media_type,media_url,owner,timestamp&access_token=EAAjuLgrjtMcBAK6M4vlR8CoOBF9pJu0O2FDhxLTBgvVAQYfo3TmwaMP6r3qQyFBPUJdHrhLCJ1vFiEyu8o4WRIgJnk2lb9uypypZCyG1hszlRCH89AHF3xOZBEJS5DOETaDKrz2sEATjQavPXy7aSyZBJSwdqvGLnshZBBjRUQzxaYGj3C2YXapgHR5SvMoZD", function(err,response,body){
+      if(err){
+        res.json(err)
+      } 
+      var k1 = body.replace("/","")
+      var g1=JSON.parse(k1)
+     call(g1);
+    });
+    function call(g1){
+      j=j+1
+      console.log(j)
+      posts.push(g1)
+      if(j==5){
+        res.json(posts)
+      }
+    }
+  }
+}
+    
+
 });
 router.post("/side_banner",(res,req)=>{
 res.json([{image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80",url:"abc.com"}])
