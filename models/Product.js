@@ -31,7 +31,7 @@ var products = new Schema({
 	},
 	current_price:{
 		type:Number
-	},
+},
 	images:[{
 		image:{
 		type:String
