@@ -469,32 +469,32 @@ var deals1 = [{deal :[{
 //  var refermanager = {redeem_amount : 25, redeem_time: 36000};
 
 function seedDB(){
-    // blog1.forEach(function(seed){
-    //     blog_table.create(seed,(err,created)=>{
-    //         if(err){
-    //             console.log(err)
-    //         } else{
-    //             console.log("refermanager created with id "+ created._id )
-    //         }
-    //     })
-    // });
-    // deals1.forEach(function(seed){
-    //     deals_home.create(seed,(err,created)=>{
-    //         if(err){
-    //             console.log(err)
-    //         } else{
-    //             console.log("refermanager created with id "+ created._id )
-    //         }
-    //     })
-    // });
+    blog1.forEach(function(seed){
+        blog_table.create(seed,(err,created)=>{
+            if(err){
+                console.log(err)
+            } else{
+                console.log("refermanager created with id "+ created._id )
+            }
+        })
+    });
+    deals1.forEach(function(seed){
+        deals_home.create(seed,(err,created)=>{
+            if(err){
+                console.log(err)
+            } else{
+                console.log("refermanager created with id "+ created._id )
+            }
+        })
+    });
     
-    // prod.forEach(function(seed){product.create(seed,(err,created)=>{
-    //     if(err){
-    //         console.log(err)
-    //     } else{
-    //         console.log("refermanager created with id "+ created._id )
-    //     }
-    // })});
+    prod.forEach(function(seed){product.create(seed,(err,created)=>{
+        if(err){
+            console.log(err)
+        } else{
+            console.log("refermanager created with id "+ created._id )
+        }
+    })});
     offers.forEach(function(seed){
         deals.create(seed,(err,created)=>{
         if(err){
@@ -504,22 +504,22 @@ function seedDB(){
             console.log("refermanager created with id "+ created._id )
         }
     })});
-    // orders2.forEach(function(seed){orders.create(seed,(err,created)=>{
-    //     if(err){
-    //         console.log(err)
-    //     } else{
-    //         console.log("refermanager created with id "+ created._id )
-    //     }
-    // })});
-    // var a=navbar.create(nv)
-    // console.log(a)
-    // ca.forEach(function(seed){cashback.create(seed,(err,created)=>{
-    //     if(err){
-    //         console.log(err)
-    //     } else{
-    //         console.log("refermanager created with id "+ created._id )
-    //     }
-    // })});
+    orders2.forEach(function(seed){orders.create(seed,(err,created)=>{
+        if(err){
+            console.log(err)
+        } else{
+            console.log("refermanager created with id "+ created._id )
+        }
+    })});
+    var a=navbar.create(nv)
+    console.log(a)
+    ca.forEach(function(seed){cashback.create(seed,(err,created)=>{
+        if(err){
+            console.log(err)
+        } else{
+            console.log("refermanager created with id "+ created._id )
+        }
+    })});
     // data.forEach(function(seed){
     //     News.create(seed,function(err,news){
     //         if(err){
