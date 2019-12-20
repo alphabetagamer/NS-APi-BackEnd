@@ -566,12 +566,12 @@ url:{
 image:{
 	type:String
 },
+text:{
+	type:String
+},
 _id:false}],
 date:{
 	type:Date
-},
-text:{
-	type:String
 }
 });
 
