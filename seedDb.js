@@ -52,78 +52,337 @@ likes:[{
         user_id:2
     }]
     }];
-var prod=[{product_id :2,
-name: "Whey Protein2",
-vendor_id:3,
-price:1800,
-discount:20,
-images:[{
-    image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
-,
-image_alt_text:"Whey Powder",
-image_caption:"Image Caption"
-}],
-thumbnails:[{
-    thumbnail:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
-    }],
-short_desc:"SHort Description",
-primary_category:"whey",
-long_desc:"The best whey powder in the market",
-categories:[{
-    category:
-        "Health"},{category: "Fitness"}],
-flavor:"Strawberry",
-other_flavors:[{
-    product_id:2,
-    flavor:"Banana"
-}],
-weight:100,
-other_weights:[{
-    product_id:2,
-    weight:200
-}],
-goals:[{
-    goal:"Fitness"
-}],
-brand_id:2
-
-
-},{product_id :3,
-    name: "Whey Protein2",
-    vendor_id:3,
-    price:1800,
-    primary_category:"whey",
-    discount:20,
-    images:[{
-        image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
-    ,
-    image_alt_text:"Whey Powder",
-    image_caption:"Image Caption"
-    }],
-    thumbnails:[{
-        thumbnail:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
-        }],
-    short_desc:"SHort Description",
-    long_desc:"The best whey powder in the market",
-    categories:[{
-        category:
-            "Health"},{category: "Fitness"}],
-    flavor:"Strawberry",
-    other_flavors:[{
-        product_id:2,
-        flavor:"Banana"
-    }],
-    weight:100,
-    other_weights:[{
-        product_id:2,
-        weight:200
-    }],
-    goals:[{
-        goal:"Fitness"
-    }],
-    brand_id:2
-    }];
-var offers=[{
+    var prod = [
+        {
+          "_id": "5df7e9ce899fbe00160c12fe",
+          "product_id": 2,
+          "name": "ON (Optimum Nutrition) Gold Standard 100% Whey Protein, 5 Lb",
+          "vendor_id": 3,
+          "price": 7699,
+          "discount": 25,
+          "current_price": 5600,
+          "long_desc": [{'content' :"The best whey powder in the market"}],
+          "prime_category":"whey",
+          "rating":4.5,
+          "total":1123,
+          "images": [
+            {
+              "_id": "5df7e9ce899fbe00160c12ff",
+              "image": "https://i2.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/ON-Optimum-Nutrition-Gold-Standard-100-Whey-Protein-5-lb.png",
+              "image_alt_text": "Whey Powder",
+              "image_caption": "Image Caption",
+              
+            },
+            {
+              "image": "https://i0.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/ON-Optimum-Nutrition-Gold-Standard-100-Whey-Protein-5-lb_2.png",
+              "image_alt_text": "whey Powder"
+            },
+            
+          ],
+          "thumbnails": [
+            {
+              "_id": "5df7e9ce899fbe00160c1300",
+              "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+            }
+          ],
+          "short_desc": "SHort Description",
+         
+          "categories": [
+            {
+              "category": "Health"
+            },
+            {
+              "category": "Fitness"
+            }
+          ],
+         
+          "flavor": "Strawberry",
+          "other_flavors": [
+            {
+              "_id": "5df7e9ce899fbe00160c1301",
+              "product_id": 2,
+              "flavor": "Banana"
+            }
+          ],
+          "weight": 1000,
+          "other_weights": [
+            {
+              "_id": "5df7e9ce899fbe00160c1302",
+              "product_id": 2,
+              "weight": 5000
+            }
+          ],
+          "goals": [
+            {
+              "goal": "Gain"
+            }
+          ],
+          "brand_id": 2,
+          "videos": [],
+          "__v": 0
+        },
+        {
+          "_id": "5dfa6da32dd74a1ee02365c4",
+          "product_id": 4,
+          "name": "Muscletech Whey Plus Isolate Gold 4lb",
+          "vendor_id": 3,
+          "price": 7699,
+          "discount": 25,
+          "current_price": 5600,
+          "long_desc": [{'content' :"The best whey powder in the market"}],
+          "rating":4.5,
+          "total":1123,
+          "images": [
+            {
+              "_id": "5df7e9ce899fbe00160c12ff",
+              "image": "https://i0.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/MUSCLETECH-WHEY-PLUS-ISOLATE-GOLD-4LB.png?zoom=1.25&fit=720%2C720&ssl=1",
+              "image_alt_text": "Whey Powder",
+              "image_caption": "Image Caption"
+            },
+            {
+              "image": "https://i1.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/Muscletech-Whey-Plus-Isolate-Gold-4lb_2.png",
+              "image_alt_text": "whey Powder"
+            }
+          ],
+          "thumbnails": [
+            {
+              "_id": "5df7e9ce899fbe00160c1300",
+              "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+            }
+          ],
+          "prime_category": "whey",
+          "short_desc": "SHort Description",
+          "categories": [
+            {
+              "category": "Health"
+            },
+            {
+              "category": "Fitness"
+            }
+          ],
+          "flavor": "Chocolate",
+          "other_flavors": [
+            {
+              "_id": "5df7e9ce899fbe00160c1301",
+              "product_id": 2,
+              "flavor": "Banana"
+            }
+          ],
+          "weight": 1000,
+          "other_weights": [
+            {
+              "_id": "5df7e9ce899fbe00160c1302",
+              "product_id": 2,
+              "weight": 5000
+            }
+          ],
+          "goals": [
+            {
+              "goal": "Gain"
+            }
+          ],
+          "brand_id": 2,
+          "videos": [],
+          "__v": 0
+        },
+        {
+          "_id": "5dfa6e352dd74a1ee02365c6",
+          "product_id": 3,
+          "name": "Dynamik Muscle Prey Whey Protein 2kg",
+          "vendor_id": 3,
+          "price": 7699,
+          "discount": 25,
+          "current_price": 5600,
+          "long_desc": [{'content' :"The best whey powder in the market"}],
+          "rating":4.5,
+          "total":1123,
+          "images": [
+            {
+              "_id": "5df7e9ce899fbe00160c12ff",
+              "image": "https://i1.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/Dynamik-Muscle-Prey-Whey-Protein-2kg.png",
+              "image_alt_text": "Whey Powder",
+              "image_caption": "Image Caption"
+            },
+            {
+              "image": "https://i1.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/Dynamik-Muscle-Prey-Whey-Protein-2kg-2.png",
+              "image_alt_text": "whey Powder"
+            }
+          ],
+          "thumbnails": [
+            {
+              "_id": "5df7e9ce899fbe00160c1300",
+              "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+            }
+          ],
+          "prime_category": "whey",
+          "short_desc": "SHort Description",
+          "categories": [
+            {
+              "category": "Health"
+            },
+            {
+              "category": "Fitness"
+            }
+          ],
+          "flavor": "Malted Chocolate",
+          "other_flavors": [
+            {
+              "_id": "5df7e9ce899fbe00160c1301",
+              "product_id": 2,
+              "flavor": "Banana"
+            }
+          ],
+          "weight": 2000,
+          "other_weights": [
+            {
+              "_id": "5df7e9ce899fbe00160c1302",
+              "product_id": 2,
+              "weight": 5000
+            }
+          ],
+          "goals": [
+            {
+              "goal": "Gain"
+            }
+          ],
+          "brand_id": 2,
+          "videos": [],
+          "__v": 0
+        },
+        {
+          "_id": "5dfa6ef32dd74a1ee02365c7",
+          "product_id": 1,
+          "name": "Ronnie Coleman Pro Antium, 5lb/2.27kg",
+          "vendor_id": 3,
+          "price": 7699,
+          "discount": 25,
+          "current_price": 5600,
+          "long_desc": [{'content' :"The best whey powder in the market"}],
+          "rating":4.5,
+          "total":1123,
+          "images": [
+            {
+              "_id": "5df7e9ce899fbe00160c12ff",
+              "image": "https://i0.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/Ronnie-Coleman-Pro-Antium-5lb_2.27kg_3.png",
+              "image_alt_text": "Whey Powder",
+              "image_caption": "Image Caption"
+            },
+            {
+              "image": "https://i2.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/Ronnie-Coleman-Pro-Antium-5lb_2.27kg_2.png",
+              "image_alt_text": "whey Powder"
+            }
+          ],
+          "thumbnails": [
+            {
+              "_id": "5df7e9ce899fbe00160c1300",
+              "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+            }
+          ],
+          "prime_category": "whey",
+          "short_desc": "SHort Description",
+          "categories": [
+            {
+              "category": "Health"
+            },
+            {
+              "category": "Fitness"
+            }
+          ],
+          "flavor": "Strawberry",
+          "other_flavors": [
+            {
+              "_id": "5df7e9ce899fbe00160c1301",
+              "product_id": 2,
+              "flavor": "Banana"
+            }
+          ],
+          "weight": 1000,
+          "other_weights": [
+            {
+              "_id": "5df7e9ce899fbe00160c1302",
+              "product_id": 2,
+              "weight": 5000
+            }
+          ],
+          "goals": [
+            {
+              "goal": "Gain"
+            }
+          ],
+          "brand_id": 2,
+          "videos": [],
+          "__v": 0
+        },
+        {
+          "_id": "5dfa6f8c2dd74a1ee02365c8",
+          "product_id": 5,
+          "name": "Ultimate Nutrition Prostar 100% Whey Protein 5.28lb/2.4kg",
+          "vendor_id": 3,
+          "price": 7699,
+          "discount": 25,
+          "current_price": 5600,
+          "long_desc": [{'content' :"The best whey powder in the market"}],
+          "rating":4.5,
+          "total":1123,
+          "images": [
+            {
+              "_id": "5df7e9ce899fbe00160c12ff",
+              "image": "https://i2.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/Ultimate-Nutrition-Prostar-100-Whey-Protein-5.28lb_2.4kg.png",
+              "image_alt_text": "Whey Powder",
+              "image_caption": "Image Caption"
+            },
+            {
+              "image": "https://i1.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/Ultimate-Nutrition-Prostar-100-Whey-Protein-5.28lb_2.4kg_2.png",
+              "image_alt_text": "whey Powder"
+            }
+          ],
+          "thumbnails": [
+            {
+              "_id": "5df7e9ce899fbe00160c1300",
+              "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+            }
+          ],
+          "prime_category": "whey",
+          "short_desc": "SHort Description",
+          "long_desc": "The best whey powder in the market",
+          "categories": [
+            {
+              "category": "Health"
+            },
+            {
+              "category": "Fitness"
+            }
+          ],
+          "flavor": "Strawberry",
+          "other_flavors": [
+            {
+              "_id": "5df7e9ce899fbe00160c1301",
+              "product_id": 2,
+              "flavor": "Raspberry"
+            },
+            {
+              "flavor": "Rum Raisin"
+            }
+          ],
+          "weight": 1000,
+          "other_weights": [
+            {
+              "_id": "5df7e9ce899fbe00160c1302",
+              "product_id": 2,
+              "weight": 5000
+            }
+          ],
+          "goals": [
+            {
+              "goal": "Gain"
+            }
+          ],
+          "brand_id": 2,
+          "videos": [],
+          "__v": 0
+        }
+      ]
+    var offers=[{
         deals:
         [{
             url:"url.com",
@@ -211,15 +470,15 @@ var deals1 = [{deal :[{
 //  var refermanager = {redeem_amount : 25, redeem_time: 36000};
 
 function seedDB(){
-    // blog1.forEach(function(seed){
-    //     blog_table.create(seed,(err,created)=>{
-    //         if(err){
-    //             console.log(err)
-    //         } else{
-    //             console.log("refermanager created with id "+ created._id )
-    //         }
-    //     })
-    // });
+    blog1.forEach(function(seed){
+        blog_table.create(seed,(err,created)=>{
+            if(err){
+                console.log(err)
+            } else{
+                console.log("refermanager created with id "+ created._id )
+            }
+        })
+    });
     deals1.forEach(function(seed){
         deals_home.create(seed,(err,created)=>{
             if(err){
@@ -230,38 +489,38 @@ function seedDB(){
         })
     });
     
-    // prod.forEach(function(seed){product.create(seed,(err,created)=>{
-    //     if(err){
-    //         console.log(err)
-    //     } else{
-    //         console.log("refermanager created with id "+ created._id )
-    //     }
-    // })});
-    // offers.forEach(function(seed){
-    //     deals.create(seed,(err,created)=>{
-    //     if(err){
-    //         console.log(err)
-    //     }
-    //     else{
-    //         console.log("refermanager created with id "+ created._id )
-    //     }
-    // })});
-    // orders2.forEach(function(seed){orders.create(seed,(err,created)=>{
-    //     if(err){
-    //         console.log(err)
-    //     } else{
-    //         console.log("refermanager created with id "+ created._id )
-    //     }
-    // })});
-    // var a=navbar.create(nv)
-    // console.log(a)
-    // ca.forEach(function(seed){cashback.create(seed,(err,created)=>{
-    //     if(err){
-    //         console.log(err)
-    //     } else{
-    //         console.log("refermanager created with id "+ created._id )
-    //     }
-    // })});
+    prod.forEach(function(seed){product.create(seed,(err,created)=>{
+        if(err){
+            console.log(err)
+        } else{
+            console.log("refermanager created with id "+ created._id )
+        }
+    })});
+    offers.forEach(function(seed){
+        deals.create(seed,(err,created)=>{
+        if(err){
+            console.log(err)
+        }
+        else{
+            console.log("refermanager created with id "+ created._id )
+        }
+    })});
+    orders2.forEach(function(seed){orders.create(seed,(err,created)=>{
+        if(err){
+            console.log(err)
+        } else{
+            console.log("refermanager created with id "+ created._id )
+        }
+    })});
+    var a=navbar.create(nv)
+    console.log(a)
+    ca.forEach(function(seed){cashback.create(seed,(err,created)=>{
+        if(err){
+            console.log(err)
+        } else{
+            console.log("refermanager created with id "+ created._id )
+        }
+    })});
     // data.forEach(function(seed){
     //     News.create(seed,function(err,news){
     //         if(err){

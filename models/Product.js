@@ -41,19 +41,11 @@ var products = new Schema({
 	},
 	image_caption:{
 		type:String
-	},
-	pos:{
-		type:Number,
-		unique:true
 	}
 }],
 videos:[{
 	video:{
 		type:String
-	},
-	pos:{
-		type:Number,
-		unique:true
 	}
 }],
 	thumbnails:[{
@@ -67,9 +59,11 @@ videos:[{
 		type:String,
     required:true
 	},
-	long_desc:{
+	long_desc:[{
+		content:{
 		type:String
-	},
+		}
+	}],
 	prime_category:{
 		type:String
 	},
