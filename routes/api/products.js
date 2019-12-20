@@ -272,7 +272,7 @@ function random() {
 router.post("/instagram",(req,res)=>{
   res.json([{url:"instagram.com",text:"Holla"}]);
 });
-router.post("/shipping",(req,res)=>{
+router.post("/shipping",async(req,res)=>{
   var f = req.body.pincode
   var pro = req.body.product_id
   var k =  await product.findOne({product_id:pro})

@@ -54,7 +54,7 @@ likes:[{
     }];
     var prod = [
         {
-          "_id": "5df7e9ce899fbe00160c12fe",
+         
           "product_id": 2,
           "name": "ON (Optimum Nutrition) Gold Standard 100% Whey Protein, 5 Lb",
           "vendor_id": 3,
@@ -81,7 +81,7 @@ likes:[{
           ],
           "thumbnails": [
             {
-              "_id": "5df7e9ce899fbe00160c1300",
+             
               "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
             }
           ],
@@ -99,7 +99,7 @@ likes:[{
           "flavor": "Strawberry",
           "other_flavors": [
             {
-              "_id": "5df7e9ce899fbe00160c1301",
+             
               "product_id": 2,
               "flavor": "Banana"
             }
@@ -107,7 +107,7 @@ likes:[{
           "weight": 1000,
           "other_weights": [
             {
-              "_id": "5df7e9ce899fbe00160c1302",
+             
               "product_id": 2,
               "weight": 5000
             }
@@ -122,7 +122,7 @@ likes:[{
           "__v": 0
         },
         {
-          "_id": "5dfa6da32dd74a1ee02365c4",
+    
           "product_id": 4,
           "name": "Muscletech Whey Plus Isolate Gold 4lb",
           "vendor_id": 3,
@@ -134,7 +134,7 @@ likes:[{
           "total":1123,
           "images": [
             {
-              "_id": "5df7e9ce899fbe00160c12ff",
+             
               "image": "https://i0.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/MUSCLETECH-WHEY-PLUS-ISOLATE-GOLD-4LB.png?zoom=1.25&fit=720%2C720&ssl=1",
               "image_alt_text": "Whey Powder",
               "image_caption": "Image Caption"
@@ -146,7 +146,7 @@ likes:[{
           ],
           "thumbnails": [
             {
-              "_id": "5df7e9ce899fbe00160c1300",
+             
               "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
             }
           ],
@@ -163,7 +163,7 @@ likes:[{
           "flavor": "Chocolate",
           "other_flavors": [
             {
-              "_id": "5df7e9ce899fbe00160c1301",
+             
               "product_id": 2,
               "flavor": "Banana"
             }
@@ -171,7 +171,7 @@ likes:[{
           "weight": 1000,
           "other_weights": [
             {
-              "_id": "5df7e9ce899fbe00160c1302",
+            
               "product_id": 2,
               "weight": 5000
             }
@@ -186,7 +186,7 @@ likes:[{
           "__v": 0
         },
         {
-          "_id": "5dfa6e352dd74a1ee02365c6",
+         
           "product_id": 3,
           "name": "Dynamik Muscle Prey Whey Protein 2kg",
           "vendor_id": 3,
@@ -198,7 +198,7 @@ likes:[{
           "total":1123,
           "images": [
             {
-              "_id": "5df7e9ce899fbe00160c12ff",
+             
               "image": "https://i1.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/Dynamik-Muscle-Prey-Whey-Protein-2kg.png",
               "image_alt_text": "Whey Powder",
               "image_caption": "Image Caption"
@@ -210,7 +210,7 @@ likes:[{
           ],
           "thumbnails": [
             {
-              "_id": "5df7e9ce899fbe00160c1300",
+             
               "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
             }
           ],
@@ -227,7 +227,7 @@ likes:[{
           "flavor": "Malted Chocolate",
           "other_flavors": [
             {
-              "_id": "5df7e9ce899fbe00160c1301",
+     
               "product_id": 2,
               "flavor": "Banana"
             }
@@ -235,7 +235,7 @@ likes:[{
           "weight": 2000,
           "other_weights": [
             {
-              "_id": "5df7e9ce899fbe00160c1302",
+              
               "product_id": 2,
               "weight": 5000
             }
@@ -250,7 +250,7 @@ likes:[{
           "__v": 0
         },
         {
-          "_id": "5dfa6ef32dd74a1ee02365c7",
+         
           "product_id": 1,
           "name": "Ronnie Coleman Pro Antium, 5lb/2.27kg",
           "vendor_id": 3,
@@ -262,7 +262,7 @@ likes:[{
           "total":1123,
           "images": [
             {
-              "_id": "5df7e9ce899fbe00160c12ff",
+            
               "image": "https://i0.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/Ronnie-Coleman-Pro-Antium-5lb_2.27kg_3.png",
               "image_alt_text": "Whey Powder",
               "image_caption": "Image Caption"
@@ -274,7 +274,7 @@ likes:[{
           ],
           "thumbnails": [
             {
-              "_id": "5df7e9ce899fbe00160c1300",
+             
               "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
             }
           ],
@@ -291,7 +291,7 @@ likes:[{
           "flavor": "Strawberry",
           "other_flavors": [
             {
-              "_id": "5df7e9ce899fbe00160c1301",
+             
               "product_id": 2,
               "flavor": "Banana"
             }
@@ -299,7 +299,7 @@ likes:[{
           "weight": 1000,
           "other_weights": [
             {
-              "_id": "5df7e9ce899fbe00160c1302",
+             
               "product_id": 2,
               "weight": 5000
             }
@@ -314,7 +314,7 @@ likes:[{
           "__v": 0
         },
         {
-          "_id": "5dfa6f8c2dd74a1ee02365c8",
+         
           "product_id": 5,
           "name": "Ultimate Nutrition Prostar 100% Whey Protein 5.28lb/2.4kg",
           "vendor_id": 3,
@@ -326,7 +326,7 @@ likes:[{
           "total":1123,
           "images": [
             {
-              "_id": "5df7e9ce899fbe00160c12ff",
+             
               "image": "https://i2.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/Ultimate-Nutrition-Prostar-100-Whey-Protein-5.28lb_2.4kg.png",
               "image_alt_text": "Whey Powder",
               "image_caption": "Image Caption"
@@ -338,13 +338,12 @@ likes:[{
           ],
           "thumbnails": [
             {
-              "_id": "5df7e9ce899fbe00160c1300",
+             
               "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
             }
           ],
           "prime_category": "whey",
           "short_desc": "SHort Description",
-          "long_desc": "The best whey powder in the market",
           "categories": [
             {
               "category": "Health"
@@ -356,7 +355,7 @@ likes:[{
           "flavor": "Strawberry",
           "other_flavors": [
             {
-              "_id": "5df7e9ce899fbe00160c1301",
+             
               "product_id": 2,
               "flavor": "Raspberry"
             },
@@ -367,7 +366,6 @@ likes:[{
           "weight": 1000,
           "other_weights": [
             {
-              "_id": "5df7e9ce899fbe00160c1302",
               "product_id": 2,
               "weight": 5000
             }
