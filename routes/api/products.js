@@ -8,13 +8,16 @@ var blog_table=require("./../../models/blog");
 var reviews_table=require("./../../models/reviews");
 var comments_table=require("./../../models/comments");
 var orders=require("../../models/order");
+var vendor = require("../../models/vendor");
 var coupon_table=require("../../models/coupon");
 var ObjectId = require('mongodb').ObjectId; 
 var deals=require("../../models/deals");
 var deals_home=require("../../models/deals_home");
 var navbar = require("../../models/navbar");
 var jwt_decode = require("jwt-decode");
+const Instagram = require('node-instagram').default;
 var user_table = require("../../models/user");
+var brand = require("../../models/brand");
 var jwt = require("jsonwebtoken");
 var refer=require("../../models/refer");
 var testimonial = require("../../models/testimonials");
@@ -36,6 +39,11 @@ const conn = mongoose.createConnection(require('../../config/keys').mongoURI);
 //         gfs.collection('uploads');
 //       });
 
+const instagram = new Instagram({
+  clientId: '2513681332286663',
+  clientSecret: '34b370203713df267ea1e2f0702c8b12',
+  accessToken: 'EAAjuLgrjtMcBAK6M4vlR8CoOBF9pJu0O2FDhxLTBgvVAQYfo3TmwaMP6r3qQyFBPUJdHrhLCJ1vFiEyu8o4WRIgJnk2lb9uypypZCyG1hszlRCH89AHF3xOZBEJS5DOETaDKrz2sEATjQavPXy7aSyZBJSwdqvGLnshZBBjRUQzxaYGj3C2YXapgHR5SvMoZD',
+});
 
 var product1 = {  
   name:"Lorem Ipsum",
@@ -132,6 +140,12 @@ router.post("/post_review",middleware.checkToken, async (req,res)=>{
         res.json({success:true})
       }
     });
+    var c = await product.findOne({product_id:req.body.id})
+    var f=c.rating.rating
+    var g=c.rating.total
+    var nf=((f*g)+req.body.rating)/g+1
+    var g=g+1
+    var m = await product.update({"product_id":req.body.id},{rating:nf,total:g})
   }else if(req.body.type=="delete"){
     var cr = reviews_table.deleteOne({product_id:req.body.id},function(err,comp){
       if(err){
@@ -140,6 +154,12 @@ router.post("/post_review",middleware.checkToken, async (req,res)=>{
         res.json({success:true})
       }
     });
+    var c = await product.findOne({product_id:req.body.id})
+    var f=c.rating.rating
+    var g=c.rating.total
+    var nf=((f*g)-req.body.rating)/g-1
+    var g=g-1
+    var m = await product.update({"product_id":req.body.id},{rating:nf,total:g})
   }else if(req.body.type=="edit"){
     var cr = reviews_table.update({product_id:req.body.id},{rating:req.body.rating,review_text:req.body.text,author_id:req.user.user_id},function(err,comp){
       if(err){
@@ -150,6 +170,122 @@ router.post("/post_review",middleware.checkToken, async (req,res)=>{
     });
 
   }
+});
+router.post("/tool",(req,res)=>{
+  console.log(req.body)
+  console.log(req.body.wgl)
+  var goal_weight=req.body.goalw
+  var age = req.body.inputEmail4
+  var name = req.body.name
+  var weight = req.body.Weight
+  var height = req.body.Height
+  var meals = req.body.Meals
+  var losegain = req.body.wgl
+  var gender = req.body.gridRadios
+  var diet= req.body.inlineRadioOptions2
+  var goal = req.body.inlineRadioOptions
+  var bodyfat=req.body.inlineRadioOptions3
+  var lifestyle = req.body.inlineRadioOptions4
+
+  var bmr=0
+  if(gender=="Female"){
+    bmr=10*weight+6.25*height-5*age-161
+  }else{
+    bmr=9*weight+6.25*height-5*age+5
+  }
+  if(goal=="Loose Weight"){
+    bmr=bmr*0.88
+  }
+  else{
+    bmr=bmr*1.18
+  }
+  var seed = bmr;
+function random() {
+    var x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
+}
+  var days=[]
+  for (var i=0;i<7;i++){
+    var day=[]
+    for (var c=0;c<meals;c++){
+      var cal=bmr/meals
+      cal=cal*random()
+      // while(Math.floor(cal)<15){
+      //   var g=cal*random()
+      //   cal=g
+      // }
+      day.push({calorie:cal})
+    }
+    days.push(day)
+  }
+  console.log(days)
+  // var options = {
+  //   method: 'GET',
+  //   url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/mealplans/generate',
+  //   qs: {targetCalories: bmr*7, timeFrame: 'week'},
+  //   headers: {
+  //     'x-rapidapi-host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
+  //     'x-rapidapi-key': 'e605ec1c2cmshf06bf65422f60f8p19c5bcjsn2785f088e33a'
+  //   }
+  // };
+  var days=[]
+  var c =request("https://api.spoonacular.com/recipes/mealplans/generate?timeFrame=week&apiKey=0aef793f5f7545b9b2d0e623cd8a5dd5&targetCalories="+bmr*7+"&diet="+diet, function (error, response, body) {
+    if (error) throw new Error(error);
+    var s = body.replace('/',"")
+    var f = JSON.parse(s)
+    var days=[]
+    for(let a of f["items"]){
+    var j=JSON.parse(a["value"])
+    days.push([{day:a["day"],slot:a["slot"],food:j["title"]}])}
+    if(meals==3){
+    console.log(days)
+  res.json(days)
+    }
+    else if(meals>3 && meals <=6){
+    var k =request("https://api.spoonacular.com/recipes/mealplans/generate?timeFrame=week&apiKey=0aef793f5f7545b9b2d0e623cd8a5dd5&targetCalories="+bmr*7+"&diet="+diet,function (error, response, body) {
+    if (error) throw new Error(error);
+    var s = body.replace('/',"")
+    var f = JSON.parse(s)
+    for(let a of f["items"]){
+    var j=JSON.parse(a["value"])
+    days.push([{day:a["day"],slot:a["slot"],food:j["title"]}])
+    var sort_days=[]
+    for(var i=1;i<=7;i++){
+    var k=1
+    for(let a of days){
+    console.log(a[0]["day"])
+
+    if(a[0]["day"]==i && k<=meals){
+    a[0]["slot"]=k
+    k=k+1
+    sort_days.push(a)}}
+
+    }
+
+    }
+    res.json(sort_days)
+    // res.render("index",{data:sort_days})
+    });
+}
+  });
+});
+router.post("/instagram",(req,res)=>{
+  res.json([{url:"instagram.com",text:"Holla"}]);
+});
+router.post("/shipping",(req,res)=>{
+  var f = req.body.pincode
+  var pro = req.body.product_id
+  var k =  await product.findOne({product_id:pro})
+  var kk = k.vendor_id
+  var f2 = await vendor.findOne({vendor_id:kk})
+  if(f2.service_pin.indexOf({pin:f}) !== -1){
+    res.json({success:"true"})
+} else{
+  res.json({success:"false"})
+}
+});
+router.post("/side_banner",(res,req)=>{
+res.json([{image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80",url:"abc.com"}])
 });
 router.get("/product_details",async(req,res)=>{
   try {
@@ -831,11 +967,22 @@ if(req.body.category){
         cat.push(a)
       }
     }
+    cat.push([{url:"www.abc.com/products/"+req.body.category}])
     res.json(cat)
 }
 else{
 res.json(products)
 }
+});
+router.post("/brands",async(req,res)=>{
+  try {
+    if(req.body.brand){
+      var c=await brand.find({name:req.body.brand})
+      res,json(c)
+    }
+  } catch (error) {
+    
+  }
 });
 router.post("/banner",async(req,res)=>{
   var date = req.body.date

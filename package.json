@@ -22,6 +22,7 @@
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
     "mongoose": "^5.7.13",
+    "node-instagram": "^4.3.0",
     "passport": "^0.4.0",
     "passport-oauth": "^1.0.0",
     "request": "^2.88.0",

@@ -14,6 +14,11 @@ var products = new Schema({
 		type:Number,
     required:true
 	},
+	badge:{
+		type:Number,
+		enum:[-1,1,2,3,4,5],
+		default:-1
+	},
 	price:{
 		type:Number,
     required:true
@@ -23,6 +28,9 @@ var products = new Schema({
 		min:0,
 		max:100,
     required:true
+	},
+	current_price:{
+		type:Number
 	},
 	images:[{
 		image:{
@@ -101,7 +109,11 @@ videos:[{
 	},
 	rating:{
 		type:Number
-	},
+		},
+		total:{
+			type:Number
+		}
+	,
 	page:{
 		type:String
 	}

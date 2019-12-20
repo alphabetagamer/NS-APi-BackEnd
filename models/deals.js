@@ -569,6 +569,9 @@ image:{
 _id:false}],
 date:{
 	type:Date
+},
+text:{
+	type:String
 }
 });
 
