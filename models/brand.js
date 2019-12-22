@@ -545,6 +545,9 @@ var brand_table=new Schema({
 	},
 	brand_page:{
 		type:String
+	},
+	image:{
+		type:String
 	}
 });
 

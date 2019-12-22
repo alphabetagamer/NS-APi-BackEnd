@@ -354,10 +354,11 @@ router.get("/product_details",async(req,res)=>{
     if(req.query.category){
       var summ=[]
       var m_goals=req.query.category
-      for(let a of m_goals){
-        summ.push({"category":a})
-      }
-      cond.push({"categories":{"$in":summ}})
+      // for(let a of m_goals){
+      //   summ.push({"category":a})
+      // }
+      //cond.push({"categories":{"$in":summ}})
+      cond.push({"prime_category":m_goals})
     }
     if(req.query.price){
       var summ=[]
@@ -1112,7 +1113,7 @@ router.post("/brands",async(req,res)=>{
   try {
     if(req.body.brand){
       var c=await brandtable.find({name:req.body.brand})
-      res,json(c)
+      res.json(c)
     }
   } catch (error) {
     
