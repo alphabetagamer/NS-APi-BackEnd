@@ -17,7 +17,7 @@ var navbar = require("../../models/navbar");
 var jwt_decode = require("jwt-decode");
 const Instagram = require('node-instagram').default;
 var user_table = require("../../models/user");
-var brand = require("../../models/brand");
+var brandtable = require("../../models/brand");
 var jwt = require("jsonwebtoken");
 var refer=require("../../models/refer");
 var testimonial = require("../../models/testimonials");
@@ -274,16 +274,26 @@ router.post("/instagram",(req,res)=>{
   res.json([{url:"instagram.com",text:"Holla"}]);
 });
 router.post("/shipping",async(req,res)=>{
-  var f = req.body.pincode
+  var f = parseInt(req.body.pincode)
   var pro = req.body.product_id
   var k =  await product.findOne({product_id:pro})
   var kk = k.vendor_id
   var f2 = await vendor.findOne({vendor_id:kk})
-  if(f2.service_pin.indexOf({pin:f}) !== -1){
-    res.json({success:"true"})
-} else{
-  res.json({success:"false"})
-}
+  for(let b of f2.service_pin){
+    if(b.pin==f){
+      var c = new Date()
+      var end=new Date(c.getTime()+5*60000)
+      return res.json({success:"true",start:c,end:end})
+      break
+    }
+  }
+  return res.json({success:"false"})
+//   if(f2.service_pin.indexOf({pin:f}) == -1){
+//     
+    
+// } else{
+  
+// }
 });
 router.post("/insta_posts",(req,res)=>{
   var posts=[]
@@ -375,6 +385,39 @@ router.get("/product_details",async(req,res)=>{
       res.json(prod_w)
       }
     }
+    else if(req.query.sort=="priceh"){
+      if(cond.length>0){
+        var prod_w=await product.find({'$and':cond}).sort({"current_price":1})
+        console.log(prod_w)
+        res.json(prod_w)
+        }
+        else{
+          var prod_w=await product.find().sort({"current_price":1})
+        res.json(prod_w)
+        }
+    }      
+    else if(req.query.sort=="pricel"){
+      if(cond.length>0){
+        var prod_w=await product.find({'$and':cond}).sort({"current_price":-1})
+        console.log(prod_w)
+        res.json(prod_w)
+        }
+        else{
+          var prod_w=await product.find().sort({"current_price":-1})
+        res.json(prod_w)
+        }
+    }          
+    else if(req.query.sort=="discount"){
+      if(cond.length>0){
+        var prod_w=await product.find({'$and':cond}).sort({"discount":-1})
+        console.log(prod_w)
+        res.json(prod_w)
+        }
+        else{
+          var prod_w=await product.find().sort({"discount":-1})
+        res.json(prod_w)
+        }
+    }          
     else if(!req.query.sort){
       if(cond.length>0){
         console.log("empty sort and filter")
@@ -474,16 +517,33 @@ router.post("/list", async (req,res)=>{
   }
 });
 router.get('/:prodID',async (req, res) => {
+  var wish="false"
+  if(typeof header !== 'undefined') {
+    const header = req.headers['authorization'];
+
+    const bearer = header.split(' ');
+    const token = bearer[1];
+    req.token = token;
+    const decoded = jwt_decode(token);
+    var g=await user_table.findById(decoded.id)
+    for(let f of g.wishlist){
+      if(f.product_id==req.params.prodID){
+        wish="true"
+        break
+      }
+    }
+  }
   var prod=await product.findOne({'product_id':req.params.prodID});
   var similar=await product.find({"categories":{"$in":prod["categories"]}})
   var review=await reviews_table.find({"product_id":req.params.prodID})
+  var brandf = brandtable.find({brand_id:prod.brand_id})
   console.log(similar)
   console.log(prod["categories"])
   var rati={"1":0,"2":0,"3":0,"4":0,"5":0}
   for(let a of review){
     rati[a.rating]=rati[a.rating]+1
   }
-  res.json({"product":prod,"similar":similar,"reviews":review,"graph":rati})
+  res.json({"product":prod,"similar":similar,"reviews":review,"graph":rati,brand:brandf.name,wishlist:wish})
 });
 router.post("/testimonial",async(req,res)=>{
   var s=testimonial.find()
@@ -1051,7 +1111,7 @@ res.json(products)
 router.post("/brands",async(req,res)=>{
   try {
     if(req.body.brand){
-      var c=await brand.find({name:req.body.brand})
+      var c=await brandtable.find({name:req.body.brand})
       res,json(c)
     }
   } catch (error) {
@@ -1060,13 +1120,17 @@ router.post("/brands",async(req,res)=>{
 });
 router.post("/:page/banner",async(req,res)=>{
   var date = req.body.date
-  var page = req.query.page
+  var page = req.param.page
   var offers= await deals.find({date:date,page:page})
   res.json(offers)
 });
+router.get("/search",async(req,res)=>{
+var c = product.find( { $text: { $search: req.query.search } } )
+res.json(c)
+});
 router.post("/deals",async(req,res)=>{
 var date = req.body.date
-var c = await deals_home.find({date:date},function(err,comp){
+var c = await deals_home.find({date:{$lte:new Date(date)},date_end:{$gte:new Date(date)}},function(err,comp){
   if(err){
     res.json(err)
   }
@@ -1214,7 +1278,7 @@ router.get("/blog/:blogID",async (req,res)=>{
   var comments_blog=await comments_table.find({"blog_id":req.params.blogID})
   console.log(similar)
   console.log(blogs["categories"])
-
+  
   res.json({"blogs":blogs,"similar":similar,"comments":comments_blog})
 
 });

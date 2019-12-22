@@ -52,9 +52,334 @@ likes:[{
         user_id:2
     }]
     }];
-    var prod = [
+    var prod = [{
+      "stock":"In Stock",
+      "product_id": 6,
+      "name": "ON (Optimum Nutrition) Gold Standard 100% Whey Protein, 5 Lb",
+      "vendor_id": 3,
+      "price": 7699,
+      "discount": 25,
+      "current_price": 5600,
+      "long_desc": [{'content' :"The best whey powder in the market"}],
+      "prime_category":"whey",
+      "rating":4.5,
+      "total":1123,
+      "images": [
+        {
+          "_id": "5df7e9ce899fbe00160c12ff",
+          "image": "https://i2.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/ON-Optimum-Nutrition-Gold-Standard-100-Whey-Protein-5-lb.png",
+          "image_alt_text": "Whey Powder",
+          "image_caption": "Image Caption",
+          
+        },
+        {
+          "image": "https://i0.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/ON-Optimum-Nutrition-Gold-Standard-100-Whey-Protein-5-lb_2.png",
+          "image_alt_text": "whey Powder"
+        },
+        
+      ],
+      "thumbnails": [
         {
          
+          "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+        }
+      ],
+      "short_desc": [{'content' :"The best whey powder in the market"},{'media':{"url":'abc.com',"caption":"caption content"}}],
+     
+      "categories": [
+        {
+          "category": "Health"
+        },
+        {
+          "category": "Fitness"
+        }
+      ],
+     
+      "flavor": "Strawberry",
+      "other_flavors": [
+        {
+         
+          "product_id": 2,
+          "flavor": "Banana"
+        }
+      ],
+      "weight": 1000,
+      "other_weights": [
+        {
+         
+          "product_id": 2,
+          "weight": 5000
+        }
+      ],
+      "goals": [
+        {
+          "goal": "Gain"
+        }
+      ],
+      "brand_id": 2,
+      "videos": [],
+      "__v": 0
+    },
+    {
+      "stock":"In Stock",
+      "product_id": 7,
+      "name": "Muscletech Whey Plus Isolate Gold 4lb",
+      "vendor_id": 3,
+      "price": 7699,
+      "discount": 25,
+      "current_price": 5600,
+      "long_desc": [{'content' :"The best whey powder in the market"}],
+      "rating":4.5,
+      "total":1123,
+      "images": [
+        {
+         
+          "image": "https://i0.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/MUSCLETECH-WHEY-PLUS-ISOLATE-GOLD-4LB.png?zoom=1.25&fit=720%2C720&ssl=1",
+          "image_alt_text": "Whey Powder",
+          "image_caption": "Image Caption"
+        },
+        {
+          "image": "https://i1.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/Muscletech-Whey-Plus-Isolate-Gold-4lb_2.png",
+          "image_alt_text": "whey Powder"
+        }
+      ],
+      "thumbnails": [
+        {
+         
+          "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+        }
+      ],
+      "prime_category": "whey",
+      "short_desc": [{'content' :"The best whey powder in the market"},{'media':{"url":'abc.com',"caption":"caption content"}}],
+      "categories": [
+        {
+          "category": "Health"
+        },
+        {
+          "category": "Fitness"
+        }
+      ],
+      "flavor": "Chocolate",
+      "other_flavors": [
+        {
+         
+          "product_id": 2,
+          "flavor": "Banana"
+        }
+      ],
+      "weight": 1000,
+      "other_weights": [
+        {
+        
+          "product_id": 2,
+          "weight": 5000
+        }
+      ],
+      "goals": [
+        {
+          "goal": "Gain"
+        }
+      ],
+      "brand_id": 2,
+      "videos": [],
+      "__v": 0
+    },
+    {
+      "stock":"In Stock",
+      "product_id": 8,
+      "name": "Dynamik Muscle Prey Whey Protein 2kg",
+      "vendor_id": 3,
+      "price": 7699,
+      "discount": 25,
+      "current_price": 5600,
+      "long_desc": [{'content' :"The best whey powder in the market"},{'media':{"url":'abc.com',"caption":"caption content"}}],
+      "rating":4.5,
+      "total":1123,
+      "images": [
+        {
+         
+          "image": "https://i1.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/Dynamik-Muscle-Prey-Whey-Protein-2kg.png",
+          "image_alt_text": "Whey Powder",
+          "image_caption": "Image Caption"
+        },
+        {
+          "image": "https://i1.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/Dynamik-Muscle-Prey-Whey-Protein-2kg-2.png",
+          "image_alt_text": "whey Powder"
+        }
+      ],
+      "thumbnails": [
+        {
+         
+          "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+        }
+      ],
+      "prime_category": "whey",
+      "short_desc": [{'content' :"The best whey powder in the market"},{'media':{"url":'abc.com',"caption":"caption content"}}],
+      "categories": [
+        {
+          "category": "Health"
+        },
+        {
+          "category": "Fitness"
+        }
+      ],
+      "flavor": "Malted Chocolate",
+      "other_flavors": [
+        {
+ 
+          "product_id": 2,
+          "flavor": "Banana"
+        }
+      ],
+      "weight": 2000,
+      "other_weights": [
+        {
+          
+          "product_id": 2,
+          "weight": 5000
+        }
+      ],
+      "goals": [
+        {
+          "goal": "Gain"
+        }
+      ],
+      "brand_id": 2,
+      "videos": [],
+      "__v": 0
+    },
+    {
+      "stock":"In Stock",
+      "product_id": 9,
+      "name": "Ronnie Coleman Pro Antium, 5lb/2.27kg",
+      "vendor_id": 3,
+      "price": 7699,
+      "discount": 25,
+      "current_price": 5600,
+      "long_desc": [{'content' :"The best whey powder in the market"}],
+      "rating":4.5,
+      "total":1123,
+      "images": [
+        {
+        
+          "image": "https://i0.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/Ronnie-Coleman-Pro-Antium-5lb_2.27kg_3.png",
+          "image_alt_text": "Whey Powder",
+          "image_caption": "Image Caption"
+        },
+        {
+          "image": "https://i2.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/Ronnie-Coleman-Pro-Antium-5lb_2.27kg_2.png",
+          "image_alt_text": "whey Powder"
+        }
+      ],
+      "thumbnails": [
+        {
+         
+          "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+        }
+      ],
+      "prime_category": "whey",
+      "short_desc": [{'content' :"The best whey powder in the market"},{'media':{"url":'abc.com',"caption":"caption content"}}],
+      "categories": [
+        {
+          "category": "Health"
+        },
+        {
+          "category": "Fitness"
+        }
+      ],
+      "flavor": "Strawberry",
+      "other_flavors": [
+        {
+         
+          "product_id": 2,
+          "flavor": "Banana"
+        }
+      ],
+      "weight": 1000,
+      "other_weights": [
+        {
+         
+          "product_id": 2,
+          "weight": 5000
+        }
+      ],
+      "goals": [
+        {
+          "goal": "Gain"
+        }
+      ],
+      "brand_id": 2,
+      "videos": [],
+      "__v": 0
+    },
+    {
+      "stock":"In Stock",
+      "product_id": 10,
+      "name": "Ultimate Nutrition Prostar 100% Whey Protein 5.28lb/2.4kg",
+      "vendor_id": 3,
+      "price": 7699,
+      "discount": 25,
+      "current_price": 5600,
+      "long_desc": [{'content' :"The best whey powder in the market"}],
+      "rating":4.5,
+      "total":1123,
+      "images": [
+        {
+         
+          "image": "https://i2.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/Ultimate-Nutrition-Prostar-100-Whey-Protein-5.28lb_2.4kg.png",
+          "image_alt_text": "Whey Powder",
+          "image_caption": "Image Caption"
+        },
+        {
+          "image": "https://i1.wp.com/www.nutritionsystems.co.in/wp-content/uploads/2019/03/Ultimate-Nutrition-Prostar-100-Whey-Protein-5.28lb_2.4kg_2.png",
+          "image_alt_text": "whey Powder"
+        }
+      ],
+      "thumbnails": [
+        {
+         
+          "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+        }
+      ],
+      "prime_category": "whey",
+      "short_desc": [{'content' :"The best whey powder in the market"},{'media':{"url":'abc.com',"caption":"caption content"}}],
+      "categories": [
+        {
+          "category": "Health"
+        },
+        {
+          "category": "Fitness"
+        }
+      ],
+      "flavor": "Strawberry",
+      "other_flavors": [
+        {
+         
+          "product_id": 2,
+          "flavor": "Raspberry"
+        },
+        {
+          "flavor": "Rum Raisin"
+        }
+      ],
+      "weight": 1000,
+      "other_weights": [
+        {
+          "product_id": 2,
+          "weight": 5000
+        }
+      ],
+      "goals": [
+        {
+          "goal": "Gain"
+        }
+      ],
+      "brand_id": 2,
+      "videos": [],
+      "__v": 0
+    }
+        ,{
+          "stock":"In Stock",
           "product_id": 2,
           "name": "ON (Optimum Nutrition) Gold Standard 100% Whey Protein, 5 Lb",
           "vendor_id": 3,
@@ -62,7 +387,7 @@ likes:[{
           "discount": 25,
           "current_price": 5600,
           "long_desc": [{'content' :"The best whey powder in the market"}],
-          "prime_category":"whey",
+          "prime_category":"mass gain",
           "rating":4.5,
           "total":1123,
           "images": [
@@ -122,7 +447,7 @@ likes:[{
           "__v": 0
         },
         {
-    
+          "stock":"In Stock",
           "product_id": 4,
           "name": "Muscletech Whey Plus Isolate Gold 4lb",
           "vendor_id": 3,
@@ -150,7 +475,7 @@ likes:[{
               "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
             }
           ],
-          "prime_category": "whey",
+          "prime_category": "mass gain",
           "short_desc": [{'content' :"The best whey powder in the market"},{'media':{"url":'abc.com',"caption":"caption content"}}],
           "categories": [
             {
@@ -186,7 +511,7 @@ likes:[{
           "__v": 0
         },
         {
-         
+          "stock":"In Stock",
           "product_id": 3,
           "name": "Dynamik Muscle Prey Whey Protein 2kg",
           "vendor_id": 3,
@@ -214,7 +539,7 @@ likes:[{
               "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
             }
           ],
-          "prime_category": "whey",
+          "prime_category": "mass gain",
           "short_desc": [{'content' :"The best whey powder in the market"},{'media':{"url":'abc.com',"caption":"caption content"}}],
           "categories": [
             {
@@ -250,7 +575,7 @@ likes:[{
           "__v": 0
         },
         {
-         
+          "stock":"In Stock",
           "product_id": 1,
           "name": "Ronnie Coleman Pro Antium, 5lb/2.27kg",
           "vendor_id": 3,
@@ -278,7 +603,7 @@ likes:[{
               "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
             }
           ],
-          "prime_category": "whey",
+          "prime_category": "mass gain",
           "short_desc": [{'content' :"The best whey powder in the market"},{'media':{"url":'abc.com',"caption":"caption content"}}],
           "categories": [
             {
@@ -314,7 +639,7 @@ likes:[{
           "__v": 0
         },
         {
-         
+          "stock":"In Stock",
           "product_id": 5,
           "name": "Ultimate Nutrition Prostar 100% Whey Protein 5.28lb/2.4kg",
           "vendor_id": 3,
@@ -342,7 +667,7 @@ likes:[{
               "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
             }
           ],
-          "prime_category": "whey",
+          "prime_category": "mass gain",
           "short_desc": [{'content' :"The best whey powder in the market"},{'media':{"url":'abc.com',"caption":"caption content"}}],
           "categories": [
             {

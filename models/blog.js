@@ -437,7 +437,10 @@ var blog_table = new Schema({
 		user_id:{
 			type:String
 		}
-	}]
+	}],
+	username:{
+		type:String
+	}
 });
 
 var comments_table = new Schema({

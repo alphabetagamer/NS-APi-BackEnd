@@ -31,7 +31,21 @@ var products = new Schema({
 	},
 	current_price:{
 		type:Number
+},	type_vn:{
+	type:String,
+	enum:["Veg","Non-Veg"],
+	default:"Veg"
 },
+stock:{
+	type:String,
+	enum:["In Stock","Out of Stock"],
+	default:"In Stock"
+},
+ingredients:{
+	type:String,
+	default:"1 tbs sugar,1tbs salt ,1tbs kala namak"
+}
+,
 	images:[{
 		image:{
 		type:String
@@ -41,10 +55,6 @@ var products = new Schema({
 	},
 	image_caption:{
 		type:String
-	},
-	type_vn:{
-		type:String,
-		enum:["Veg","Non-Veg"]
 	}
 }],
 videos:[{
