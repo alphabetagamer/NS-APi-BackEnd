@@ -370,7 +370,10 @@ author_id:{
 images:[{
 	image:String,
 	image_alt_text:String
-}]
+}],
+date:{
+	type:String
+}
 });
 var order_table = new Schema({
 	order_id:{

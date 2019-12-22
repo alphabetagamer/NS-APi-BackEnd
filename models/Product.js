@@ -41,6 +41,10 @@ var products = new Schema({
 	},
 	image_caption:{
 		type:String
+	},
+	type_vn:{
+		type:String,
+		enum:["Veg","Non-Veg"]
 	}
 }],
 videos:[{
@@ -55,13 +59,22 @@ videos:[{
 	}
 
 	],
-	short_desc:{
-		type:String,
-    required:true
-	},
+	short_desc:[{
+		content:{
+		type:String
+		},
+		media:{
+			url:{type:String},
+			caption:{type:String}
+		}
+	}],
 	long_desc:[{
 		content:{
 		type:String
+		},
+		media:{
+			url:{type:String},
+			caption:{type:String}
 		}
 	}],
 	prime_category:{

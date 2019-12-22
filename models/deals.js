@@ -572,6 +572,9 @@ text:{
 _id:false}],
 date:{
 	type:Date
+},
+page:{
+	type:String
 }
 });
 

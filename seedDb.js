@@ -85,7 +85,7 @@ likes:[{
               "thumbnail": "https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
             }
           ],
-          "short_desc": "SHort Description",
+          "short_desc": [{'content' :"The best whey powder in the market"},{'media':{"url":'abc.com',"caption":"caption content"}}],
          
           "categories": [
             {
@@ -151,7 +151,7 @@ likes:[{
             }
           ],
           "prime_category": "whey",
-          "short_desc": "SHort Description",
+          "short_desc": [{'content' :"The best whey powder in the market"},{'media':{"url":'abc.com',"caption":"caption content"}}],
           "categories": [
             {
               "category": "Health"
@@ -193,7 +193,7 @@ likes:[{
           "price": 7699,
           "discount": 25,
           "current_price": 5600,
-          "long_desc": [{'content' :"The best whey powder in the market"}],
+          "long_desc": [{'content' :"The best whey powder in the market"},{'media':{"url":'abc.com',"caption":"caption content"}}],
           "rating":4.5,
           "total":1123,
           "images": [
@@ -215,7 +215,7 @@ likes:[{
             }
           ],
           "prime_category": "whey",
-          "short_desc": "SHort Description",
+          "short_desc": [{'content' :"The best whey powder in the market"},{'media':{"url":'abc.com',"caption":"caption content"}}],
           "categories": [
             {
               "category": "Health"
@@ -279,7 +279,7 @@ likes:[{
             }
           ],
           "prime_category": "whey",
-          "short_desc": "SHort Description",
+          "short_desc": [{'content' :"The best whey powder in the market"},{'media':{"url":'abc.com',"caption":"caption content"}}],
           "categories": [
             {
               "category": "Health"
@@ -343,7 +343,7 @@ likes:[{
             }
           ],
           "prime_category": "whey",
-          "short_desc": "SHort Description",
+          "short_desc": [{'content' :"The best whey powder in the market"},{'media':{"url":'abc.com',"caption":"caption content"}}],
           "categories": [
             {
               "category": "Health"

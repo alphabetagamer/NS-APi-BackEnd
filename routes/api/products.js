@@ -133,7 +133,8 @@ p_similar_vendor:[{similar:"v_id1"},{similar:"v_id2"}]
 // });
 router.post("/post_review",middleware.checkToken, async (req,res)=>{
   if(req.body.type == "new"){
-    var cr = reviews_table.create({product_id:req.body.id,rating:req.body.rating,review_text:req.body.text,author_id:req.user.user_id},function(err,comp){
+    var dd = new Date();
+    var cr = reviews_table.create({product_id:req.body.id,rating:req.body.rating,review_text:req.body.text,author_id:req.user.user_id,date:dd},function(err,comp){
       if(err){
         res.json(err)
       }else{
@@ -340,9 +341,9 @@ router.get("/product_details",async(req,res)=>{
       }
       cond.push({"goals":{"$in":summ}})
     }
-    if(req.query.categories){
+    if(req.query.category){
       var summ=[]
-      var m_goals=req.query.categories.split(',')
+      var m_goals=req.query.category
       for(let a of m_goals){
         summ.push({"category":a})
       }
@@ -362,7 +363,7 @@ router.get("/product_details",async(req,res)=>{
       cond.push({"price":{$gte:m_goals}})
     }
     console.log(cond)
-    if(req.query.sort=="popularity"){
+    if(req.query.sort=="popularity" || req.query.sort=="rating" ){
       console.log(cond)
       if(cond.length>0){
       var prod_w=await product.find({'$and':cond}).sort({"rating":1})
@@ -442,13 +443,47 @@ router.get("/product_details",async(req,res)=>{
 
 
 // });
+router.post("/list", async (req,res)=>{
+  if(req.body.type=="blog"){
+    var goals=[]
+   var blo=await blog_table.find()
+   for(let a of blo){
+    for(let b of a.categories){
+      if(goals.indexOf(b.category)==-1){
+        goals.push(b.category)
+      }
+    }
+  }
+  res.json({category:goals})
+  }
+  else if(req.body.type=="products"){
+    var prods = await product.find()
+    var prices=prods.map(prods => prods.current_price).filter((value, index, self) => self.indexOf(value) === index)
+    var weights=prods.map(prods => prods.weight).filter((value, index, self) => self.indexOf(value) === index)
+    var cate=prods.map(prods => prods.prime_category).filter((value, index, self) => self.indexOf(value) === index)
+    var brand=prods.map(prods => prods.brand).filter((value, index, self) => self.indexOf(value) === index)
+    var goals=[]
+    for(let a of prods){
+      for(let b of a.goals){
+        if(goals.indexOf(b.goal)==-1){
+          goals.push(b.goal)
+        }
+      }
+    }
+    res.json({"prices":prices,"weights":weights,cate:cate,brand:brand,goals:goals})
+  }
+});
 router.get('/:prodID',async (req, res) => {
   var prod=await product.findOne({'product_id':req.params.prodID});
   var similar=await product.find({"categories":{"$in":prod["categories"]}})
   var review=await reviews_table.find({"product_id":req.params.prodID})
   console.log(similar)
   console.log(prod["categories"])
-  res.json({"product":prod,"similar":similar,"reviews":review})
+  var rati={"1":0,"2":0,"3":0,"4":0,"5":0}
+  for(let a of review){
+    rati[a.rating]=rati[a.rating]+1
+  }
+  res.json({"product":prod,"similar":similar,"reviews":review,"graph":rati})
 });
 router.post("/testimonial",async(req,res)=>{
   var s=testimonial.find()
@@ -466,69 +501,69 @@ else{
 }
 
 });
-router.post("/tool",(req,res)=>{
-  console.log(req.body)
-  console.log(req.body.wgl)
-  var goal_weight=req.body.goalw
-  var age = req.body.inputEmail4
-  var name = req.body.name
-  var weight = req.body.Weight
-  var height = req.body.Height
-  var meals = req.body.Meals
-  var losegain = req.body.wgl
-  var gender = req.body.gridRadios
-  var diet= req.body.inlineRadioOptions2
-  var goal = req.body.inlineRadioOptions
-  var bodyfat=req.body.inlineRadioOptions3
-  var lifestyle = req.body.inlineRadioOptions4
+// router.post("/tool",(req,res)=>{
+//   console.log(req.body)
+//   console.log(req.body.wgl)
+//   var goal_weight=req.body.goalw
+//   var age = req.body.inputEmail4
+//   var name = req.body.name
+//   var weight = req.body.Weight
+//   var height = req.body.Height
+//   var meals = req.body.Meals
+//   var losegain = req.body.wgl
+//   var gender = req.body.gridRadios
+//   var diet= req.body.inlineRadioOptions2
+//   var goal = req.body.inlineRadioOptions
+//   var bodyfat=req.body.inlineRadioOptions3
+//   var lifestyle = req.body.inlineRadioOptions4
 
-  var bmr=0
-  if(gender=="Female"){
-    bmr=10*weight+6.25*height-5*age-161
-  }else{
-    bmr=9*weight+6.25*height-5*age+5
-  }
-  if(goal=="Loose Weight"){
-    bmr=bmr*0.88
-  }
-  else{
-    bmr=bmr*1.18
-  }
-  var seed = bmr;
-function random() {
-    var x = Math.sin(seed++) * 10000;
-    return x - Math.floor(x);
-}
-  var days=[]
-  for (var i=0;i<7;i++){
-    var day=[]
-    for (var c=0;c<meals;c++){
-      var cal=bmr/meals
-      cal=cal*random()
-      // while(Math.floor(cal)<15){
-      //   var g=cal*random()
-      //   cal=g
-      // }
-      day.push({calorie:cal})
-    }
-    days.push(day)
-  }
-  console.log(days)
-  // var options = {
-  //   method: 'GET',
-  //   url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/mealplans/generate',
-  //   qs: {targetCalories: bmr*7, timeFrame: 'week'},
-  //   headers: {
-  //     'x-rapidapi-host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
-  //     'x-rapidapi-key': 'e605ec1c2cmshf06bf65422f60f8p19c5bcjsn2785f088e33a'
-  //   }
-  // };
-  var c =request("https://api.spoonacular.com/recipes/mealplans/generate?timeFrame=week&apiKey=0aef793f5f7545b9b2d0e623cd8a5dd5&targetCalories="+bmr*7, function (error, response, body) {
-    if (error) throw new Error(error);
-    console.log(body)
-  res.json(body)
-  });
-});
+//   var bmr=0
+//   if(gender=="Female"){
+//     bmr=10*weight+6.25*height-5*age-161
+//   }else{
+//     bmr=9*weight+6.25*height-5*age+5
+//   }
+//   if(goal=="Loose Weight"){
+//     bmr=bmr*0.88
+//   }
+//   else{
+//     bmr=bmr*1.18
+//   }
+//   var seed = bmr;
+// function random() {
+//     var x = Math.sin(seed++) * 10000;
+//     return x - Math.floor(x);
+// }
+//   var days=[]
+//   for (var i=0;i<7;i++){
+//     var day=[]
+//     for (var c=0;c<meals;c++){
+//       var cal=bmr/meals
+//       cal=cal*random()
+//       // while(Math.floor(cal)<15){
+//       //   var g=cal*random()
+//       //   cal=g
+//       // }
+//       day.push({calorie:cal})
+//     }
+//     days.push(day)
+//   }
+//   console.log(days)
+//   // var options = {
+//   //   method: 'GET',
+//   //   url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/mealplans/generate',
+//   //   qs: {targetCalories: bmr*7, timeFrame: 'week'},
+//   //   headers: {
+//   //     'x-rapidapi-host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
+//   //     'x-rapidapi-key': 'e605ec1c2cmshf06bf65422f60f8p19c5bcjsn2785f088e33a'
+//   //   }
+//   // };
+//   var c =request("https://api.spoonacular.com/recipes/mealplans/generate?timeFrame=week&apiKey=0aef793f5f7545b9b2d0e623cd8a5dd5&targetCalories="+bmr*7, function (error, response, body) {
+//     if (error) throw new Error(error);
+//     console.log(body)
+//   res.json(body)
+//   });
+// });
 router.post("/toolshort",(req,res)=>{
   console.log(req.body)
   console.log(req.body.wgl)
@@ -1023,9 +1058,10 @@ router.post("/brands",async(req,res)=>{
     
   }
 });
-router.post("/banner",async(req,res)=>{
+router.post("/:page/banner",async(req,res)=>{
   var date = req.body.date
-  var offers= await deals.find({date:date})
+  var page = req.query.page
+  var offers= await deals.find({date:date,page:page})
   res.json(offers)
 });
 router.post("/deals",async(req,res)=>{
@@ -1143,13 +1179,14 @@ if(req.body.type=="new"){
   var id = new mongoose.mongo.ObjectId();
   var comment=req.body.comment
   var blog_id=req.params.blogID
+  var dd= new Date();
   var replyTo=-1
   //var date=req.body.date
   var email=req.user.email
   try{if(req.body.replyTo){
     replyTo=req.body.replyTo
   }}catch(err){console.log(err)}
-  var add_c = comments_table.create({blog_id:blog_id,text:comment,user_id:req.user.user_id,parent_comment_id:replyTo,username:req.user.username,comment_id:id},function(err,completed){
+  var add_c = comments_table.create({blog_id:blog_id,text:comment,user_id:req.user.user_id,parent_comment_id:replyTo,username:req.user.username,comment_id:id,date:dd},function(err,completed){
     if(err){
       res.json(err)
     }else{
