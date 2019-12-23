@@ -98,9 +98,7 @@ likes:[{
       "flavor": "Strawberry",
       "other_flavors": [
         {
-         
-          "product_id": 2,
-          "flavor": "Banana"
+                "flavor": "Banana"
         }
       ],
       "weight": 1000,
@@ -163,7 +161,6 @@ likes:[{
       "other_flavors": [
         {
          
-          "product_id": 2,
           "flavor": "Banana"
         }
       ],
@@ -227,7 +224,6 @@ likes:[{
       "other_flavors": [
         {
  
-          "product_id": 2,
           "flavor": "Banana"
         }
       ],
@@ -290,8 +286,6 @@ likes:[{
       "flavor": "Strawberry",
       "other_flavors": [
         {
-         
-          "product_id": 2,
           "flavor": "Banana"
         }
       ],
@@ -355,7 +349,7 @@ likes:[{
       "other_flavors": [
         {
          
-          "product_id": 2,
+         
           "flavor": "Raspberry"
         },
         {
@@ -425,7 +419,7 @@ likes:[{
           "other_flavors": [
             {
              
-              "product_id": 2,
+              
               "flavor": "Banana"
             }
           ],
@@ -489,7 +483,7 @@ likes:[{
           "other_flavors": [
             {
              
-              "product_id": 2,
+              
               "flavor": "Banana"
             }
           ],
@@ -553,7 +547,7 @@ likes:[{
           "other_flavors": [
             {
      
-              "product_id": 2,
+             
               "flavor": "Banana"
             }
           ],
@@ -617,7 +611,7 @@ likes:[{
           "other_flavors": [
             {
              
-              "product_id": 2,
+              
               "flavor": "Banana"
             }
           ],
@@ -681,7 +675,7 @@ likes:[{
           "other_flavors": [
             {
              
-              "product_id": 2,
+              
               "flavor": "Raspberry"
             },
             {

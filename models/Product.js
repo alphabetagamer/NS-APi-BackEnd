@@ -103,10 +103,8 @@ videos:[{
 		required:true
 	},
 	other_flavors:[{
-		product_id:{
-			type:Number
-		},
-		flavor:String
+		flavor:String,
+		_id:false
 	}],
 	weight:{
 		type:Number

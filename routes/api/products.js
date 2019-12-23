@@ -371,7 +371,7 @@ router.post("/product_details",async(req,res)=>{
     if(req.body.rating){
       var summ=[]
       var m_goals=req.body.rating
-      cond.push({"price":{$gte:m_goals}})
+      cond.push({"rating":{$gte:m_goals}})
     }
     if(req.body.flavor){
       var summ=[]
@@ -531,7 +531,7 @@ router.post("/list", async (req,res)=>{
     for(let a of brand){
       console.log(a)
       var bn=await brandtable.findOne({brand_id:a})
-      drizzle.push(bn.name)
+      drizzle.push([bn.name,bn.brand_id])
     }
     var goals=[]
     prices.push(0)
