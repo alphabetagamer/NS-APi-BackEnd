@@ -428,7 +428,8 @@ var blog_table = new Schema({
 	categories:[{
 		category:{
 			type:String
-		}
+		},
+		_id:false
 	}],
 	publish_date:{
 		type:Date
