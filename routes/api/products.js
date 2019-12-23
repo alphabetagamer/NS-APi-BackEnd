@@ -337,44 +337,44 @@ function accountdata(a){
 router.post("/side_banner",(res,req)=>{
 res.json([{image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80",url:"abc.com"}])
 });
-router.get("/product_details",async(req,res)=>{
+router.post("/product_details",async(req,res)=>{
   try {
     var cond=[]
-    if(req.query.weight){
-      cond.push({"weight":req.query.weight})
+    if(req.body.weight){
+      cond.push({"weight":req.body.weight})
     }
-    if(req.query.goal){
+    if(req.body.goal){
       var summ=[]
-      var m_goals=req.query.goal.split(',')
+      var m_goals=req.body.goal.split(',')
       for(let a of m_goals){
         summ.push({"goal":a})
       }
       cond.push({"goals":{"$in":summ}})
     }
-    if(req.query.category){
+    if(req.body.category){
       var summ=[]
-      var m_goals=req.query.category
+      var m_goals=req.body.category
       // for(let a of m_goals){
       //   summ.push({"category":a})
       // }
       //cond.push({"categories":{"$in":summ}})
       cond.push({"prime_category":m_goals})
     }
-    if(req.query.price){
+    if(req.body.price){
       var summ=[]
-      var m_goals=req.query.price.split(',')
+      var m_goals=req.body.price.split(',')
       cond.push({"price":{$lte:m_goals[1],$gte:m_goals[0]}})
     }
-    if(req.query.brand){
-      cond.push({"brand_id":req.query.brand})
+    if(req.body.brand){
+      cond.push({"brand_id":req.body.brand})
     }
-    if(req.query.rating){
+    if(req.body.rating){
       var summ=[]
-      var m_goals=req.query.rating
+      var m_goals=req.body.rating
       cond.push({"price":{$gte:m_goals}})
     }
     console.log(cond)
-    if(req.query.sort=="popularity" || req.query.sort=="rating" ){
+    if(req.body.sort=="popularity" || req.body.sort=="rating" ){
       console.log(cond)
       if(cond.length>0){
       var prod_w=await product.find({'$and':cond}).sort({"rating":1})
@@ -386,7 +386,7 @@ router.get("/product_details",async(req,res)=>{
       res.json(prod_w)
       }
     }
-    else if(req.query.sort=="priceh"){
+    else if(req.body.sort=="priceh"){
       if(cond.length>0){
         var prod_w=await product.find({'$and':cond}).sort({"current_price":1})
         console.log(prod_w)
@@ -397,7 +397,7 @@ router.get("/product_details",async(req,res)=>{
         res.json(prod_w)
         }
     }      
-    else if(req.query.sort=="pricel"){
+    else if(req.body.sort=="pricel"){
       if(cond.length>0){
         var prod_w=await product.find({'$and':cond}).sort({"current_price":-1})
         console.log(prod_w)
@@ -408,7 +408,7 @@ router.get("/product_details",async(req,res)=>{
         res.json(prod_w)
         }
     }          
-    else if(req.query.sort=="discountl"){
+    else if(req.body.sort=="discountl"){
       if(cond.length>0){
         var prod_w=await product.find({'$and':cond}).sort({"discount":-1})
         console.log(prod_w)
@@ -419,7 +419,7 @@ router.get("/product_details",async(req,res)=>{
         res.json(prod_w)
         }
     }       
-    else if(req.query.sort=="discounth"){
+    else if(req.body.sort=="discounth"){
       if(cond.length>0){
         var prod_w=await product.find({'$and':cond}).sort({"discount":1})
         console.log(prod_w)
@@ -430,7 +430,7 @@ router.get("/product_details",async(req,res)=>{
         res.json(prod_w)
         }
     }    
-    else if(!req.query.sort){
+    else if(!req.body.sort){
       if(cond.length>0){
         console.log("empty sort and filter")
         var prod_w=await product.find({'$and':cond})
@@ -1182,24 +1182,24 @@ var blog_listing={
   }],
   top_blogs:[{blog:"www.blog.com",views:100},{blog:"www.blog2.com",views:300}]
 }
-router.get("/blog/blog_list",async (req,res)=>{
+router.post("/blog/blog_list",async (req,res)=>{
   try {
     var cond=[]
-    if(req.query.categories){
+    if(req.body.categories){
       var summ=[]
-      var m_goals=req.query.categories.split(',')
+      var m_goals=req.body.categories.split(',')
       for(let a of m_goals){
         summ.push({"category":a})
       }
       console.log(summ)
       cond.push({"categories":{"$in":summ}})
     }
-    if(req.query.rating){
+    if(req.body.rating){
       var summ=[]
-      var m_goals=req.query.rating
+      var m_goals=req.body.rating
       cond.push({"views":{$gte:m_goals}})
     }
-    if(req.query.sort=="popularity"){
+    if(req.body.sort=="popularity"){
       console.log(cond)
       if(cond.length>0){
       var prod_w=await blog_table.find({'$and':cond}).sort({"views":1})
@@ -1212,7 +1212,7 @@ router.get("/blog/blog_list",async (req,res)=>{
       res.json(prod_w)
       }
     }
-    if(req.query.sort=="date"){
+    if(req.body.sort=="date"){
       console.log(cond)
       if(cond.length>0){
       var prod_w=await blog_table.find({'$and':cond}).sort({"publish_date":1})
