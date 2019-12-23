@@ -524,15 +524,15 @@ router.post("/list", async (req,res)=>{
   }
   else if(req.body.type=="products"){
     var prods = await product.find()
-    var prices=[]
-    //var prices=prods.map(prods => prods.current_price).filter((value, index, self) => self.indexOf(value) === index)
+    var prices2=[]
+    var prices=prods.map(prods => prods.current_price).filter((value, index, self) => self.indexOf(value) === index)
     var weights=prods.map(prods => prods.weight).filter((value, index, self) => self.indexOf(value) === index)
     var cate=prods.map(prods => prods.prime_category).filter((value, index, self) => self.indexOf(value) === index)
     var brand=prods.map(prods => prods.brand_id).filter((value, index, self) => self.indexOf(value) === index)
     var drizzle=[]
     var maa=Math.max.apply(null, prices) 
     if(maa<10000){
-      prices.push(maa)
+      prices2.push(maa)
     }
     for(let a of brand){
       console.log(a)
@@ -540,7 +540,7 @@ router.post("/list", async (req,res)=>{
       drizzle.push([bn.name,bn.brand_id])
     }
     var goals=[]
-    prices.push(0)
+    prices2.push(0)
     var price_range=[]
     var h10=0
     while(h10<=maa+500){
@@ -562,7 +562,7 @@ router.post("/list", async (req,res)=>{
         }
       }
     }
-    res.json({"prices":prices,"weights":weights,cate:cate,brand:drizzle,goals:goals,flavor:flavor,price_range,price_range})
+    res.json({"prices":prices2,"weights":weights,cate:cate,brand:drizzle,goals:goals,flavor:flavor,price_range,price_range})
   }
 });
 router.get('/:prodID',async (req, res) => {
