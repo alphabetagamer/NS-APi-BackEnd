@@ -1120,9 +1120,13 @@ router.post("/brands",async(req,res)=>{
   }
 });
 router.post("/:page/banner",async(req,res)=>{
-  var date = req.body.date
   var page = req.param.page
-  var offers= await deals.find({date:date,page:page})
+  var offers= await deals.find({page:page})
+  // var c = await deals.find({date:{$lte:new Date(date)},date_end:{$gte:new Date(date)},page:page},function(err,comp){
+  //   if(err){
+  //     res.json(err)
+  //   }
+  // });
   res.json(offers)
 });
 router.get("/search",async(req,res)=>{
