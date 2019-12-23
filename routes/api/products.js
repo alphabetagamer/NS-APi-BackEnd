@@ -1202,12 +1202,12 @@ router.post("/blog/blog_list",async (req,res)=>{
     if(req.body.sort=="popularity"){
       console.log(cond)
       if(cond.length>0){
-      var prod_w=await blog_table.find({'$and':cond}).sort({"views":1})
+      var prod_w=await blog_table.find({'$and':cond}).sort({"views":-1})
       console.log(prod_w)
       res.json(prod_w)
       }
       else{
-        var prod_w=await blog_table.find().sort({"views":1})
+        var prod_w=await blog_table.find().sort({"views":-1})
       console.log(prod_w)
       res.json(prod_w)
       }
@@ -1290,6 +1290,10 @@ router.post("/navbar",async(req,res)=>{
 });
 router.get("/blog/:blogID",async (req,res)=>{
   var blogs= await blog_table.findOne({blog_id:req.params.blogID});
+  console.log(blogs.views)
+  var hh= await blog_table.update({blog_id:req.params.blogID},{views:blogs.views+1});
+  
+
   var similar=await blog_table.find({"categories":{"$in":blogs["categories"]}})
   var comments_blog=await comments_table.find({"blog_id":req.params.blogID})
   console.log(similar)
