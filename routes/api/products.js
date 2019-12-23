@@ -408,7 +408,7 @@ router.get("/product_details",async(req,res)=>{
         res.json(prod_w)
         }
     }          
-    else if(req.query.sort=="discount"){
+    else if(req.query.sort=="discountl"){
       if(cond.length>0){
         var prod_w=await product.find({'$and':cond}).sort({"discount":-1})
         console.log(prod_w)
@@ -418,7 +418,18 @@ router.get("/product_details",async(req,res)=>{
           var prod_w=await product.find().sort({"discount":-1})
         res.json(prod_w)
         }
-    }          
+    }       
+    else if(req.query.sort=="discounth"){
+      if(cond.length>0){
+        var prod_w=await product.find({'$and':cond}).sort({"discount":1})
+        console.log(prod_w)
+        res.json(prod_w)
+        }
+        else{
+          var prod_w=await product.find().sort({"discount":1})
+        res.json(prod_w)
+        }
+    }    
     else if(!req.query.sort){
       if(cond.length>0){
         console.log("empty sort and filter")
