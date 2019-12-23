@@ -354,11 +354,11 @@ router.post("/product_details",async(req,res)=>{
     if(req.body.category){
       var summ=[]
       var m_goals=req.body.category
-      // for(let a of m_goals){
-      //   summ.push({"category":a})
-      // }
-      //cond.push({"categories":{"$in":summ}})
-      cond.push({"prime_category":m_goals})
+      for(let a of m_goals){
+        summ.push({"category":a})
+      }
+      cond.push({"categories":{"$in":summ}})
+      // cond.push({"prime_category":m_goals})
     }
     if(req.body.price){
       var summ=[]
@@ -372,6 +372,12 @@ router.post("/product_details",async(req,res)=>{
       var summ=[]
       var m_goals=req.body.rating
       cond.push({"price":{$gte:m_goals}})
+    }
+    if(req.body.flavor){
+      var summ=[]
+      var m_goals=req.body.rating
+      cond.push({"flavor":req.body.flavor})
+
     }
     console.log(cond)
     if(req.body.sort=="popularity" || req.body.sort=="rating" ){
