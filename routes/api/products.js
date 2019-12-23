@@ -524,14 +524,15 @@ router.post("/list", async (req,res)=>{
   }
   else if(req.body.type=="products"){
     var prods = await product.find()
-    var prices=prods.map(prods => prods.current_price).filter((value, index, self) => self.indexOf(value) === index)
+    var prices=[]
+    //var prices=prods.map(prods => prods.current_price).filter((value, index, self) => self.indexOf(value) === index)
     var weights=prods.map(prods => prods.weight).filter((value, index, self) => self.indexOf(value) === index)
     var cate=prods.map(prods => prods.prime_category).filter((value, index, self) => self.indexOf(value) === index)
     var brand=prods.map(prods => prods.brand_id).filter((value, index, self) => self.indexOf(value) === index)
     var drizzle=[]
     var maa=Math.max.apply(null, prices) 
     if(maa<10000){
-      prices.push(10000)
+      prices.push(maa)
     }
     for(let a of brand){
       console.log(a)
