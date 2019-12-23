@@ -516,8 +516,25 @@ router.post("/list", async (req,res)=>{
     var prices=prods.map(prods => prods.current_price).filter((value, index, self) => self.indexOf(value) === index)
     var weights=prods.map(prods => prods.weight).filter((value, index, self) => self.indexOf(value) === index)
     var cate=prods.map(prods => prods.prime_category).filter((value, index, self) => self.indexOf(value) === index)
-    var brand=prods.map(prods => prods.brand).filter((value, index, self) => self.indexOf(value) === index)
+    var brand=prods.map(prods => prods.brand_id).filter((value, index, self) => self.indexOf(value) === index)
+    var drizzle=[]
+    var maa=Math.max.apply(null, prices) 
+    if(maa<10000){
+      prices.push(10000)
+    }
+    for(let a of brand){
+      console.log(a)
+      var bn=await brandtable.findOne({brand_id:a})
+      drizzle.push(bn.name)
+    }
     var goals=[]
+    prices.push(0)
+    var price_range=[]
+    var h10=0
+    while(h10<=maa+500){
+      h10=h10+1000
+      price_range.push(h10)
+    }
     for(let a of prods){
       for(let b of a.goals){
         if(goals.indexOf(b.goal)==-1){
@@ -533,7 +550,7 @@ router.post("/list", async (req,res)=>{
         }
       }
     }
-    res.json({"prices":prices,"weights":weights,cate:cate,brand:brand,goals:goals,flavor:flavor})
+    res.json({"prices":prices,"weights":weights,cate:cate,brand:drizzle,goals:goals,flavor:flavor,price_range,price_range})
   }
 });
 router.get('/:prodID',async (req, res) => {

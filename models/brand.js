@@ -528,7 +528,7 @@ var testimonial_table=new Schema({
 });
 var brand_table=new Schema({
 	brand_id:{
-		type:String,
+		type:Number,
 		required:true,
 		unique:true
 	},
