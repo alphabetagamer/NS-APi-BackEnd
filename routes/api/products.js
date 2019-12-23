@@ -366,7 +366,12 @@ router.post("/product_details",async(req,res)=>{
       cond.push({"price":{$lte:m_goals[1],$gte:m_goals[0]}})
     }
     if(req.body.brand){
-      cond.push({"brand_id":req.body.brand})
+      var summ=[]
+      var m_goals=req.body.brand.split(',')
+      for(let a of m_goals){
+        summ.push(a)
+      }
+      cond.push({"brand_id":{"$in":summ}})
     }
     if(req.body.rating){
       var summ=[]
