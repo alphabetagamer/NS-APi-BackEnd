@@ -525,7 +525,15 @@ router.post("/list", async (req,res)=>{
         }
       }
     }
-    res.json({"prices":prices,"weights":weights,cate:cate,brand:brand,goals:goals})
+    var flavor=prods.map(prods => prods.flavor).filter((value, index, self) => self.indexOf(value) === index)
+    for(let a of prods){
+      for(let b of a.other_flavors){
+        if(flavor.indexOf(b.flavor)==-1){
+          flavor.push(b.flavor)
+        }
+      }
+    }
+    res.json({"prices":prices,"weights":weights,cate:cate,brand:brand,goals:goals,flavor:flavor})
   }
 });
 router.get('/:prodID',async (req, res) => {
