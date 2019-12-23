@@ -519,7 +519,7 @@ router.post("/list", async (req,res)=>{
 });
 router.get('/:prodID',async (req, res) => {
   var wish="false"
-  if(typeof header !== 'undefined') {
+  if(req.headers['authorization']) {
     const header = req.headers['authorization'];
 
     const bearer = header.split(' ');
