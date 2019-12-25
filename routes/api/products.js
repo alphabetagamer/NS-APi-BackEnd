@@ -1262,6 +1262,9 @@ else{
 res.json(products)
 }
 });
+router.post("/metatool",async(req,res)=>{
+  res.json({username:"NSB",title:"Title",text:"THIS IS A DRY API",bmr:14.1})
+})
 router.post("/brands",async(req,res)=>{
   try {
     if(req.body.brand){
