@@ -1113,7 +1113,7 @@ catch(err){
   var wishlist_items = wishlist_items["wishlist"]
   var items=[]
   for(let a of wishlist_items){
-    var f= await product.findOne({product_id:a["product_id"]},function(err,success){
+    var f= await product.findOne({'_id':a["product_id"]},function(err,success){
       if(err){
         console.log(err)
         res.json(err)
