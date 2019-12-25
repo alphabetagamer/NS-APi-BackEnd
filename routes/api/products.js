@@ -21,6 +21,7 @@ var navbar = require("../../models/navbar");
 var jwt_decode = require("jwt-decode");
 const Instagram = require('node-instagram').default;
 var user_table = require("../../models/user");
+var food_table = require("../../models/food");
 var brandtable = require("../../models/brand");
 var jwt = require("jsonwebtoken");
 var refer=require("../../models/refer");
@@ -176,7 +177,7 @@ router.post("/post_review",middleware.checkToken, async (req,res)=>{
 
   }
 });
-router.post("/tool",async(req,res)=>{
+router.post("/tool",middleware.checkToken,async(req,res)=>{
 
   var goal_weight=req.body.goal_weight
   var age = req.body.age
@@ -234,7 +235,7 @@ function random() {
   // };
   var days=[]
   var days_up=[]
-  var c =await request("https://api.spoonacular.com/recipes/mealplans/generate?timeFrame=week&apiKey=cc6fcd54215d4c8ca1217c93705f99d9&targetCalories=" + bmr * 7 + "&diet=" + diet,async function (error, response, body) {
+  var c =await request("https://api.spoonacular.com/recipes/mealplans/generate?timeFrame=week&apiKey=63d9f1c8fab34e868816066b940bf4ab&targetCalories=" + bmr * 7 + "&diet=" + diet,async function (error, response, body) {
     if (error)
       throw new Error(error);
     var s = body.replace('/', "");
@@ -249,7 +250,7 @@ function random() {
       console.log(days.length)
       await forEach(days,async (b)=>{
 
-      var k = await axios.get("https://api.spoonacular.com/recipes/"+b[0].id+"/nutritionWidget.json?&apiKey=cc6fcd54215d4c8ca1217c93705f99d9").then(function(body){
+      var k = await axios.get("https://api.spoonacular.com/recipes/"+b[0].id+"/nutritionWidget.json?&apiKey=63d9f1c8fab34e868816066b940bf4ab").then(function(body){
         var f2 = body.data
         a=b[0]
         console.log(a.food)
@@ -263,7 +264,14 @@ function random() {
       console.log(days_up.length)
      });
      if (meals <= 3 && days_up.length==7*meals) {
-      res.json(days_up)
+       console.log(req.user.user_id)
+       try{food_table.create({uid:req.user.user_id,chart:days_up})
+       res.json(days_up)
+      }catch(err){
+         res.json("already exists")
+       }
+       console.log(typeof(days_up))
+      
     
     }
     else if(meals<=3){
@@ -302,7 +310,7 @@ function random() {
 
     if (meals > 3 && meals <= 6 && days.length==21) {
       var aa= new Promise(function(res1,err){
-        var k = request("https://api.spoonacular.com/recipes/mealplans/generate?timeFrame=week&apiKey=cc6fcd54215d4c8ca1217c93705f99d9&targetCalories=" + bmr * 7 + "&diet=" + diet, function (error, response, body) {
+        var k = request("https://api.spoonacular.com/recipes/mealplans/generate?timeFrame=week&apiKey=63d9f1c8fab34e868816066b940bf4ab&targetCalories=" + bmr * 7 + "&diet=" + diet, function (error, response, body) {
         if (error)
           throw new Error(error);
         var s = body.replace('/', "");
@@ -323,7 +331,7 @@ function random() {
           console.log(days.length)
           var hhh=1
           await forEach(days,async (b)=>{  
-          var k = await axios.get("https://api.spoonacular.com/recipes/"+b[0].id+"/nutritionWidget.json?apiKey=cc6fcd54215d4c8ca1217c93705f99d9").then(function(body){
+          var k = await axios.get("https://api.spoonacular.com/recipes/"+b[0].id+"/nutritionWidget.json?apiKey=63d9f1c8fab34e868816066b940bf4ab").then(function(body){
             var f2 = body.data
             a=b[0]           
             days_up.push([{ day: a["day"], slot: a["slot"], food: a.food, id: a.id, fat: f2.fat, proteins: f2.protein, calories: f2.calories }]);
@@ -354,7 +362,11 @@ function random() {
               }
             }
           }
-          res.json(sort_days)
+          try{food_table.create({uid:req.user.user_id,chart:sort_days})
+       res.json(sort_days)
+      }catch(err){
+         res.json("already exists")
+       }
         
         }
       })
@@ -948,31 +960,31 @@ catch(err){
     
 
   });
-  router.post("/product_rec",async(req,res)=>{
-    var c = await product.find();
-    function shuffle(c) {
-      var currentIndex = c.length, temporaryValue, randomIndex;
+  // router.post("/product_rec",async(req,res)=>{
+  //   var c = await product.find();
+  //   function shuffle(c) {
+  //     var currentIndex = c.length, temporaryValue, randomIndex;
     
-      // While there remain elements to shuffle...
-      while (0 !== currentIndex) {
+  //     // While there remain elements to shuffle...
+  //     while (0 !== currentIndex) {
     
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
+  //       // Pick a remaining element...
+  //       randomIndex = Math.floor(Math.random() * currentIndex);
+  //       currentIndex -= 1;
     
-        // And swap it with the current element.
-        temporaryValue = c[currentIndex];
-        c[currentIndex] = c[randomIndex];
-        c[randomIndex] = temporaryValue;
-      }
+  //       // And swap it with the current element.
+  //       temporaryValue = c[currentIndex];
+  //       c[currentIndex] = c[randomIndex];
+  //       c[randomIndex] = temporaryValue;
+  //     }
     
-      return c
-    }
-    console.log(c)
-    var k = shuffle(c)
+  //     return c
+  //   }
+  //   console.log(c)
+  //   var k = shuffle(c)
   
-    res.json([k[0],k[1],k[2],k[3],k[4]])
-  });
+  //   res.json([k[0],k[1],k[2],k[3],k[4]])
+  // });
   router.post("/iniwork",middleware.checkToken,async(req,res)=>{
     // var g=request("https://wger.de/api/v2/exercise",function(error,response,body){
     //   var js=JSON.parse(body)
@@ -993,7 +1005,7 @@ catch(err){
     });
     res.json({success:true})
   });
-  router.post("/workout",middleware.checkToken,async(req,res)=>{
+  router.post("/toolpage",middleware.checkToken,async(req,res)=>{
     // var g=request("https://wger.de/api/v2/exercise",function(error,response,body){
     //   var js=JSON.parse(body)
     //   res.json(js)
@@ -1014,7 +1026,31 @@ catch(err){
     console.log(k)
     exercise.push(k)
   }
-  res.json(exercise)
+  var c = await product.find();
+  function shuffle(c) {
+    var currentIndex = c.length, temporaryValue, randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+  
+      // And swap it with the current element.
+      temporaryValue = c[currentIndex];
+      c[currentIndex] = c[randomIndex];
+      c[randomIndex] = temporaryValue;
+    }
+  
+    return c
+  }
+  
+  var k = shuffle(c)
+ var food=await food_table.find({uid:req.user.user_id})
+ 
+
+  res.json({exercise:exercise,username:req.user.username,title:"Title",text:"THIS IS A DRY API",bmr:14.1,products:[k[0],k[1],k[2],k[3],k[4]],food_chart:food})
 });
   router.post("/orders",middleware.checkToken,async(req,res)=>{
     try {
@@ -1262,9 +1298,7 @@ else{
 res.json(products)
 }
 });
-router.post("/metatool",async(req,res)=>{
-  res.json({username:"NSB",title:"Title",text:"THIS IS A DRY API",bmr:14.1})
-})
+
 router.post("/brands",async(req,res)=>{
   try {
     if(req.body.brand){
