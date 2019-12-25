@@ -352,6 +352,8 @@ review_id:{
 product_id:{
 	type:Number,
 	required:true
+},username:{
+	type:String
 },
 rating:{
 	type:Number,

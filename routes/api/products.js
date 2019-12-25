@@ -175,13 +175,13 @@ router.post("/post_review",middleware.checkToken, async (req,res)=>{
 router.post("/tool",(req,res)=>{
   console.log(req.body)
   console.log(req.body.wgl)
-  var goal_weight=req.body.goalw
-  var age = req.body.inputEmail4
+  var goal_weight=req.body.goal_weight
+  var age = req.body.age
   var name = req.body.name
-  var weight = req.body.Weight
-  var height = req.body.Height
-  var meals = req.body.Meals
-  var losegain = req.body.wgl
+  var weight = req.body.weight
+  var height = req.body.height
+  var meals = req.body.meals || 3
+  var losegain = req.body.losegain
   var gender = req.body.gender
   var diet= req.body.diet
   var goal = req.body.goal
@@ -340,6 +340,7 @@ res.json([{image:"https://images.unsplash.com/photo-1566408669374-5a6d5dca1ef5?i
 router.post("/product_details",async(req,res)=>{
   try {
     var cond=[]
+    console.log(req.body)
     if(req.body.weight){
       cond.push({"weight":req.body.weight})
     }
