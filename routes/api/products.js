@@ -1,5 +1,9 @@
+var axios=require('axios')
 const express = require('express');
 const router = express.Router();
+var http = require('http');
+var https = require('https');
+const { forEach } = require('p-iteration');
 var request = require('request');
 const mongoose = require('mongoose');
 var product = require("./../../models/Product");
@@ -172,9 +176,8 @@ router.post("/post_review",middleware.checkToken, async (req,res)=>{
 
   }
 });
-router.post("/tool",(req,res)=>{
-  console.log(req.body)
-  console.log(req.body.wgl)
+router.post("/tool",async(req,res)=>{
+
   var goal_weight=req.body.goal_weight
   var age = req.body.age
   var name = req.body.name
@@ -219,7 +222,7 @@ function random() {
     }
     days.push(day)
   }
-  console.log(days)
+  //console.log(days)
   // var options = {
   //   method: 'GET',
   //   url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/mealplans/generate',
@@ -230,44 +233,140 @@ function random() {
   //   }
   // };
   var days=[]
-  var c =request("https://api.spoonacular.com/recipes/mealplans/generate?timeFrame=week&apiKey=0aef793f5f7545b9b2d0e623cd8a5dd5&targetCalories="+bmr*7+"&diet="+diet, function (error, response, body) {
-    if (error) throw new Error(error);
-    var s = body.replace('/',"")
-    var f = JSON.parse(s)
-    var days=[]
-    for(let a of f["items"]){
-    var j=JSON.parse(a["value"])
-    days.push([{day:a["day"],slot:a["slot"],food:j["title"]}])}
-    if(meals==3){
-    console.log(days)
-  res.json(days)
-    }
-    else if(meals>3 && meals <=6){
-    var k =request("https://api.spoonacular.com/recipes/mealplans/generate?timeFrame=week&apiKey=0aef793f5f7545b9b2d0e623cd8a5dd5&targetCalories="+bmr*7+"&diet="+diet,function (error, response, body) {
-    if (error) throw new Error(error);
-    var s = body.replace('/',"")
-    var f = JSON.parse(s)
-    for(let a of f["items"]){
-    var j=JSON.parse(a["value"])
-    days.push([{day:a["day"],slot:a["slot"],food:j["title"]}])
-    var sort_days=[]
-    for(var i=1;i<=7;i++){
-    var k=1
-    for(let a of days){
-    console.log(a[0]["day"])
-
-    if(a[0]["day"]==i && k<=meals){
-    a[0]["slot"]=k
-    k=k+1
-    sort_days.push(a)}}
-
-    }
-
-    }
-    res.json(sort_days)
-    // res.render("index",{data:sort_days})
+  var days_up=[]
+  var c =await request("https://api.spoonacular.com/recipes/mealplans/generate?timeFrame=week&apiKey=cc6fcd54215d4c8ca1217c93705f99d9&targetCalories=" + bmr * 7 + "&diet=" + diet,async function (error, response, body) {
+    if (error)
+      throw new Error(error);
+    var s = body.replace('/', "");
+    var f = JSON.parse(s);
+    await forEach(f["items"],async (a)=>{
+      var j = JSON.parse(a["value"]);
+      var f2=[]
+      days.push([{ day: a["day"], slot: a["slot"], food: j.title, id: j.id, fat: f2.fat, proteins: f2.protein, calories: f2.calories }]);
+      // console.log(days)
     });
-}
+    if(days.length==7*meals && meals<=3){   
+      console.log(days.length)
+      await forEach(days,async (b)=>{
+
+      var k = await axios.get("https://api.spoonacular.com/recipes/"+b[0].id+"/nutritionWidget.json?&apiKey=cc6fcd54215d4c8ca1217c93705f99d9").then(function(body){
+        var f2 = body.data
+        a=b[0]
+        console.log(a.food)
+        console.log(b[0].food)
+        days_up.push([{ day: a["day"], slot: a["slot"], food: a.food, id: a.id, fat: f2.fat, proteins: f2.protein, calories: f2.calories }]);
+        setTimeout(500);
+      }).catch(function(err){
+        
+      });
+
+      console.log(days_up.length)
+     });
+     if (meals <= 3 && days_up.length==7*meals) {
+      res.json(days_up)
+    
+    }
+    else if(meals<=3){
+      setTimeout(1000);
+    }
+    }
+        else if(meals<=3){
+      setTimeout(1000);
+    }
+     
+    // while (days_up.length <= 7 * meals) {
+    //   // console.log(days.length)
+    //   if (meals <= 3 && days_up.length == 7 * meals) {
+    //     var temp = [];
+    //     var temp2 = [];
+    //     var j = 1;
+    //     var k = 1;
+    //     for (let a of days_up) {
+    //       if (k % meals == 0) {
+    //         var daa = "day_" + j;
+    //         temp2.push(a[0]);
+    //         j = j + 1;
+    //         temp.push({ "slot": temp2 });
+    //         temp2 = [];
+    //         k = k + 1;
+    //       }
+    //       else {
+    //         temp2.push(a[0]);
+    //         k = k + 1;
+    //       }
+    //     }
+    //     res.json(temp);
+    //     break
+    //   }
+    // }
+
+    if (meals > 3 && meals <= 6 && days.length==21) {
+      var aa= new Promise(function(res1,err){
+        var k = request("https://api.spoonacular.com/recipes/mealplans/generate?timeFrame=week&apiKey=cc6fcd54215d4c8ca1217c93705f99d9&targetCalories=" + bmr * 7 + "&diet=" + diet, function (error, response, body) {
+        if (error)
+          throw new Error(error);
+        var s = body.replace('/', "");
+        var f = JSON.parse(s);
+        for (let a of f["items"]) {
+          var j = JSON.parse(a["value"]);
+          days.push([{ day: a["day"], slot: a["slot"], food: j["title"],id:j.id}]);
+          if(days.length==42){
+            res1("22")
+          }
+        }
+      });
+      
+      
+    })
+      aa.then(async function(res1){
+        if(days.length==42){   
+          console.log(days.length)
+          var hhh=1
+          await forEach(days,async (b)=>{  
+          var k = await axios.get("https://api.spoonacular.com/recipes/"+b[0].id+"/nutritionWidget.json?apiKey=cc6fcd54215d4c8ca1217c93705f99d9").then(function(body){
+            var f2 = body.data
+            a=b[0]           
+            days_up.push([{ day: a["day"], slot: a["slot"], food: a.food, id: a.id, fat: f2.fat, proteins: f2.protein, calories: f2.calories }]);
+            setTimeout(500);
+            hhh=hhh+1
+            console.log(hhh)
+            console.log(b[0].food)
+          }).catch(function(err){
+           
+          });
+          if(days_up.length==42){
+            return "22"
+          }
+         });
+        }
+      }).then(function(res1){
+        console.log("we made it")
+        console.log(days_up.length)
+        if (meals > 3 && days_up.length==42) {
+          var sort_days = [];
+          for (var i = 1; i <= 7; i++) {
+            var k = 1;
+            for (let a of days_up) {
+              if (a[0]["day"] == i && k <= meals) {
+                a[0]["slot"] = k;
+                k = k + 1;
+                sort_days.push(a);
+              }
+            }
+          }
+          res.json(sort_days)
+        
+        }
+      })
+
+         
+       
+        }
+
+        
+      
+        // res.render("index",{data:sort_days})
+
   });
 });
 router.post("/instagram",(req,res)=>{
@@ -341,9 +440,14 @@ router.post("/product_details",async(req,res)=>{
   try {
     var cond=[]
     console.log(req.body)
+    var summ=[]
     if(req.body.weight){
-      cond.push({"weight":req.body.weight})
-    }
+      var m_goals=req.body.weight.split(',')
+      for(let a of m_goals){
+        summ.push(a)
+      }
+      cond.push({"weight":{"$in":summ}})
+  }
     if(req.body.goal){
       var summ=[]
       var m_goals=req.body.goal.split(',')
@@ -354,7 +458,7 @@ router.post("/product_details",async(req,res)=>{
     }
     if(req.body.category){
       var summ=[]
-      var m_goals=req.body.category
+      var m_goals=req.body.category.split(",")
       for(let a of m_goals){
         summ.push({"category":a})
       }
@@ -444,7 +548,7 @@ router.post("/product_details",async(req,res)=>{
     }    
     else if(!req.body.sort){
       if(cond.length>0){
-        console.log("empty sort and filter")
+        console.log("non sort and filter")
         var prod_w=await product.find({'$and':cond})
         console.log(prod_w)
         res.json(prod_w)
@@ -867,7 +971,7 @@ catch(err){
     console.log(c)
     var k = shuffle(c)
   
-    res.json(k)
+    res.json([k[0],k[1],k[2],k[3],k[4]])
   });
   router.post("/iniwork",middleware.checkToken,async(req,res)=>{
     // var g=request("https://wger.de/api/v2/exercise",function(error,response,body){
