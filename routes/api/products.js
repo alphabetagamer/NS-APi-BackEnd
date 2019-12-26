@@ -712,7 +712,7 @@ router.get('/:prodID',async (req, res) => {
   res.json({"product":prod,"similar":similar,"reviews":review,"graph":rati,brand:brandf.name,wishlist:wish})
 });
 router.post("/testimonial",async(req,res)=>{
-  var s=testimonial.find()
+  var s=await testimonial.find()
   res.json(s)
 });
 router.post("/signup",(req,res)=>{
