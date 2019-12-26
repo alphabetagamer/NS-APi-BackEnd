@@ -177,6 +177,234 @@ router.post("/post_review",middleware.checkToken, async (req,res)=>{
 
   }
 });
+router.post("/tooltest",middleware.checkToken,async(req,res)=>{
+  if(req.body.type=="new"){
+    try {
+      var f=await food_table.find({uid:req.user.user_id})
+      if(f.length>0){
+        res.json("already exists")
+      }else{
+      var goal_weight=req.body.goal_weight
+      var age = req.body.age
+      var name = req.body.name
+      var weight = req.body.weight
+      var height = req.body.height
+      var meals = req.body.meals || 3
+      var losegain = req.body.losegain
+      var gender = req.body.gender
+      var diet= req.body.diet
+      var goal = req.body.goal
+      var bodyfat=req.body.bodyfat
+      var lifestyle = req.body.lifestyle
+      var bmr=0
+      if(gender=="Female"){
+        bmr=10*weight+6.25*height-5*age-161
+      }else{
+        bmr=9*weight+6.25*height-5*age+5
+      }
+      if(goal=="Loose Weight"){
+        bmr=bmr*0.88
+      }
+      else{
+        bmr=bmr*1.18
+      }
+    //   var seed = bmr;
+    //   function random() {
+    //     var x = Math.sin(seed++) * 10000;
+    //     return x - Math.floor(x);
+    // }
+    var tobe ={day1:[],day2:[],day3:[],day4:[],day5:[],day6:[],day7:[]}
+    var days=[]
+    var days_up=[]
+    if(meals<=3){
+
+      var promise3 = new Promise(async function(resolve, reject) {  
+        console.log("we have been called")
+        var c =await request("https://api.spoonacular.com/recipes/mealplans/generate?timeFrame=week&apiKey=63d9f1c8fab34e868816066b940bf4ab&targetCalories=" + bmr * 7 + "&diet=" + diet,async function (error, response, body) {
+        if (error)
+          throw new Error(error);
+        var s = body.replace('/', "");
+        var f = JSON.parse(s);
+        await forEach(f["items"],async (a)=>{
+          var j = JSON.parse(a["value"]);
+          var f2=[]
+          days.push([{ day: a["day"], slot: a["slot"], food: j.title, id: j.id, fat: f2.fat, proteins: f2.protein, calories: f2.calories }]);
+          // console.log(days)
+        });
+        resolve("done")
+      });
+     
+    })
+    promise3.then(async function(res1){
+      console.log(days.length)
+      await forEach(days,async (b)=>{
+        var k = await axios.get("https://api.spoonacular.com/recipes/"+b[0].id+"/nutritionWidget.json?&apiKey=63d9f1c8fab34e868816066b940bf4ab").then(function(body){
+          var f2 = body.data
+          a=b[0]
+          console.log(a.food)
+          console.log(b[0].food)
+          days_up.push([{ day: a["day"], slot: a["slot"], food: a.food, id: a.id, fat: f2.fat, proteins: f2.protein, calories: f2.calories ,carbs:f2.carbs}]);
+        }).catch(function(err){
+          return "error"
+        });
+    
+        console.log(days_up.length)
+       })
+       if(days_up.length==21){
+         return "success"
+       }
+      
+    }).then(async function(res1){
+      if(res1=="success"){
+        var tobe={day1:[],day2:[],day3:[],day4:[],day5:[],day6:[],day7:[]}
+        await forEach(days_up,async (b)=>{
+          if(b[0].day==1){
+            tobe.day1.push(b[0])
+          }
+          if(b[0].day==2){
+            tobe.day2.push(b[0])
+          }
+          if(b[0].day==3){
+            tobe.day3.push(b[0])
+          }
+          if(b[0].day==4){
+            tobe.day4.push(b[0])
+          }
+          if(b[0].day==5){
+            tobe.day5.push(b[0])
+          }
+          if(b[0].day==6){
+            tobe.day6.push(b[0])
+          }
+          if(b[0].day==7){
+            tobe.day7.push(b[0])
+          }
+        });
+        console.log(req.user.user_id)
+  
+         try{food_table.create({uid:req.user.user_id,chart:tobe})
+         res.json(tobe)
+        }catch(err){
+           res.json("already exists")
+         }
+      }
+      else{
+        res.json({error:"oopsie doodle"})
+      }
+    })
+    }
+    else if(meals>3 && meals<=6){
+      var promise3 = new Promise(async function(resolve, reject) {  
+        console.log("we have been called")
+        var c =await request("https://api.spoonacular.com/recipes/mealplans/generate?timeFrame=week&apiKey=63d9f1c8fab34e868816066b940bf4ab&targetCalories=" + bmr * 7 + "&diet=" + diet,async function (error, response, body) {
+        if (error)
+          throw new Error(error);
+        var s = body.replace('/', "");
+        var f = JSON.parse(s);
+        await forEach(f["items"],async (a)=>{
+          var j = JSON.parse(a["value"]);
+          var f2=[]
+          days.push([{ day: a["day"], slot: a["slot"], food: j.title, id: j.id, fat: f2.fat, proteins: f2.protein, calories: f2.calories }]);
+          // console.log(days)
+        });
+        
+      });
+      var c =await request("https://api.spoonacular.com/recipes/mealplans/generate?timeFrame=week&apiKey=63d9f1c8fab34e868816066b940bf4ab&targetCalories=" + bmr * 7 + "&diet=" + diet,async function (error, response, body) {
+        if (error)
+          throw new Error(error);
+        var s = body.replace('/', "");
+        var f = JSON.parse(s);
+        await forEach(f["items"],async (a)=>{
+          var j = JSON.parse(a["value"]);
+          var f2=[]
+          days.push([{ day: a["day"], slot: a["slot"], food: j.title, id: j.id, fat: f2.fat, proteins: f2.protein, calories: f2.calories }]);
+          // console.log(days)
+        });
+        resolve("done")
+      });
+    });
+    promise3.then(async function(res1){
+      console.log(days.length)
+      await forEach(days,async (b)=>{
+        var k = await axios.get("https://api.spoonacular.com/recipes/"+b[0].id+"/nutritionWidget.json?&apiKey=63d9f1c8fab34e868816066b940bf4ab").then(function(body){
+          var f2 = body.data
+          a=b[0]
+          console.log(a.food)
+          console.log(b[0].food)
+          days_up.push([{ day: a["day"], slot: a["slot"], food: a.food, id: a.id, fat: f2.fat, proteins: f2.protein, calories: f2.calories ,carbs:f2.carbs}]);
+        }).catch(function(err){
+          return "error"
+        });
+    
+        console.log(days_up.length)
+       })
+       if(days_up.length==42){
+         return "success"
+       }
+      
+    }).then(async function(res1){
+      if(res1=="success"){
+        var tobe={day1:[],day2:[],day3:[],day4:[],day5:[],day6:[],day7:[]}
+        await forEach(days_up,async (b)=>{
+          if(b[0].day==1){
+            tobe.day1.push(b[0])
+          }
+          if(b[0].day==2){
+            tobe.day2.push(b[0])
+          }
+          if(b[0].day==3){
+            tobe.day3.push(b[0])
+          }
+          if(b[0].day==4){
+            tobe.day4.push(b[0])
+          }
+          if(b[0].day==5){
+            tobe.day5.push(b[0])
+          }
+          if(b[0].day==6){
+            tobe.day6.push(b[0])
+          }
+          if(b[0].day==7){
+            tobe.day7.push(b[0])
+          }
+        });
+        console.log(req.user.user_id)
+        tobe.day1 = tobe.day1.slice(0,meals);
+        tobe.day2 = tobe.day2.slice(0,meals);
+        tobe.day3 = tobe.day3.slice(0,meals);
+        tobe.day4 = tobe.day4.slice(0,meals);
+        tobe.day5 = tobe.day5.slice(0,meals);
+        tobe.day6 = tobe.day6.slice(0,meals);
+        tobe.day7 = tobe.day7.slice(0,meals);
+         try{food_table.create({uid:req.user.user_id,chart:tobe})
+         res.json(tobe)
+        }catch(err){
+           res.json("already exists")
+         }
+      }
+      else{
+        res.json({error:"oopsie doodle"})
+      }
+    })
+      
+    }  
+    }
+    } catch (error) {
+      res.json(err)
+    }
+  }
+  else if(req.body.type=="delete"){
+    await food_table.findOneAndDelete({uid:req.user.user_id},function(err,suc){
+      if(err){
+        return res.json({status:err})
+      }
+      else{
+        return res.json({status:"deleted"})
+      }
+    });
+    
+  }
+});
 router.post("/tool",middleware.checkToken,async(req,res)=>{
 
   var goal_weight=req.body.goal_weight
@@ -205,7 +433,7 @@ router.post("/tool",middleware.checkToken,async(req,res)=>{
     bmr=bmr*1.18
   }
   var seed = bmr;
-function random() {
+  function random() {
     var x = Math.sin(seed++) * 10000;
     return x - Math.floor(x);
 }
@@ -255,7 +483,7 @@ function random() {
         a=b[0]
         console.log(a.food)
         console.log(b[0].food)
-        days_up.push([{ day: a["day"], slot: a["slot"], food: a.food, id: a.id, fat: f2.fat, proteins: f2.protein, calories: f2.calories }]);
+        days_up.push([{ day: a["day"], slot: a["slot"], food: a.food, id: a.id, fat: f2.fat, proteins: f2.protein, calories: f2.calories ,carbs:f2.carbs}]);
         setTimeout(500);
       }).catch(function(err){
         
@@ -264,9 +492,34 @@ function random() {
       console.log(days_up.length)
      });
      if (meals <= 3 && days_up.length==7*meals) {
-       console.log(req.user.user_id)
-       try{food_table.create({uid:req.user.user_id,chart:days_up})
-       res.json(days_up)
+      var tobe={day1:[],day2:[],day3:[],day4:[],day5:[],day6:[],day7:[]}
+      await forEach(days_up,async (b)=>{
+        if(b[0].day==1){
+          tobe.day1.push(b[0])
+        }
+        if(b[0].day==2){
+          tobe.day2.push(b[0])
+        }
+        if(b[0].day==3){
+          tobe.day3.push(b[0])
+        }
+        if(b[0].day==4){
+          tobe.day4.push(b[0])
+        }
+        if(b[0].day==5){
+          tobe.day5.push(b[0])
+        }
+        if(b[0].day==6){
+          tobe.day6.push(b[0])
+        }
+        if(b[0].day==7){
+          tobe.day7.push(b[0])
+        }
+      });
+      console.log(req.user.user_id)
+
+       try{food_table.create({uid:req.user.user_id,chart:tobe})
+       res.json(tobe)
       }catch(err){
          res.json("already exists")
        }
@@ -330,15 +583,14 @@ function random() {
         if(days.length==42){   
           console.log(days.length)
           var hhh=1
+          console.log("going in")            
           await forEach(days,async (b)=>{  
           var k = await axios.get("https://api.spoonacular.com/recipes/"+b[0].id+"/nutritionWidget.json?apiKey=63d9f1c8fab34e868816066b940bf4ab").then(function(body){
             var f2 = body.data
             a=b[0]           
-            days_up.push([{ day: a["day"], slot: a["slot"], food: a.food, id: a.id, fat: f2.fat, proteins: f2.protein, calories: f2.calories }]);
-            setTimeout(500);
-            hhh=hhh+1
-            console.log(hhh)
-            console.log(b[0].food)
+            days_up.push([{ day: a["day"], slot: a["slot"], food: a.food, id: a.id, fat: f2.fat, proteins: f2.protein, calories: f2.calories , carbs:f2.carbs}]);
+            setTimeout(25)
+            console.log(days_up.length)            
           }).catch(function(err){
            
           });
@@ -347,7 +599,7 @@ function random() {
           }
          });
         }
-      }).then(function(res1){
+      }).then( async function(res1){
         console.log("we made it")
         console.log(days_up.length)
         if (meals > 3 && days_up.length==42) {
@@ -362,14 +614,43 @@ function random() {
               }
             }
           }
-          try{food_table.create({uid:req.user.user_id,chart:sort_days})
-       res.json(sort_days)
+        console.log(sort_days.length)
+        return "abc"
+        }}).then(async function(abc){
+        var tobe={day1:[],day2:[],day3:[],day4:[],day5:[],day6:[],day7:[]}
+      await forEach(days_up,async (b)=>{
+        if(b[0].day==1){
+          tobe.day1.push(b[0])
+        }
+        if(b[0].day==2){
+          tobe.day2.push(b[0])
+        }
+        if(b[0].day==3){
+          tobe.day3.push(b[0])
+        }
+        if(b[0].day==4){
+          tobe.day4.push(b[0])
+        }
+        if(b[0].day==5){
+          tobe.day5.push(b[0])
+        }
+        if(b[0].day==6){
+          tobe.day6.push(b[0])
+        }
+        if(b[0].day==7){
+          tobe.day7.push(b[0])
+        }
+      });
+      console.log(req.user.user_id)
+
+       try{food_table.create({uid:req.user.user_id,chart:tobe})
+        return res.json(tobe)
       }catch(err){
-         res.json("already exists")
+         return res.json("already exists")
        }
         
-        }
-      })
+        
+      });
 
          
        
