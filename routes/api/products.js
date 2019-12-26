@@ -996,16 +996,38 @@ router.post("/testimonial",async(req,res)=>{
   var s=await testimonial.find()
   res.json(s)
 });
-router.post("/signup",(req,res)=>{
-var number = req.body.mobile_no
-
-console.log(req.body.mobile_no)
+router.post("/signup",async (req,res)=>{
+var number = req.body.mobile
+console.log(number)
+if(number){
 if (number.length == 10){
-  return res.json({status:"SignedUp"})
+  var login_c = await user_table.find({mobile:number})
+  console.log(login_c)
+if(login_c.length>0){
+  return res.json({status:"error already exists"})
+}
+ else{
+  var g = await request.post("https://api.msg91.com/api/v5/otp?authkey=300621AuH65oUfZhyG5db16e01&template_id=5e0515dcd6fc057a0c775b24&otp_expiry=10&mobile=+91"+req.body.mobile.toString(),function(err,res1){
+    var s=JSON.parse(res1.body)
+
+    if(s.type == "error"){
+      res.json(s)
+
+    }else{
+      res.json({status:s})
+    }
+  });
+ }
+}else{
+  return res.json({status:"Incorrect number"})
+}
 }
 else{
   return res.json({status:"Incorrect number"})
 }
+
+console.log(req.body.mobile_no)
+
 
 });
 // router.post("/tool",(req,res)=>{
@@ -1103,50 +1125,63 @@ router.post("/signup_comp",async(req,res)=>{
   var email = req.body.email
   var mob = req.body.mobile
   var name = req.body.username
+  var otp = req.body.otp
   var ref = new mongoose.mongo.ObjectId()
   var newId = new mongoose.mongo.ObjectId();
   var wallet_id= new mongoose.mongo.ObjectId();
-  try{
-  if(req.body.ref){
-    var newuser=await user_table.create({name:{first_name:f_name,last_name:l_name},email:email,referral_code:ref,mobile:mob,user_id:newId,username:name,wallet:{wallet_id:wallet_id}},function(err,created){
-      if(err){
-        console.log(err)
-        return res.json({status:"Unable to signup"})
-      }
-      else{
-        console.log(created)
+  var otpp = false;
+  var check= await request.post("https://api.msg91.com/api/v5/otp/verify?mobile=+91"+req.body.mobile.toString()+"&otp="+otp.toString()+"&authkey=300621AuH65oUfZhyG5db16e01",async function(err,res1){
+      var s=JSON.parse(res1.body)
+       console.log(s)
+      if(s.type == "error"){
+        return res.json({status:s})
+      }else{
+        try{
+          if(req.body.ref2){
+            var newuser=await user_table.create({name:{first_name:f_name,last_name:l_name},email:email,referral_code:ref,mobile:mob,user_id:newId,username:name,wallet:{wallet_id:wallet_id}},function(err,created){
+              if(err){
+                console.log(err)
+                return res.json({status:"Unable to signup"})
+              }
+              else{
         
-        var refer2= refer.create({user_id:created.user_id,referral_code:ref})
-        var re= refer.update({referral_code:req.body.ref},{$push:{referred:{user_id:created.user_id}}},(err,created)=>{
-          if(err){
-            console.log(err)
-             res.json({status:"Invalid Referral code"})
-          }
-          else{
-             res.json({status:"referred"})
-          }
+                var refer2= refer.create({user_id:created.user_id,referral_code:ref})
+                var re= refer.update({referral_code:req.body.ref2},{$push:{referred:{user_id:created.user_id}}},(err,created)=>{
+                  if(err){
+                    console.log(err)
+                     return res.json({status:"Invalid Referral code"})
+                  }
+                  else{
+                     return res.json({status:"referred"})
+                  }
+                
+                });
+              
+              }
+            });
+          }else
         
-        });
-      
-      }
-    });
-  }else
-  {  var newuser=await user_table.create({name:{first_name:f_name,last_name:l_name},email:email,referral_code:ref,mobile:mob,user_id:newId,username:name,wallet:{wallet_id:wallet_id}},function(err,created){
-      if(err){
-        console.log(err)
-        return res.json({status:"Unable to signup"})
-      }
-      else{
-        console.log(created)
-        var refer2= refer.create({user_id:created.id,referral_code:ref})
-        return res.json({status:"signed up"})
-      }
-    });
-  }
-}
+          { 
+             var newuser=await user_table.create({name:{first_name:f_name,last_name:l_name},email:email,referral_code:ref,mobile:mob,user_id:newId,username:name,wallet:{wallet_id:wallet_id}},function(err,created){
+              if(err){
+                console.log(err)
+                return res.json({status:"Unable to signup"})
+              }
+              else{
+                console.log(created)
+                var refer2= refer.create({user_id:created.id,referral_code:ref})
+                return res.json({status:"signed up"})
+              }
+            });
+          }
+        }
+         
 catch(err){
   console.log(err)
 }
+      }
+    });
+
 
   });
   router.post("/account_details",middleware.checkToken,async (req,res)=>{
@@ -1500,12 +1535,37 @@ if(!errors.isEmpty()){
 }
 return res.json({status:"SignedUP"})
 });
+router.post("/sendotp",async(req,res)=>{
+  var login_c=await user_table.findOne({mobile:req.body.mobile})
+  if(login_c){
+    var g = await request.post("https://api.msg91.com/api/v5/otp?authkey=300621AuH65oUfZhyG5db16e01&template_id=5e0515dcd6fc057a0c775b24&otp_expiry=10&mobile=+91"+req.body.mobile.toString(),function(err,res1){
+      var s=JSON.parse(res1.body)
+
+      if(s.type == "error"){
+        res.json(s)
+
+      }else{
+        res.json({status:s})
+      }
+    });
+  }
+  else{
+    res.json({err:"not registered"})
+  }
+});
 router.post("/login",[check('mobile',"please enter a valid 10 digit phone number").isLength({min:10})],async (req,res)=>{
   var login_c=await user_table.findOne({mobile:req.body.mobile})
-  console.log(login_c)
+  var login_otp=req.body.otp
   var errors={};
-  if(login_c){
-    const payload = { id: login_c.id, mobile:login_c.mobile }; // Create JWT Payload
+  if(login_c)
+  {
+    var check= await request.post("https://api.msg91.com/api/v5/otp/verify?mobile=+91"+req.body.mobile.toString()+"&otp="+login_otp.toString()+"&authkey=300621AuH65oUfZhyG5db16e01",function(err,res1){
+      var s=JSON.parse(res1.body)
+
+      if(s.type == "error"){
+        res.json(s)
+      }else{
+        const payload = { id: login_c.id, mobile:login_c.mobile }; // Create JWT Payload
        // Sign Token
         jwt.sign(
           payload,
@@ -1514,10 +1574,15 @@ router.post("/login",[check('mobile',"please enter a valid 10 digit phone number
           (err, token) => {
             res.json({
               success: true,
-              token: 'Bearer ' + token
+              token: 'Bearer ' + token,
+              response:s
             });
           }
         );
+      }
+    })
+    
+
   }
   else {
     errors.password = 'Password incorrect';
