@@ -592,44 +592,55 @@ var coupon_table = new Schema({
 		type:Number,
 		default:999999
 	},
-	coupon_type:{
-		single:{
-			product_id:{
-				type:Number,
-				default:-1
-			}
-		},
-		category:{
-			category:{
-				type:String,
-				default:-1
-			}
-		},
-		brand:{
-			brand_id:{
-				type:Number,
-				default:-1
-			}
-		},
-		new_user:{
-			type:Boolean,
-			default:false
-		},
-		repeat_user:{
-			type:Boolean,
-			default:false
+	// coupon_type:{
+	// 	single:{
+	// 		product_id:{
+	// 			type:Number,
+	// 			default:-1
+	// 		}
+	// 	},
+	// 	category:{
+	// 		category:{
+	// 			type:String,
+	// 			default:-1
+	// 		}
+	// 	},
+	// 	brand:{
+	// 		brand_id:{
+	// 			type:Number,
+	// 			default:-1
+	// 		}
+	// 	},
+	// 	new_user:{
+	// 		type:Boolean,
+	// 		default:false
+	// 	},
+	// 	repeat_user:{
+	// 		type:Boolean,
+	// 		default:false
 
-		},
-		all_user:{
-			type:Boolean,
-			default:false
-		},
-		select_user:[{
-		user_id:{
+	// 	},
+	// 	all_user:{
+	// 		type:Boolean,
+	// 		default:false
+	// 	},
+	// 	select_user:[{
+	// 	user_id:{
+	// 		type:String
+	// 	}	
+	// 	}]
+
+	// }
+	coupon_type_p:{
+		type:{
 			type:String
-		}	
-		}]
-
+		}
+	},
+	coupon_type_b:{
+		type:{
+			type:String
+		},
+		applyon:[]
 	}
 });
 var referral_table = new Schema({

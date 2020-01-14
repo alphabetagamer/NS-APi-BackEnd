@@ -374,6 +374,9 @@ images:[{
 }]
 });
 var order_table = new Schema({
+	date:{
+		type:Date
+	},
 	order_id:{
 		type:Number,
 		unique:true

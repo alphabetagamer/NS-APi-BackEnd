@@ -14,6 +14,11 @@ var products = new Schema({
 		type:Number,
     required:true
 	},
+	badge:{
+		type:Number,
+		enum:[-1,1,2,3,4,5],
+		default:-1
+	},
 	price:{
 		type:Number,
     required:true
@@ -24,6 +29,23 @@ var products = new Schema({
 		max:100,
     required:true
 	},
+	current_price:{
+		type:Number
+},	type_vn:{
+	type:String,
+	enum:["Veg","Non-Veg"],
+	default:"Veg"
+},
+stock:{
+	type:String,
+	enum:["In Stock","Out of Stock"],
+	default:"In Stock"
+},
+ingredients:{
+	type:String,
+	default:"1 tbs sugar,1tbs salt ,1tbs kala namak"
+}
+,
 	images:[{
 		image:{
 		type:String
@@ -33,19 +55,11 @@ var products = new Schema({
 	},
 	image_caption:{
 		type:String
-	},
-	pos:{
-		type:Number,
-		unique:true
 	}
 }],
 videos:[{
 	video:{
 		type:String
-	},
-	pos:{
-		type:Number,
-		unique:true
 	}
 }],
 	thumbnails:[{
@@ -55,11 +69,25 @@ videos:[{
 	}
 
 	],
-	short_desc:{
-		type:String,
-    required:true
-	},
-	long_desc:{
+	short_desc:[{
+		content:{
+		type:String
+		},
+		media:{
+			url:{type:String},
+			caption:{type:String}
+		}
+	}],
+	long_desc:[{
+		content:{
+		type:String
+		},
+		media:{
+			url:{type:String},
+			caption:{type:String}
+		}
+	}],
+	prime_category:{
 		type:String
 	},
 	categories:[{
@@ -75,10 +103,8 @@ videos:[{
 		required:true
 	},
 	other_flavors:[{
-		product_id:{
-			type:Number
-		},
-		flavor:String
+		flavor:String,
+		_id:false
 	}],
 	weight:{
 		type:Number
@@ -98,6 +124,13 @@ videos:[{
 	},
 	rating:{
 		type:Number
+		},
+		total:{
+			type:Number
+		}
+	,
+	page:{
+		type:String
 	}
 
 
@@ -262,6 +295,10 @@ var user_table = new Schema({
 			  type:String
 		  }
 	  },
+	  password:{
+		  type:String,
+		  required:true
+	  },
 	  wallet:{
 		  wallet_id:{
 			  type:Number,
@@ -276,7 +313,7 @@ var user_table = new Schema({
 		  minlength:10,
 		  maxlength:10
 	  },
-	  address:[{
+	  address:{
 		  address:{
 			  type:String
 		  },
@@ -291,11 +328,8 @@ var user_table = new Schema({
 		  },
 		  country:{
 			  type:String
-		  },
-		  name:{
-			  type:String
 		  }
-	  }],
+	  },
 	  wishlist:[{
 		  product_id:{
 			  type:Number
@@ -446,7 +480,8 @@ var blog_table = new Schema({
 		category:{
 			type:String,
 			
-		}
+		},
+		_id:false
 	}],
 	publish_date:{
 		type:Date
@@ -626,16 +661,12 @@ var coupon_table = new Schema({
 	}
 });
 var referral_table = new Schema({
-	user_id:String,
-	referral_code:{
-		type:String
-	},
+	user_id:Number,
 	referred:[{
-		user_id:{type:String},
-		_id:false
+		user_id:{type:Number}
 	}]
 });
-// module.exports = products = mongoose.model('products', products);
+module.exports = products = mongoose.model('products', products);
 // module.exports = vendor_table = mongoose.model('vendor_table', vendor_table);
 // module.exports = admin_table = mongoose.model('admin_table', admin_table);
 // module.exports = user_table = mongoose.model('user_table', user_table);
@@ -643,7 +674,7 @@ var referral_table = new Schema({
 // module.exports = reviews_table = mongoose.model('reviews_table', reviews_table);
 // module.exports = order_table = mongoose.model('order_table', order_table);
 // module.exports = comments_table = mongoose.model('comments_table', comments_table);
- module.exports = referral_table = mongoose.model('referral_table', referral_table);
+// module.exports = referral_table = mongoose.model('referral_table', referral_table);
 // module.exports = coupon_table = mongoose.model('coupon_table', coupon_table);
 // module.exports = brand_table = mongoose.model('brand_table', brand_table);
 // module.exports = testimonial_table= mongoose.model('testimonial_table', testimonial_table);

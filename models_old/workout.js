@@ -1,5 +1,18 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+var exercise = new Schema({
+	exercise:[{
+		name:String,
+		muscle:String
+	}]
+});
+var workout = new Schema({
+	exercise:[{
+		name:String,
+		muscle:String
+	}],
+	user_id:String
+});
 var products = new Schema({
 	product_id : {
 		type : Number,
@@ -262,6 +275,10 @@ var user_table = new Schema({
 			  type:String
 		  }
 	  },
+	  password:{
+		  type:String,
+		  required:true
+	  },
 	  wallet:{
 		  wallet_id:{
 			  type:Number,
@@ -276,7 +293,7 @@ var user_table = new Schema({
 		  minlength:10,
 		  maxlength:10
 	  },
-	  address:[{
+	  address:{
 		  address:{
 			  type:String
 		  },
@@ -291,11 +308,8 @@ var user_table = new Schema({
 		  },
 		  country:{
 			  type:String
-		  },
-		  name:{
-			  type:String
 		  }
-	  }],
+	  },
 	  wishlist:[{
 		  product_id:{
 			  type:Number
@@ -346,7 +360,6 @@ var cashback_table = new Schema({
 var reviews_table= new Schema({
 review_id:{
 	type:Number,
-	required:true,
 	unique:true
 },
 product_id:{
@@ -365,7 +378,7 @@ review_title:{
 	type:String
 },
 author_id:{
-	type:Number
+	type:String
 },
 images:[{
 	image:String,
@@ -626,24 +639,20 @@ var coupon_table = new Schema({
 	}
 });
 var referral_table = new Schema({
-	user_id:String,
-	referral_code:{
-		type:String
-	},
+	user_id:Number,
 	referred:[{
-		user_id:{type:String},
-		_id:false
+		user_id:{type:Number}
 	}]
 });
-// module.exports = products = mongoose.model('products', products);
+//module.exports = products = mongoose.model('products', products);
 // module.exports = vendor_table = mongoose.model('vendor_table', vendor_table);
 // module.exports = admin_table = mongoose.model('admin_table', admin_table);
 // module.exports = user_table = mongoose.model('user_table', user_table);
 // module.exports = cashback_table = mongoose.model('cashback_table', cashback_table);
-// module.exports = reviews_table = mongoose.model('reviews_table', reviews_table);
+ module.exports = workout = mongoose.model('workout', workout);
 // module.exports = order_table = mongoose.model('order_table', order_table);
 // module.exports = comments_table = mongoose.model('comments_table', comments_table);
- module.exports = referral_table = mongoose.model('referral_table', referral_table);
+// module.exports = referral_table = mongoose.model('referral_table', referral_table);
 // module.exports = coupon_table = mongoose.model('coupon_table', coupon_table);
 // module.exports = brand_table = mongoose.model('brand_table', brand_table);
 // module.exports = testimonial_table= mongoose.model('testimonial_table', testimonial_table);

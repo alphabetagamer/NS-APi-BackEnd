@@ -262,6 +262,10 @@ var user_table = new Schema({
 			  type:String
 		  }
 	  },
+	  password:{
+		  type:String,
+		  required:true
+	  },
 	  wallet:{
 		  wallet_id:{
 			  type:Number,
@@ -276,7 +280,7 @@ var user_table = new Schema({
 		  minlength:10,
 		  maxlength:10
 	  },
-	  address:[{
+	  address:{
 		  address:{
 			  type:String
 		  },
@@ -291,11 +295,8 @@ var user_table = new Schema({
 		  },
 		  country:{
 			  type:String
-		  },
-		  name:{
-			  type:String
 		  }
-	  }],
+	  },
 	  wishlist:[{
 		  product_id:{
 			  type:Number
@@ -460,8 +461,7 @@ var blog_table = new Schema({
 
 var comments_table = new Schema({
 	comment_id:{
-		type:Number,
-		required:true,
+		type:String,
 		unique:true
 	},
 	blog_id:{
@@ -472,7 +472,10 @@ var comments_table = new Schema({
 		type:String
 	},
 	user_id:{
-		type:Number
+		type:String
+	},
+	username:{
+		type:String
 	},
 	parent_comment_id:{
 		type:Number,
@@ -541,6 +544,9 @@ var brand_table=new Schema({
 		type:String
 	},
 	brand_page:{
+		type:String
+	},
+	image:{
 		type:String
 	}
 });
@@ -626,13 +632,9 @@ var coupon_table = new Schema({
 	}
 });
 var referral_table = new Schema({
-	user_id:String,
-	referral_code:{
-		type:String
-	},
+	user_id:Number,
 	referred:[{
-		user_id:{type:String},
-		_id:false
+		user_id:{type:Number}
 	}]
 });
 // module.exports = products = mongoose.model('products', products);
@@ -643,9 +645,9 @@ var referral_table = new Schema({
 // module.exports = reviews_table = mongoose.model('reviews_table', reviews_table);
 // module.exports = order_table = mongoose.model('order_table', order_table);
 // module.exports = comments_table = mongoose.model('comments_table', comments_table);
- module.exports = referral_table = mongoose.model('referral_table', referral_table);
+// module.exports = referral_table = mongoose.model('referral_table', referral_table);
 // module.exports = coupon_table = mongoose.model('coupon_table', coupon_table);
-// module.exports = brand_table = mongoose.model('brand_table', brand_table);
+ module.exports = brand_table = mongoose.model('brand_table', brand_table);
 // module.exports = testimonial_table= mongoose.model('testimonial_table', testimonial_table);
 // module.exports = pincode_table = mongoose.model('pincode_table', pincode_table);
 // module.exports = blog_table = mongoose.model('blog_table', blog_table);

@@ -1126,6 +1126,12 @@ router.post("/signup_comp",async(req,res)=>{
   var mob = req.body.mobile
   var name = req.body.username
   var otp = req.body.otp
+  var ge=req.body.gender
+  var dateobj = new Date(); 
+  
+  // Contents of above date object is 
+  // converted into a string using toISOString() function. 
+  var tii = dateobj.toISOString(); 
   var ref = new mongoose.mongo.ObjectId()
   var newId = new mongoose.mongo.ObjectId();
   var wallet_id= new mongoose.mongo.ObjectId();
@@ -1138,7 +1144,7 @@ router.post("/signup_comp",async(req,res)=>{
       }else{
         try{
           if(req.body.ref2){
-            var newuser=await user_table.create({name:{first_name:f_name,last_name:l_name},email:email,referral_code:ref,mobile:mob,user_id:newId,username:name,wallet:{wallet_id:wallet_id}},function(err,created){
+            var newuser=await user_table.create({name:{first_name:f_name,last_name:l_name},email:email,referral_code:ref,mobile:mob,user_id:newId,username:name,wallet:{wallet_id:wallet_id},join_date:tii,gender:ge},function(err,created){
               if(err){
                 console.log(err)
                 return res.json({status:"Unable to signup"})
@@ -1162,7 +1168,7 @@ router.post("/signup_comp",async(req,res)=>{
           }else
         
           { 
-             var newuser=await user_table.create({name:{first_name:f_name,last_name:l_name},email:email,referral_code:ref,mobile:mob,user_id:newId,username:name,wallet:{wallet_id:wallet_id}},function(err,created){
+             var newuser=await user_table.create({name:{first_name:f_name,last_name:l_name},email:email,referral_code:ref,mobile:mob,user_id:newId,username:name,wallet:{wallet_id:wallet_id},join_date:tii,gender:ge},function(err,created){
               if(err){
                 console.log(err)
                 return res.json({status:"Unable to signup"})

@@ -244,6 +244,9 @@ var admin_table = new Schema({
 
 });
 var user_table = new Schema({
+	profile_image:{
+		type:String
+	},
 	user_id:{
 		type:String,
 		unique:true,
@@ -312,6 +315,10 @@ var user_table = new Schema({
 	  }],
 	  join_date:{
 		  type:Date
+	  },
+	  gender:{
+		  type:String,
+		  enum:["Male","Female"]
 	  },
 	  referral_code:{
 		  type:String,
